@@ -1,550 +1,516 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
+<html lang="vi"><head><base target="_blank">
+
+
+    <base target="_blank">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAMINS - Hệ thống học tập</title>
-  <style>
-    :root {
-        --primary-green: #1abc9c;
-        --primary-blue: #3498db;
-        --primary-orange: #e67e22;
-    }
+    <title>Toán 11 - NAMINS</title>
+    <style>
+        :root {
+            --primary-green: #1a4d2e;  /* Màu xanh từ ảnh (dành cho ô F1) */
+            --image-orange: #b57318;   /* Màu cam đất từ ảnh (dành cho ô G1) */
+            --primary-orange: #e67e22; /* Giữ màu cam cũ cho Chương và Bài học */
+            --bg-light: #fdfdfd;
+            --border-color: #b5b5b5;
+            --text-dark: #222;
+        }
 
-    /* Thiết lập chuẩn để không bị tràn màn hình */
-    * {
-        box-sizing: border-box;
-    }
+        * { box-sizing: border-box; }
 
-    body {
-        font-family: 'Segoe UI', Arial, sans-serif;
-        background-color: #fdfdfd; 
-        margin: 0;
-        padding: 20px;
-        font-size: 16px; /* ĐÃ SỬA: Hạ cỡ chữ cơ sở từ 20px xuống 16px */
-        overflow-x: hidden;
-    }
-
-    /* HEADER & LOGO */
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1100px;
-        margin: 0 auto 25px auto;
-        width: 100%;
-    }
-
-    .logo-wrap {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .logo-text {
-        font-size: 36px; /* ĐÃ SỬA: Hạ từ 42px xuống 36px */
-        font-weight: 800;
-        color: #1a4d2e;
-        line-height: 1;
-    }
-
-    .logo-text span { color: #e67e22; }
-    .logo-domain { font-size: 14px; color: #888; display: block; margin-top: 0px; } 
-
-    /* TÌM KIẾM */
-    .search-box input {
-        width: 270px; 
-        padding: 10px 16px; 
-        border-radius: 25px;
-        border: 1px solid #c7d2d8;
-        background: #f1f4f6;
-        outline: none;
-        font-size: 15px; /* ĐÃ SỬA: Hạ từ 17px xuống 15px */
-        transition: 0.2s;
-    }
-
-    /* LAYOUT 3 CỘT (MÁY TÍNH) */
-    .container {
-        display: flex;
-        gap: 20px;
-        max-width: 1100px;
-        margin: 0 auto;
-        width: 100%;
-    }
-
-    .column {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    /* TIÊU ĐỀ CỘT */
-    .column-header {
-        padding: 14px 18px;
-        border-radius: 10px;
-        color: white;
-        font-weight: bold;
-        font-size: 20px; /* ĐÃ SỬA: Hạ cỡ chữ tiêu đề máy tính từ 24px xuống 20px */
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        text-align: left;
-    }
-
-    .bg-green { background: #1a4d2e; } /* ĐÃ ĐỔI: Trùng màu chữ NAM (#1a4d2e) */
-    .bg-blue { background: #3498db; }
-    .bg-orange { background: #e67e22; }
-
-    /* THIẾT KẾ Ô KHOÁ HỌC */
-    .item-card {
-        background: #fff;
-        padding: 12px 18px; 
-        border-radius: 16px;
-        border: 1.5px solid #b5b5b5; 
-        cursor: pointer;
-        transition: 0.2s;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.08); 
-        text-decoration: none;
-        display: block;
-    }
-
-    .item-card h2 {
-        margin: 0;
-        font-weight: 700; 
-        color: #222; 
-        font-size: 18px; /* ĐÃ SỬA: Hạ cỡ chữ tên môn học máy tính từ 20px xuống 18px */
-    }
-
-    .dropdown {
-        margin-top: 12px;
-        padding-top: 8px;
-        border-top: 1px dashed #cbd5e1;
-        display: none;
-    }
-
-    .dropdown a {
-        display: block;
-        text-decoration: none;
-        color: #2c3e50;
-        padding: 6px 0;
-        font-size: 15px; /* ĐÃ SỬA: Hạ cỡ chữ liên kết bài giảng xuống 15px cho gọn */
-        font-weight: 500;
-    }
-
-    /* FOOTER ACTION (MÁY TÍNH) */
-    .footer-action {
-        margin: 40px auto 20px auto;
-        max-width: 1100px;
-        width: 100%;
-        display: flex;
-        flex-direction: row; 
-        align-items: center;
-        justify-content: flex-start;
-        gap: 30px;
-    }
-
-    .btn-register {
-        background: linear-gradient(to bottom, #d4af37, #a67c00);
-        color: #fff;
-        padding: 14px 35px; 
-        border-radius: 25px;
-        border: 1px solid #8e6f3e;
-        font-weight: bold;
-        font-size: 16px; /* ĐÃ SỬA: Hạ cỡ chữ nút bấm từ 20px xuống 16px */
-        cursor: pointer;
-    }
-
-    .link-detail { color: blue; font-weight: bold; text-decoration: none; font-size: 15px; text-transform: uppercase; } 
-    .copyright { color: #999; font-size: 14px; margin-left: auto; }
-
-    /* --- ĐIỀU CHỈNH HOÀN TOÀN CHO ĐIỆN THOẠI (DƯỚI 768PX) --- */
-    @media (max-width: 768px) {
         body {
-            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg-light); 
+            margin: 0;
+            padding: 20px;
+            font-size: 16px;
+            overflow-x: hidden;
         }
 
+        /* HEADER & LOGO */
         .header {
-            flex-direction: column;
-            padding: 20px 10px;
-            gap: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto 25px auto;
+            width: 100%;
         }
 
-        .logo-text { font-size: 32px; text-align: center; }
-        .search-box { width: 100%; padding: 0 15px; }
-        .search-box input { width: 100%; font-size: 15px; }
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
+        .logo-text {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        /* Chữ ở ô F1: Màu xanh đậm chuẩn theo ảnh */
+        #subject-text {
+            color: var(--primary-green);
+        }
+
+        /* Chữ ở ô G1 (số lớp): Màu cam đất chuẩn theo ảnh */
+        #grade-text {
+            color: var(--image-orange);
+            margin-left: 5px;
+        }
+
+        /* TÌM KIẾM */
+        .search-box input {
+            width: 270px; 
+            padding: 10px 16px; 
+            border-radius: 25px;
+            border: 1px solid #c7d2d8;
+            background: #f1f4f6;
+            outline: none;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-orange);
+            background: #fff;
+        }
+
+        /* LAYOUT 2 CỘT */
         .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 0;
+            gap: 12px;
         }
 
         .column-header {
-            border-radius: 0;
-            font-size: 18px;  /* ĐÃ SỬA: Hạ tiêu đề trên điện thoại từ 22px xuống 18px */
-            padding: 14px;
-            text-align: center;
+            padding: 14px 18px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: left;
         }
 
+        .bg-green { background: var(--primary-green); }
+        .bg-orange { background: var(--image-orange); }
+
+        /* THIẾT KẾ Ô KHOÁ HỌC (ITEM CARD) */
         .item-card {
-            border-radius: 0;
-            border-left: none;
-            border-right: none;
-            padding: 14px;
+            background: #fff;
+            padding: 16px 20px; 
+            border-radius: 16px;
+            border: 1.5px solid var(--border-color); 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05); 
+            display: block;
+        }
+
+        .item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
         }
 
         .item-card h2 {
-            font-size: 16px; /* ĐÃ SỬA: Hạ cỡ chữ môn học trên điện thoại từ 18px xuống 16px */
-            text-align: center;
+            margin: 0;
+            font-weight: 700; 
+            color: var(--text-dark); 
+            font-size: 18px;
+            transition: color 0.2s ease;
         }
 
+        .item-card:hover h2 {
+            color: var(--primary-orange) !important;
+        }
+
+        /* DROPDOWN MENU CON */
+        .dropdown {
+            margin-top: 14px;          
+            padding-top: 14px;         
+            border-top: 1px dashed #cbd5e1;
+            display: none;
+        }
+
+        .dropdown a {
+            display: block;
+            text-decoration: none;
+            color: #334155;
+            padding: 5px 4px;          
+            margin-bottom: 2px;        
+            font-size: 15px;
+            font-weight: 600;
+            transition: color 0.15s ease;
+        }
+
+        .dropdown a:last-child { margin-bottom: 0; }
+        
+        .dropdown a:hover { 
+            color: var(--primary-orange) !important; 
+            text-decoration: underline; 
+        }
+
+        /* FOOTER ACTION */
         .footer-action {
-            flex-direction: column;
+            margin: 40px auto 20px auto;
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            flex-direction: row; 
             align-items: center;
+            justify-content: flex-start;
+            gap: 30px;
+        }
+
+        .btn-register {
+            background: var(--image-orange); 
+            color: #fff;
+            padding: 14px 35px; 
+            border-radius: 25px;
+            border: 1px solid #945d12;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+
+        .btn-register:hover { opacity: 0.9; }
+
+        .link-detail { 
+            color: var(--primary-green); 
+            font-weight: bold; 
+            text-decoration: none; 
+            font-size: 18px; 
+            text-transform: uppercase; 
+        } 
+        
+        .link-detail:hover { text-decoration: underline; }
+
+        .copyright { 
+            max-width: 1100px;
+            margin: 20px auto;
+            color: #999; 
+            font-size: 14px; 
+            text-align: left;
+        }
+
+        /* KHU VỰC CỦA ADMIN */
+        #admin-panel {
+            max-width: 1100px;
+            margin: 20px auto;
             padding: 20px;
-            gap: 20px;
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+            border-radius: 10px;
+            display: none; 
+        }
+        .admin-input-group {
+            margin-bottom: 15px;
+        }
+        .admin-input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #533f03;
+        }
+        .admin-input-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            outline: none;
+        }
+        #admin-panel textarea {
+            width: 100%;
+            height: 180px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .btn-admin {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        .btn-register { width: 100%; font-size: 16px; }
-        .copyright { margin-left: 0; text-align: center; font-size: 13px; }
-
-        /* ẨN CÁC THÀNH PHẦN BÁO CÁO DƯỚI CÙNG */
-        .goog-te-banner-frame, .skiptranslate, #goog-gt-tt { display: none !important; }
-    }
-</style>
-
-    <script>
-        function toggleMenu(id) {
-            let menus = document.querySelectorAll(".dropdown");
-            menus.forEach(m => {
-                if (m.id !== id) m.style.display = "none";
-            });
-
-            let menu = document.getElementById(id);
-            if (menu) {
-                menu.style.display = (menu.style.display === "block") ? "none" : "block";
-            }
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .header { flex-direction: column; padding: 10px; gap: 15px; }
+            .logo-text { font-size: 32px; text-align: center; }
+            .search-box { width: 100%; }
+            .search-box input { width: 100%; }
+            .container { flex-direction: column; gap: 15px; }
+            .column-header { font-size: 18px; padding: 14px; text-align: center; }
+            .item-card { border-radius: 12px; padding: 14px; }
+            .item-card h2 { font-size: 16px; text-align: center; }
+            .footer-action { flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+            .btn-register { width: 100%; }
+            .copyright { text-align: center; font-size: 13px; }
         }
-    </script>
+    </style>
 </head>
 <body>
 
     <div class="header">
         <div class="logo-wrap">
-            <div class="logo-text">NAM<span>INS</span><span class="logo-domain"> </span></div>
+            <div class="logo-text"><span id="subject-text">Toán</span><span id="grade-text">12</span></div>
         </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Tìm qua Google..." oninput="checkAdminPass(this.value)">
+        </div>
+    </div>
+
+    <div id="admin-panel" style="display: none;">
+        <h3 style="margin-top:0; color: #856404;">🛠️ HỆ THỐNG CẬP NHẬT CODE TỰ ĐỘNG</h3>
         
-        <form class="search-box" action="https://www.google.com/search" method="GET" target="_blank">
-            <input type="text" name="q" placeholder="Tìm qua Google...">
-        </form>
+        <div class="admin-input-group">
+            <label for="sheet-id-input">Thay đổi ID Google Sheet (Để trống nếu giữ nguyên ID hiện tại):</label>
+            <input type="text" id="sheet-id-input" placeholder="Ví dụ: 17I3YobOlAHAW7CPK1XBVCSKinVj3ggT7PrbZz5zGMWU">
+            <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại của trang này: 17I3YobOlAHAW7CPK1XBVCSKinVj3ggT7PrbZz5zGMWU</small>
+        </div>
+
+        <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang kết nối tới Google Sheets (ID: 16m9526VzuBdl_z-gENN3W17CqJ3ieX6KldQp59mn15A)...</p>
+        <button class="btn-admin" id="btn-fetch" onclick="generateNewCode()">Bắt đầu lấy dữ liệu mới từ Sheets</button>
+        
+        <div id="output-area" style="display: none; margin-top: 15px;">
+            <p><b>Bước tiếp theo:</b> Bấm nút Copy dưới đây, vào Google Sites chỉnh sửa mã nhúng, <b>Xóa toàn bộ code cũ đi và Dán đè code mới này vào</b> rồi Xuất bản.</p>
+            <button class="btn-admin" style="background:#007bff;" onclick="copyNewCode()">Copy Toàn Bộ Code</button>
+            <textarea id="code-output" readonly=""></textarea>
+        </div>
     </div>
 
     <div class="container">
-        
-        <div class="column">
-            <div class="column-header bg-green">1. Toán THCS </div>
-            
-            <div class="item-card" onclick="toggleMenu('toan9')">
-                <h2>Toán 9</h2>
-                <div class="dropdown" id="toan9">
-                    <a href="https://drive.google.com/drive/folders/1IN0Vu8I59tDogqiE-DRfkpHSYNhcY_ih?usp=drive_link" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="https://drive.google.com/drive/folders/11vuSgYt78tC5DVsqqQIRUlngFB7Wg-ft?usp=drive_link" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="https://drive.google.com/drive/folders/17Ytkb71OElnwTiILSOC2I_qHCNc6swWq?usp=drive_link" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
+        <div class="column" id="column-1"><div class="column-header bg-green">1. Bài giảng</div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_1')"><h2>Chương 1. Tập hợp các số tự nhiên</h2><div class="dropdown" id="chuong_col1_1"><a href="https://www.youtube.com/watch?v=BL9G6A2q7tU" target="_blank"><span>Bài 1. Tập hợp.</span></a><a href="#" target="_blank"><span>Bài 2. Cách ghi số tự nhiên.</span></a><a href="#" target="_blank"><span>Bài 3. Thứ tự trong tập hợp các số tự nhiên.</span></a><a href="#" target="_blank"><span>Bài 4. Phép cộng và phép trừ số tự nhiên.</span></a><a href="#" target="_blank"><span>Bài 5. Phép nhân và phép chia số tự nhiên.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài 6. Luỹ thừa với số mũ tự nhiên.</span></a><a href="#" target="_blank"><span>Bài 7. Thứ tự thực hiện các phép tính.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 1</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_2')"><h2>Chương 2. Tính chia hết trong tập hợp số tự nhiên</h2><div class="dropdown" id="chuong_col1_2"><a href="#" target="_blank"><span>Bài 8. Quan hệ chia hết và tính chất.</span></a><a href="#" target="_blank"><span>Bài 9. Dấu hiệu chia hết.</span></a><a href="#" target="_blank"><span>Bài 10. Số nguyên tố.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài 11. Ước chung. Ước chung lớn nhất.</span></a><a href="#" target="_blank"><span>Bài 12. Bội chung. Bội chung nhỏ nhất.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 2</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_3')"><h2>Chương 3. Số nguyên</h2><div class="dropdown" id="chuong_col1_3"><a href="#" target="_blank"><span>Bài 13. Tập hợp các số nguyên.</span></a><a href="#" target="_blank"><span>Bài 14. Phép cộng và phép trừ số nguyên.</span></a><a href="#" target="_blank"><span>Bài 15. Quy tắc dấu ngoặc.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài 16. Phép nhân số nguyên.</span></a><a href="#" target="_blank"><span>Bài 17. Phép chia hết. Ước và bội của một số nguyên.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 3</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_4')"><h2>Chương 4. Một số hình phẳng trong thực tiễn</h2><div class="dropdown" id="chuong_col1_4"><a href="#" target="_blank"><span>Bài 18. Hình tam giác đều. Hình vuông. Hình lục giác đều.</span></a><a href="#" target="_blank"><span>Bài 19. Hình chữ nhật. Hình thoi. Hình bình hành. Hình thang cân.</span></a><a href="#" target="_blank"><span>Bài 20. Chu vi và diện tích của một số tứ giác đã học.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_5')"><h2>Chương 5. Tính đối xứng của hình phằng trong tự nhiên</h2><div class="dropdown" id="chuong_col1_5"><a href="#" target="_blank"><span>Bài 21. Hình có trục đối xứng.</span></a><a href="#" target="_blank"><span>Bài 22. Hình có tâm đối xứng.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 5</span></a></div></div></div>
 
-            <div class="item-card" onclick="toggleMenu('toan8')">
-                <h2>Toán 8</h2>
-                <div class="dropdown" id="toan8">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.2 Toán 8\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('toan7')">
-                <h2>Toán 7</h2>
-                <div class="dropdown" id="toan7">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.3 Toán 7\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('toan6')">
-                <h2>Toán 6</h2>
-                <div class="dropdown" id="toan6">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\I.2. Đề thi giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.1 Toán 9\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\I. Toán cấp 2\I.4 Toán 6\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-        </div>
-
-        <div class="column">
-
-            <div class="column-header" style="background-color: #78281f; color: white;"> 2. Toán THPT  </div>
-                     
-            <div class="item-card" onclick="toggleMenu('toan12')">
-                <h2>Toán 12</h2>
-                <div class="dropdown" id="toan12">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.1. Toán 12\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('toan11')">
-                <h2>Toán 11</h2>
-                <div class="dropdown" id="toan11">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.2. Toán 11\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('toan10')">
-                <h2>Toán 10</h2>
-                <div class="dropdown" id="toan10">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\II. Toán cấp 3\II.3. Toán 10\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-        </div>
-
-        <div class="column">
-            <div class="column-header bg-orange">3. Vật lí & KHTN </div>
-            
-            <div class="item-card" onclick="toggleMenu('li12')">
-                <h2>Lí 12</h2>
-                <div class="dropdown" id="li12">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.1. Lí 12\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('li11')">
-                <h2>Lí 11</h2>
-                <div class="dropdown" id="li11">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.2. Lí 11\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('li10')">
-                <h2>Lí 10</h2>
-                <div class="dropdown" id="li10">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.3. Lí 10\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('li9')">
-                <h2>KHTN 9</h2>
-                <div class="dropdown" id="li9">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.4. KHTN 9\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('li8')">
-                <h2>KHTN 8</h2>
-                <div class="dropdown" id="li8">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.5. KHTN 8\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('li7')">
-                <h2>KHTN 7</h2>
-                <div class="dropdown" id="li7">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.6. KHTN 7\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-
-            <div class="item-card" onclick="toggleMenu('li6')">
-                <h2>KHTN 6</h2>
-                <div class="dropdown" id="li6">
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\I. Bài giảng kì 1" target="_blank"><span style="font-weight: bold;">I. Bài giảng kì 1</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\I.1. Đề cương giữa kì 1" target="_blank">I.1. Đề cương giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\I.2. Đề thi giữa kì 1" target="_blank">I.2. Đề thi giữa kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\I.3. Đề cương kì 1" target="_blank">I.3. Đề cương kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\I.4. Đề thi kì 1" target="_blank">I.4. Đề thi kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\II. Bài giảng kì 2" target="_blank"><span style="font-weight: bold;">II. Bài giảng kì 2</span></a>
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\II.1. Đề cương giữa kì 2" target="_blank">II.1. Đề cương giữa kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\II.2. Đề thi giữa kì 2" target="_blank"><span style="color: red;">II.2. Đề thi giữa kì 2</span></a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\II.3. Đề cương kì 2" target="_blank">II.3. Đề cương kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\II.4. Đề thi kì 2" target="_blank">II.4. Đề thi kì 2</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\1. Khảo sát đầu năm" target="_blank">1. Khảo sát đầu năm</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\2. Khảo sát kì 1" target="_blank">2. Khảo sát kì 1</a> 
-                    <a href="file:///G:\Share00\1. Quản lí Onthi24\III. Lí - KHTN\III.7. KHTN 6\3. Khảo sát kì 2" target="_blank"><span style="color: red;">3. Khảo sát kì 2</span></a> 
-                </div>
-            </div>
-        </div>
+        <div class="column" id="column-2"><div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_1')"><h2>1.1 Đề cương giữa kì 1</h2><div class="dropdown" id="chuong_col2_1"><a href="https://www.youtube.com/watch?v=wyLaay_sHtk&amp;list=RDwyLaay_sHtk&amp;start_radio=1" target="_blank"><span>Đề cương 1</span></a><a href="https://www.youtube.com/watch?v=BL9G6A2q7tU" target="_blank"><span>Đề cương 2</span></a><a href="#" target="_blank"><span>Đề cương 3</span></a><a href="#" target="_blank"><span>Đề cương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_2')"><h2>1.2 Đề thi giữ kì 1</h2><div class="dropdown" id="chuong_col2_2"><a href="#" target="_blank"><span>Bộ đề thi 1</span></a><a href="#" target="_blank"><span>Bộ đề thi 2</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_3')"><h2>1.3 Đề cương học kì 1</h2><div class="dropdown" id="chuong_col2_3"><a href="#" target="_blank"><span>Đề cương 1</span></a><a href="#" target="_blank"><span>Đề cương 2</span></a><a href="#" target="_blank"><span>Đề cương 3</span></a><a href="#" target="_blank"><span>Đề cương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_4')"><h2>1.4 Đề thi học kì 1</h2><div class="dropdown" id="chuong_col2_4"><a href="#" target="_blank"><span>Bộ đề thi 1</span></a><a href="#" target="_blank"><span>Bộ đề thi 2</span></a></div></div></div>
     </div>
 
-  <div class="footer-action">
+    <div class="footer-action">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdX0G3eI0fttdhqXR_YAexVfp2LlgFBJTWZUpS4gGjICfkZ_Q/viewform?usp=sharing" target="_blank" style="text-decoration: none;">
+            <button class="btn-register">ĐĂNG KÍ HỌC NGAY</button>
+        </a>
+        <a href="https://sites.google.com/view/namins2" target="_blank" class="link-detail">
+            GIỚI THIỆU VỀ NAMINS.COM
+        </a>
+    </div>
 
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdX0G3eI0fttdhqXR_YAexVfp2LlgFBJTWZUpS4gGjICfkZ_Q/viewform?usp=sharing&ouid=113477090607001884064" target="_blank" style="text-decoration: none;">
-        <button class="btn-register">ĐĂNG KÍ HỌC NGAY</button>
-    </a>
+    <div class="copyright">© 2026 NAMINS</div>
 
-    <a href="https://sites.google.com/view/namins2"
-   target="_blank"
-   class="link-detail"
-   style="
-       text-decoration: none;
-       color: #78281f; /* ĐÃ ĐỔI: Trùng với màu nền cột 3. Vật lí & KHTN (#78281f) */
-       cursor: pointer;
-       font-weight: bold;
-       font-size: 18px; /* ĐÃ SỬA: Hạ cỡ chữ liên kết chân trang xuống 15px */
-   ">
-    GIỚI THIỆU VỀ NAMINS.COM
-</a>
+    <script>
+        // ==========================================
+        // CẤU HÌNH HỆ THỐNG
+        // ==========================================
+        const SHEET_ID = '16m9526VzuBdl_z-gENN3W17CqJ3ieX6KldQp59mn15A'; 
+        const SHEET_TITLE = 'Sheet1'; 
+        const SHEET_RANGE = 'A1:G100'; 
+        const ADMIN_PASSWORD = 'admin123'; 
 
-</div>
+        // ==========================================
+        // DỮ LIỆU TĨNH (ĐỔ TỰ ĐỘNG KHI BUILD)
+        // ==========================================
+        const STATIC_DATA = {"1":{"Chương 1. Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số":{"color":"","items":[{"name":"Bài 1. Tính đơn điệu và cực trị của hàm số","link":"#","color":""},{"name":"Bài 2. Giá trị lớn nhất và giá trị nhỏ nhất của hàm số","link":"#","color":""},{"name":"Bài 3. Đường tiệm cận của đồ thị hàm số","link":"#","color":""},{"name":"Bài 4. Khảo sát sự biến thiên và vẽ đồ thị hàm số","link":"#","color":""},{"name":"Bài 5. Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn","link":"#","color":""},{"name":"Bài tập cuối chương 1","link":"#","color":""}]},"Chương 2. Véc tơ và trục tọa độ trong không gian":{"color":"","items":[{"name":"Bài 6. Vectơ trong không gian","link":"#","color":""},{"name":"Bài 7. Hệ trục tọa độ trong không gian","link":"#","color":""},{"name":"Bài 8. Biểu thức tọa độ của các phép toán vectơ","link":"#","color":""},{"name":"Bài tập cuối chương 2","link":"#","color":""}]},"Chương 3. Các số đo đặc trưng":{"color":"","items":[{"name":"Bài 9. Khoảng biến thiên và khoảng tứ phân vị","link":"#","color":""},{"name":"Bài 10. Phương sai và độ lệch chuẩn","link":"#","color":""}]},"Chuyên đề học kì 1":{"color":"","items":[{"name":"Chuyên đề 1: Tính đơn điệu và cực trị của hàm số chứa tham số, hàm hợp, hàm ẩn","link":"#","color":""},{"name":"Chuyên đề 2: Bài toán tối ưu, Max - Min chứa dấu giá trị tuyệt đối và hàm hợp","link":"#","color":""},{"name":"Chuyên đề 3: Khảo sát chuyên sâu về tiệm cận và sự tương giao của đồ thị hàm số","link":"#","color":""},{"name":"Chuyên đề 4: Ứng dụng đạo hàm giải bài toán thực tế và tối ưu hóa chi phí, năng suất","link":"#","color":""},{"name":"Bài tập cuối chương II","link":"#","color":""},{"name":"Chuyên đề 5: Khối hình học không gian thuần túy giải bằng phương pháp Vectơ","link":"#","color":""},{"name":"Chuyên đề 6: Cực trị hình học không gian sử dụng phương pháp Vectơ và Tọa độ","link":"#","color":""},{"name":"Chuyên đề 7: Phương pháp tọa độ hóa (Gắn trục tọa độ Oxyz) giải bài toán hình học cổ điển","link":"#","color":""},{"name":"Chuyên đề 9: Ứng dụng phương sai, độ lệch chuẩn đánh giá rủi ro kinh tế và kiểm định hiệu quả","link":"#","color":""},{"name":"Chuyên đề 10: Ứng dụng tích hợp Đạo hàm, Tọa độ không gian và Thống kê trong các bài toán tích hợp","link":"#","color":""}]},"Chương 4. Nguyên hàm và tích phân":{"color":"","items":[{"name":"Bài 11. Nguyên hàm","link":"#","color":""},{"name":"Bài 12. Tích phân","link":"#","color":""},{"name":"Bài 13. Ứng dụng hình học của tích phân","link":"#","color":""},{"name":"Bài tập cuối chương 4","link":"#","color":""}]},"Chương 5. Phương pháp tọa độ trong không gian":{"color":"","items":[{"name":"Bài 14. Phương trình mặt phẳng","link":"#","color":""},{"name":"Bài 15. Phương trình đường thẳng trong không gian","link":"#","color":""},{"name":"Bài 16. Công thức tính góc trong không gian","link":"#","color":""},{"name":"Bài 17. Phương trình mặt cầu","link":"#","color":""},{"name":"Bài tập cuối chương 5","link":"#","color":""}]},"Chương 6. Xác suất có điều kiện":{"color":"","items":[{"name":"Bài 18. Xác suất có điều kiện","link":"#","color":""},{"name":"Bài 19. Công thức xác suất toàn phần và công thức Bayes","link":"#","color":""},{"name":"Bài tập cuối chương 6","link":"#","color":""}]},"Chuyên đề học kì 2":{"color":"","items":[{"name":"Chuyên đề 1: Kỹ thuật xử lý Nguyên hàm - Tích phân của hàm hợp và hàm ẩn","link":"#","color":""},{"name":"Chuyên đề 2: Các phương pháp tính tích phân đặc biệt và hàm số chứa dấu giá trị tuyệt đối","link":"#","color":""},{"name":"Chuyên đề 3: Ứng dụng tích phân giải quyết bài toán Diện tích, Thể tích phức tạp và Hình phẳng ghép","link":"#","color":""},{"name":"Chuyên đề 4: Bài toán vị trí tương đối và tương giao giữa Đường thẳng, Mặt phẳng, Mặt cầu","link":"#","color":""},{"name":"Chuyên đề 5: Các bài toán về Góc và Khoảng cách nâng cao trong không gian Oxyz","link":"#","color":""},{"name":"Chuyên đề 6: Biện luận Cực trị hình học Oxyz bằng phương pháp Hình học cổ điển","link":"#","color":""},{"name":"Chuyên đề 7: Biện luận Cực trị hình học Oxyz bằng phương pháp Đại số và Khảo sát hàm số","link":"#","color":""},{"name":"Chuyên đề 8: Xác suất có điều kiện và kỹ thuật xây dựng Sơ đồ cây","link":"#","color":""},{"name":"Chuyên đề 9: Công thức xác suất toàn phần và Định lý Bayes nâng cao","link":"#","color":""},{"name":"Chuyên đề 10: Một số bài tính xác suất đặc biệt","link":"#","color":""}]}},"2":{"1.1 Đề cương giữa kì 1":{"color":"","items":[{"name":"Đề cương 1","link":"https://www.youtube.com/watch?v=wyLaay_sHtk&list=RDwyLaay_sHtk&start_radio=1","color":""},{"name":"Đề cương 2","link":"#","color":""},{"name":"Đề cương 3","link":"#","color":""},{"name":"Đề cương 4","link":"#","color":""}]},"1.2 Đề thi giữ kì 1":{"color":"","items":[{"name":"Bộ đề thi 1","link":"#","color":""},{"name":"Bộ đề thi 2","link":"#","color":""}]},"1.3 Đề cương học kì 1":{"color":"","items":[{"name":"Đề cương 1","link":"#","color":""},{"name":"Đề cương 2","link":"#","color":""},{"name":"Đề cương 3","link":"#","color":""},{"name":"Đề cương 4","link":"#","color":""}]},"1.4 Đề thi học kì 1":{"color":"","items":[{"name":"Bộ đề thi 1","link":"#","color":""},{"name":"Bộ đề thi 2","link":"#","color":""}]}}}; 
 
-<div class="copyright">
-    © 2026 NAMINS
-</div>
-</body>
+        function toggleMenu(id) {
+            let targetMenu = document.getElementById(id);
+            if (targetMenu) {
+                const currentDisplay = window.getComputedStyle(targetMenu).display;
+                
+                let allDropdowns = document.querySelectorAll('.dropdown');
+                allDropdowns.forEach(menu => {
+                    menu.style.display = 'none';
+                });
+
+                if (currentDisplay === "none") {
+                    targetMenu.style.display = "block";
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderColumn(1, STATIC_DATA[1]);
+            renderColumn(2, STATIC_DATA[2]);
+        });
+
+        function renderColumn(colNum, chapters) {
+            const columnEl = document.getElementById(`column-${colNum}`);
+            if (!columnEl) return;
+
+            const headerEl = columnEl.querySelector('.column-header');
+            const headerHtml = headerEl ? headerEl.outerHTML : '';
+            columnEl.innerHTML = headerHtml;
+
+            let index = 0;
+            for (let chuongName in chapters) {
+                index++;
+                const menuId = `chuong_col${colNum}_${index}`;
+                const chapterData = chapters[chuongName];
+                
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.style.marginBottom = '12px';
+                card.setAttribute('onclick', `toggleMenu('${menuId}')`);
+
+                const h2 = document.createElement('h2');
+                h2.innerText = chuongName;
+                if (chapterData.color) h2.style.color = chapterData.color; 
+                card.appendChild(h2);
+
+                const dropdown = document.createElement('div');
+                dropdown.className = 'dropdown';
+                dropdown.id = menuId;
+
+                if (!chapterData.items || chapterData.items.length === 0) {
+                    dropdown.innerHTML = '<span style="color:#888; font-style:italic; font-size:14px;">(Chưa cập nhật bài học)</span>';
+                } else {
+                    chapterData.items.forEach(item => {
+                        const a = document.createElement('a');
+                        a.href = item.link;
+                        a.target = '_blank';
+                        a.onclick = (e) => e.stopPropagation(); 
+                        if (item.color) a.style.color = item.color; 
+                        
+                        const span = document.createElement('span');
+                        span.innerText = item.name;
+                        
+                        a.appendChild(span);
+                        dropdown.appendChild(a);
+                    });
+                }
+                card.appendChild(dropdown);
+                columnEl.appendChild(card);
+            }
+            
+            if (Object.keys(chapters || {}).length === 0) {
+                const emptyNotify = document.createElement('div');
+                emptyNotify.className = 'loading';
+                emptyNotify.innerText = 'Hiện tại mục này chưa cập nhật nội dung.';
+                columnEl.appendChild(emptyNotify);
+            }
+        }
+
+        function checkAdminPass(val) {
+            if (val.trim() === ADMIN_PASSWORD) {
+                document.getElementById('admin-panel').style.display = 'block';
+                document.getElementById('current-id-hint').innerText = `ID hiện tại của trang này: ${SHEET_ID}`;
+                document.getElementById('search-input').value = ''; 
+                alert('Đã mở Chế độ Quản trị viên! Cuộn xuống dưới để cập nhật code.');
+            }
+        }
+
+        function generateNewCode() {
+            const status = document.getElementById('admin-status');
+            
+            let inputId = document.getElementById('sheet-id-input').value.trim();
+            let finalSheetId = inputId ? inputId : SHEET_ID;
+
+            status.innerText = `Đang kết nối tới Google Sheets (ID: ${finalSheetId})...`;
+            status.style.color = "blue";
+
+            const FULL_URL = `https://docs.google.com/spreadsheets/d/${finalSheetId}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
+
+            fetch(FULL_URL)
+            .then(res => res.text())
+            .then(rep => {
+                const data = JSON.parse(rep.substr(47).slice(0, -2));
+                const rows = data.table.rows;
+                
+                if (!rows || rows.length === 0) {
+                    alert('Không tìm thấy dữ liệu.');
+                    return;
+                }
+
+                let subjectVal = "Toán";
+                let gradeVal = "6";
+                if (rows[0] && rows[0].c) {
+                    if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim();
+                    if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();
+                }
+
+                document.getElementById('subject-text').innerText = subjectVal;
+                document.getElementById('grade-text').innerText = gradeVal;
+
+                let columnsData = { 1: {}, 2: {} };
+
+                rows.forEach((row, rowIndex) => {
+                    if (!row.c) return; 
+                    if (rowIndex === 0 && !row.c[0]) return; 
+
+                    const colNum = (row.c[0] && row.c[0].v) ? parseInt(row.c[0].v) : 1; 
+                    const chuongName = (row.c[1] && row.c[1].v) ? row.c[1].v.toString().trim() : '';     
+                    const baiName = (row.c[2] && row.c[2].v) ? row.c[2].v.toString().trim() : '';        
+                    const linkUrl = (row.c[3] && row.c[3].v) ? row.c[3].v : '#';        
+                    const customColor = (row.c[4] && row.c[4].v) ? row.c[4].v.toString().trim() : '';       
+
+                    if (chuongName) {
+                        if (!columnsData[colNum]) columnsData[colNum] = {};
+                        if (!columnsData[colNum][chuongName]) {
+                            columnsData[colNum][chuongName] = { color: '', items: [] };
+                        }
+                        if (baiName) {
+                            columnsData[colNum][chuongName].items.push({ 
+                                name: baiName, link: linkUrl, color: customColor 
+                            });
+                        } else if (customColor) {
+                            columnsData[colNum][chuongName].color = customColor;
+                        }
+                    }
+                });
+
+                document.getElementById('admin-panel').style.display = 'none';
+                document.getElementById('output-area').style.display = 'none';
+                document.getElementById('code-output').value = '';
+
+                let currentHtml = document.documentElement.outerHTML;
+                
+                const dataString = JSON.stringify(columnsData);
+                const regexData = /const STATIC_DATA = \{.*?\};/;
+                currentHtml = currentHtml.replace(regexData, `const STATIC_DATA = ${dataString};`);
+
+                const regexId = /const SHEET_ID = '.*?';/;
+                currentHtml = currentHtml.replace(regexId, `const SHEET_ID = '${finalSheetId}';`);
+
+                let updatedHtml = "<!DOCTYPE html>\n<html lang=\"vi\">\n" + currentHtml + "\n</html>";
+
+                document.getElementById('admin-panel').style.display = 'block';
+                document.getElementById('code-output').value = updatedHtml;
+                document.getElementById('output-area').style.display = 'block';
+
+                status.innerText = "Tạo mã thành công! Hãy copy đoạn mã bên dưới.";
+                status.style.color = "green";
+            })
+            .catch(err => {
+                console.error(err);
+                status.innerText = "Lỗi tải dữ liệu! Hãy kiểm tra lại ID Sheet hoặc quyền chia sẻ công khai của Sheet.";
+                status.style.color = "red";
+            });
+        }
+
+        function copyNewCode() {
+            const copyText = document.getElementById("code-output");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            alert("Đã copy thành công! Hãy mang dán đè vào Google Sites và bấm Xuất bản.");
+        }
+    </script>
+
+</body></html>
 </html>
