@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
-<html lang="vi"><head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toán 11 - NAMINS</title>
+    <title id="page-title">Toán 11 - NAMINS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -305,43 +305,40 @@
            📱 CHỈNH SỬA GIAO DIỆN MOBILE CHUẨN XỊN THEO ẢNH CỦA BẠN
            ======================================================= */
         @media (max-width: 768px) {
-            body { padding: 0px; } /* Xóa khoảng trống lề để cấu hình sát viền */
+            body { padding: 0px; } 
 
             .top-navbar { 
                 padding: 8px 15px; 
                 border-radius: 0; 
                 margin-bottom: 10px;
-                justify-content: flex-start; /* Dồn nút mở và logo về bên trái */
+                justify-content: flex-start; 
                 gap: 15px;
                 background-color: #f1f4f6;
             }
 
             .mobile-menu-btn { 
-                display: block; /* Hiện nút 3 gạch ☰ */
+                display: block; 
             }
 
-            /* THIẾT KẾ THANH MENU TRƯỢT DỌC (SIDEBAR) ĐÚNG THEO ẢNH THỨ 2 */
             .nav-menu {
                 position: fixed;
                 top: 0;
-                left: -280px; /* Giấu toàn bộ menu sang bên trái màn hình */
+                left: -280px; 
                 width: 260px;
                 height: 100%;
-                background-color: #f4f6f8; /* Màu nền xám nhạt như ảnh */
+                background-color: #f4f6f8; 
                 flex-direction: column;
                 z-index: 99999;
-                padding: 60px 0px 20px 0px; /* Nhường chỗ cho nút X */
+                padding: 60px 0px 20px 0px; 
                 transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 box-shadow: 4px 0 12px rgba(0,0,0,0.15);
-                display: flex !important; /* Ép buộc luôn ở trạng thái flex dọc */
+                display: flex !important; 
             }
 
-            /* Lệnh trượt mở Sidebar ra */
             .nav-menu.open {
                 left: 0 !important;
             }
 
-            /* Nút đóng (✕) ở góc trên bên trái menu dọc */
             .mobile-close-btn {
                 display: block !important;
                 position: absolute;
@@ -357,39 +354,35 @@
                 width: 100%; 
             }
 
-            /* Định dạng các dòng chữ menu dọc giống ảnh của bạn */
             .nav-item { 
                 padding: 14px 24px; 
-                font-size: 20px; /* Chữ to, rõ ràng như ảnh */
+                font-size: 20px; 
                 color: #222;
                 font-weight: 600;
                 border-bottom: none;
-                border-left: 5px solid transparent; /* Đệm viền ẩn */
-                justify-content: space-between; /* Đẩy chữ sang trái, icon mũi tên sang phải */
+                border-left: 5px solid transparent; 
+                justify-content: space-between; 
                 width: 100%;
                 background-color: transparent;
             }
 
-            /* Thể hiện vết gạch dọc màu đen ở biên trái thay vì gạch chân ngang */
             .nav-item.active {
                 background-color: #e2e8f0;
-                border-left: 6px solid #000 !important; /* Vết đen bên trái cực chuẩn */
+                border-left: 6px solid #000 !important; 
                 border-bottom: none !important;
                 font-weight: bold;
             }
 
-            /* DROPDOWN MENU TRÊN MOBILE (Xếp chồng ngay bên dưới mục cha khi click) */
             .nav-item-wrap .dropdown-content {
-                display: none; /* Mặc định ẩn */
-                position: static; /* Hủy bỏ định vị tuyệt đối của PC */
+                display: none; 
+                position: static; 
                 width: 100%;
                 box-shadow: none;
-                background-color: #eaedf1; /* Màu tối hơn một chút để phân cấp */
+                background-color: #eaedf1; 
                 padding-left: 20px;
                 border-radius: 0;
             }
 
-            /* Thẻ con bên trong dropdown di động */
             .nav-item-wrap .dropdown-content a {
                 padding: 12px 25px;
                 font-size: 16px;
@@ -397,34 +390,29 @@
                 border-bottom: 1px solid #d1d5db;
             }
 
-            /* Khi click kích hoạt mở rộng dropdown bằng JS */
             .nav-item-wrap.active-mobile .dropdown-content {
                 display: block !important;
             }
 
-            /* Ngăn chặn hover trên di động kích hoạt sai */
             .nav-item-wrap:hover .dropdown-content { display: none; }
 
-            /* Định dạng lại phần thân nội dung */
             .header { 
                 flex-direction: column; 
                 padding: 0 15px; 
                 gap: 12px; 
                 align-items: flex-start;
             }
-            .logo-wrap { display: none; } /* Ẩn logo phụ */
+            .logo-wrap { display: flex; } 
             
-            .main-title { 
+            .logo-text { 
                 font-size: 32px; 
                 font-weight: 800;
-                color: #1a4d2e;
                 margin: 5px 0 0 0;
             }
 
             .search-box { width: 100%; padding: 0 15px; }
             .search-box input { width: 100%; border-radius: 20px; }
 
-            /* Giao diện khối bài giảng xếp chồng bo sát viền chuẩn ảnh số 1 */
             .container { flex-direction: column; gap: 8px; padding: 0; margin-top: 15px; }
             .column-header { border-radius: 0; font-size: 18px; padding: 14px; text-align: center; }
             .item-card { border-radius: 0; border-left: none; border-right: none; padding: 14px; }
@@ -487,7 +475,12 @@
     </div>
 
     <div class="header">
-        <h1 class="main-title">Trang chủ</h1>
+        <div class="logo-wrap">
+            <h1 class="logo-text">
+                <span id="subject-text">Toán</span>
+                <span id="grade-text">11</span>
+            </h1>
+        </div>
         <div class="search-box">
             <input type="text" id="search-input" placeholder="Tìm qua Google..." oninput="checkAdminPass(this.value)">
         </div>
@@ -510,8 +503,12 @@
     </div>
 
     <div class="container">
-        <div class="column" id="column-1"><div class="column-header bg-green">1. Bài giảng</div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_1')"><h2>Chương 1. Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số</h2><div class="dropdown" id="chuong_col1_1"><a href="#" target="_blank"><span>Bài 1. Tính đơn điệu và cực trị của hàm số</span></a><a href="#" target="_blank"><span>Bài 2. Giá trị lớn nhất và giá trị nhỏ nhất của hàm số</span></a><a href="#" target="_blank"><span>Bài 3. Đường tiệm cận của đồ thị hàm số</span></a><a href="#" target="_blank"><span>Bài 4. Khảo sát sự biến thiên và vẽ đồ thị hàm số</span></a><a href="#" target="_blank"><span>Bài 5. Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 1</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_2')"><h2>Chương 2. Véc tơ và trục tọa độ trong không gian</h2><div class="dropdown" id="chuong_col1_2"><a href="#" target="_blank"><span>Bài 6. Vectơ trong không gian</span></a><a href="#" target="_blank"><span>Bài 7. Hệ trục tọa độ trong không gian</span></a><a href="#" target="_blank"><span>Bài 8. Biểu thức tọa độ của các phép toán vectơ</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 2</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_3')"><h2>Chương 3. Các số đo đặc trưng</h2><div class="dropdown" id="chuong_col1_3"><a href="#" target="_blank"><span>Bài 9. Khoảng biến thiên và khoảng tứ phân vị</span></a><a href="#" target="_blank"><span>Bài 10. Phương sai và độ lệch chuẩn</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_4')"><h2>Chuyên đề học kì 1</h2><div class="dropdown" id="chuong_col1_4"><a href="#" target="_blank"><span>Chuyên đề 1: Tính đơn điệu và cực trị của hàm số chứa tham số, hàm hợp, hàm ẩn</span></a><a href="#" target="_blank"><span>Chuyên đề 2: Bài toán tối ưu, Max - Min chứa dấu giá trị tuyệt đối và hàm hợp</span></a><a href="#" target="_blank"><span>Chuyên đề 3: Khảo sát chuyên sâu về tiệm cận và sự tương giao của đồ thị hàm số</span></a><a href="#" target="_blank"><span>Chuyên đề 4: Ứng dụng đạo hàm giải bài toán thực tế và tối ưu hóa chi phí, năng suất</span></a><a href="#" target="_blank"><span>Bài tập cuối chương II</span></a><a href="#" target="_blank"><span>Chuyên đề 5: Khối hình học không gian thuần túy giải bằng phương pháp Vectơ</span></a><a href="#" target="_blank"><span>Chuyên đề 6: Cực trị hình học không gian sử dụng phương pháp Vectơ và Tọa độ</span></a><a href="#" target="_blank"><span>Chuyên đề 7: Phương pháp tọa độ hóa (Gắn trục tọa độ Oxyz) giải bài toán hình học cổ điển</span></a><a href="#" target="_blank"><span>Chuyên đề 9: Ứng dụng phương sai, độ lệch chuẩn đánh giá rủi ro kinh tế và kiểm định hiệu quả</span></a><a href="#" target="_blank"><span>Chuyên đề 10: Ứng dụng tích hợp Đạo hàm, Tọa độ không gian và Thống kê trong các bài toán tích hợp</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_5')"><h2>Chương 4. Nguyên hàm và tích phân</h2><div class="dropdown" id="chuong_col1_5"><a href="#" target="_blank"><span>Bài 11. Nguyên hàm</span></a><a href="#" target="_blank"><span>Bài 12. Tích phân</span></a><a href="#" target="_blank"><span>Bài 13. Ứng dụng hình học của tích phân</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_6')"><h2>Chương 5. Phương pháp tọa độ trong không gian</h2><div class="dropdown" id="chuong_col1_6"><a href="#" target="_blank"><span>Bài 14. Phương trình mặt phẳng</span></a><a href="#" target="_blank"><span>Bài 15. Phương trình đường thẳng trong không gian</span></a><a href="#" target="_blank"><span>Bài 16. Công thức tính góc trong không gian</span></a><a href="#" target="_blank"><span>Bài 17. Phương trình mặt cầu</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 5</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_7')"><h2>Chương 6. Xác suất có điều kiện</h2><div class="dropdown" id="chuong_col1_7"><a href="#" target="_blank"><span>Bài 18. Xác suất có điều kiện</span></a><a href="#" target="_blank"><span>Bài 19. Công thức xác suất toàn phần và công thức Bayes</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 6</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_8')"><h2>Chuyên đề học kì 2</h2><div class="dropdown" id="chuong_col1_8"><a href="#" target="_blank"><span>Chuyên đề 1: Kỹ thuật xử lý Nguyên hàm - Tích phân của hàm hợp và hàm ẩn</span></a><a href="#" target="_blank"><span>Chuyên đề 2: Các phương pháp tính tích phân đặc biệt và hàm số chứa dấu giá trị tuyệt đối</span></a><a href="#" target="_blank"><span>Chuyên đề 3: Ứng dụng tích phân giải quyết bài toán Diện tích, Thể tích phức tạp và Hình phẳng ghép</span></a><a href="#" target="_blank"><span>Chuyên đề 4: Bài toán vị trí tương đối và tương giao giữa Đường thẳng, Mặt phẳng, Mặt cầu</span></a><a href="#" target="_blank"><span>Chuyên đề 5: Các bài toán về Góc và Khoảng cách nâng cao trong không gian Oxyz</span></a><a href="#" target="_blank"><span>Chuyên đề 6: Biện luận Cực trị hình học Oxyz bằng phương pháp Hình học cổ điển</span></a><a href="#" target="_blank"><span>Chuyên đề 7: Biện luận Cực trị hình học Oxyz bằng phương pháp Đại số và Khảo sát hàm số</span></a><a href="#" target="_blank"><span>Chuyên đề 8: Xác suất có điều kiện và kỹ thuật xây dựng Sơ đồ cây</span></a><a href="#" target="_blank"><span>Chuyên đề 9: Công thức xác suất toàn phần và Định lý Bayes nâng cao</span></a><a href="#" target="_blank"><span>Chuyên đề 10: Một số bài tính xác suất đặc biệt</span></a></div></div></div>
-        <div class="column" id="column-2"><div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_1')"><h2>1.1 Đề cương giữa kì 1</h2><div class="dropdown" id="chuong_col2_1"><a href="https://www.youtube.com/watch?v=wyLaay_sHtk&amp;list=RDwyLaay_sHtk&amp;start_radio=1" target="_blank"><span>Đề cương 1</span></a><a href="#" target="_blank"><span>Đề cương 2</span></a><a href="#" target="_blank"><span>Đề cương 3</span></a><a href="#" target="_blank"><span>Đề cương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_2')"><h2>1.2 Đề thi giữ kì 1</h2><div class="dropdown" id="chuong_col2_2"><a href="#" target="_blank"><span>Bộ đề thi 1</span></a><a href="#" target="_blank"><span>Bộ đề thi 2</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_3')"><h2>1.3 Đề cương học kì 1</h2><div class="dropdown" id="chuong_col2_3"><a href="#" target="_blank"><span>Đề cương 1</span></a><a href="#" target="_blank"><span>Đề cương 2</span></a><a href="#" target="_blank"><span>Đề cương 3</span></a><a href="#" target="_blank"><span>Đề cương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_4')"><h2>1.4 Đề thi học kì 1</h2><div class="dropdown" id="chuong_col2_4"><a href="#" target="_blank"><span>Bộ đề thi 1</span></a><a href="#" target="_blank"><span>Bộ đề thi 2</span></a></div></div></div>
+        <div class="column" id="column-1">
+            <div class="column-header bg-green">1. Bài giảng</div>
+            </div>
+        <div class="column" id="column-2">
+            <div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div>
+            </div>
     </div>
 
     <div class="footer-action">
@@ -528,12 +525,11 @@
     <script>
         const SHEET_ID = '16m9526VzuBdl_z-gENN3W17CqJ3ieX6KldQp59mn15A'; 
         const SHEET_TITLE = 'Sheet1'; 
-        const SHEET_RANGE = 'A1:G100'; 
+        const SHEET_RANGE = 'A1:H100'; // Mở rộng vùng quét lên cột H để lấy tiêu đề trang
         const ADMIN_PASSWORD = 'admin123'; 
 
         const STATIC_DATA = {"1":{"Chương 1. Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số":{"color":"","items":[{"name":"Bài 1. Tính đơn điệu và cực trị của hàm số","link":"#","color":""},{"name":"Bài 2. Giá trị lớn nhất và giá trị nhỏ nhất của hàm số","link":"#","color":""},{"name":"Bài 3. Đường tiệm cận của đồ thị hàm số","link":"#","color":""},{"name":"Bài 4. Khảo sát sự biến thiên và vẽ đồ thị hàm số","link":"#","color":""},{"name":"Bài 5. Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn","link":"#","color":""},{"name":"Bài tập cuối chương 1","link":"#","color":""}]},"Chương 2. Véc tơ và trục tọa độ trong không gian":{"color":"","items":[{"name":"Bài 6. Vectơ trong không gian","link":"#","color":""},{"name":"Bài 7. Hệ trục tọa độ trong không gian","link":"#","color":""},{"name":"Bài 8. Biểu thức tọa độ của các phép toán vectơ","link":"#","color":""},{"name":"Bài tập cuối chương 2","link":"#","color":""}]},"Chương 3. Các số đo đặc trưng":{"color":"","items":[{"name":"Bài 9. Khoảng biến thiên và khoảng tứ phân vị","link":"#","color":""},{"name":"Bài 10. Phương sai và độ lệch chuẩn","link":"#","color":""}]},"Chuyên đề học kì 1":{"color":"","items":[{"name":"Chuyên đề 1: Tính đơn điệu và cực trị của hàm số chứa tham số, hàm hợp, hàm ẩn","link":"#","color":""},{"name":"Chuyên đề 2: Bài toán tối ưu, Max - Min chứa dấu giá trị tuyệt đối và hàm hợp","link":"#","color":""},{"name":"Chuyên đề 3: Khảo sát chuyên sâu về tiệm cận và sự tương giao của đồ thị hàm số","link":"#","color":""},{"name":"Chuyên đề 4: Ứng dụng đạo hàm giải bài toán thực tế và tối ưu hóa chi phí, năng suất","link":"#","color":""},{"name":"Bài tập cuối chương II","link":"#","color":""},{"name":"Chuyên đề 5: Khối hình học không gian thuần túy giải bằng phương pháp Vectơ","link":"#","color":""},{"name":"Chuyên đề 6: Cực trị hình học không gian sử dụng phương pháp Vectơ và Tọa độ","link":"#","color":""},{"name":"Chuyên đề 7: Phương pháp tọa độ hóa (Gắn trục tọa độ Oxyz) giải bài toán hình học cổ điển","link":"#","color":""},{"name":"Chuyên đề 9: Ứng dụng phương sai, độ lệch chuẩn đánh giá rủi ro kinh tế và kiểm định hiệu quả","link":"#","color":""},{"name":"Chuyên đề 10: Ứng dụng tích hợp Đạo hàm, Tọa độ không gian và Thống kê trong các bài toán tích hợp","link":"#","color":""}]},"Chương 4. Nguyên hàm và tích phân":{"color":"","items":[{"name":"Bài 11. Nguyên hàm","link":"#","color":""},{"name":"Bài 12. Tích phân","link":"#","color":""},{"name":"Bài 13. Ứng dụng hình học của tích phân","link":"#","color":""},{"name":"Bài tập cuối chương 4","link":"#","color":""}]},"Chương 5. Phương pháp tọa độ trong không gian":{"color":"","items":[{"name":"Bài 14. Phương trình mặt phẳng","link":"#","color":""},{"name":"Bài 15. Phương trình đường thẳng trong không gian","link":"#","color":""},{"name":"Bài 16. Công thức tính góc trong không gian","link":"#","color":""},{"name":"Bài 17. Phương trình mặt cầu","link":"#","color":""},{"name":"Bài tập cuối chương 5","link":"#","color":""}]},"Chương 6. Xác suất có điều kiện":{"color":"","items":[{"name":"Bài 18. Xác suất có điều kiện","link":"#","color":""},{"name":"Bài 19. Công thức xác suất toàn phần và công thức Bayes","link":"#","color":""},{"name":"Bài tập cuối chương 6","link":"#","color":""}]},"Chuyên đề học kì 2":{"color":"","items":[{"name":"Chuyên đề 1: Kỹ thuật xử lý Nguyên hàm - Tích phân của hàm hợp và hàm ẩn","link":"#","color":""},{"name":"Chuyên đề 2: Các phương pháp tính tích phân đặc biệt và hàm số chứa dấu giá trị tuyệt đối","link":"#","color":""},{"name":"Chuyên đề 3: Ứng dụng tích phân giải quyết bài toán Diện tích, Thể tích phức tạp và Hình phẳng ghép","link":"#","color":""},{"name":"Chuyên đề 4: Bài toán vị trí tương đối và tương giao giữa Đường thẳng, Mặt phẳng, Mặt cầu","link":"#","color":""},{"name":"Chuyên đề 5: Các bài toán về Góc và Khoảng cách nâng cao trong không gian Oxyz","link":"#","color":""},{"name":"Chuyên đề 6: Biện luận Cực trị hình học Oxyz bằng phương pháp Hình học cổ điển","link":"#","color":""},{"name":"Chuyên đề 7: Biện luận Cực trị hình học Oxyz bằng phương pháp Đại số và Khảo sát hàm số","link":"#","color":""},{"name":"Chuyên đề 8: Xác suất có điều kiện và kỹ thuật xây dựng Sơ đồ cây","link":"#","color":""},{"name":"Chuyên đề 9: Công thức xác suất toàn phần và Định lý Bayes nâng cao","link":"#","color":""},{"name":"Chuyên đề 10: Một số bài tính xác suất đặc biệt","link":"#","color":""}]}},"2":{"1.1 Đề cương giữa kì 1":{"color":"","items":[{"name":"Đề cương 1","link":"https://www.youtube.com/watch?v=wyLaay_sHtk&list=RDwyLaay_sHtk&start_radio=1","color":""},{"name":"Đề cương 2","link":"#","color":""},{"name":"Đề cương 3","link":"#","color":""},{"name":"Đề cương 4","link":"#","color":""}]},"1.2 Đề thi giữ kì 1":{"color":"","items":[{"name":"Bộ đề thi 1","link":"#","color":""},{"name":"Bộ đề thi 2","link":"#","color":""}]},"1.3 Đề cương học kì 1":{"color":"","items":[{"name":"Đề cương 1","link":"#","color":""},{"name":"Đề cương 2","link":"#","color":""},{"name":"Đề cương 3","link":"#","color":""},{"name":"Đề cương 4","link":"#","color":""}]},"1.4 Đề thi học kì 1":{"color":"","items":[{"name":"Bộ đề thi 1","link":"#","color":""},{"name":"Bộ đề thi 2","link":"#","color":""}]}}}; 
 
-        // Hàm JS mở / đóng thanh menu di động
         function openMobileMenu(e) {
             e.stopPropagation();
             document.getElementById('mobileNavMenu').classList.add('open');
@@ -544,11 +540,10 @@
             document.getElementById('mobileNavMenu').classList.remove('open');
         }
 
-        // Click mở rộng mục cha trên điện thoại
         function handleMobileClick(wrapper, event) {
             if (window.innerWidth <= 768) {
                 if (event.target.tagName === 'A' && event.target.getAttribute('href') !== '#') {
-                    return; // Cho phép chuyển trang nếu bấm vào liên kết con thực sự
+                    return; 
                 }
                 event.preventDefault();
                 event.stopPropagation();
@@ -571,10 +566,8 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const currentUrl = window.location.href;
-            
             document.querySelectorAll('.nav-menu .nav-item').forEach(el => el.classList.remove('active'));
             
-            // Logic tự động chuyển vết gạch chân / gạch biên dọc di động
             if (currentUrl.includes('/toan-thpt/')) {
                 document.getElementById('menu-thpt').classList.add('active');
             } else if (currentUrl.includes('/toan-thcs/')) {
@@ -590,7 +583,6 @@
             renderColumn(1, STATIC_DATA[1]);
             renderColumn(2, STATIC_DATA[2]);
             
-            // Đóng sidebar khi người dùng chạm ra ngoài màn hình nền
             document.addEventListener('click', (e) => {
                 if(window.innerWidth <= 768) {
                     const menu = document.getElementById('mobileNavMenu');
@@ -658,6 +650,9 @@
             }
         }
 
+        // ==========================================
+        // KHU VỰC ĐIỀU CHỈNH ĐỌC DỮ LIỆU ĐỘNG CHUẨN Ô H1, F1, G1
+        // ==========================================
         function generateNewCode() {
             const status = document.getElementById('admin-status');
             let inputId = document.getElementById('sheet-id-input').value.trim();
@@ -675,6 +670,22 @@
                 const rows = data.table.rows;
                 
                 if (!rows || rows.length === 0) { alert('Không tìm thấy dữ liệu.'); return; }
+
+                // Đọc dữ liệu từ dòng đầu tiên (A1:H1) để gán cho các ô cấu trúc
+                let subjectVal = "Toán";
+                let gradeVal = "11";
+                let titleVal = "Toán 11 - NAMINS";
+                
+                if (rows[0] && rows[0].c) {
+                    if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim(); // Ô F1
+                    if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();   // Ô G1
+                    if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();   // Ô H1
+                }
+
+                // Cập nhật dữ liệu ngay tại giao diện hiện tại để kiểm tra trực quan
+                document.getElementById('page-title').innerText = titleVal;
+                document.getElementById('subject-text').innerText = subjectVal;
+                document.getElementById('grade-text').innerText = gradeVal;
 
                 let columnsData = { 1: {}, 2: {} };
                 rows.forEach((row, rowIndex) => {
@@ -702,13 +713,15 @@
 
                 document.getElementById('admin-panel').style.display = 'none';
                 let currentHtml = document.documentElement.outerHTML;
+                
+                // Thay thế chuỗi dữ liệu tĩnh
                 currentHtml = currentHtml.replace(/const STATIC_DATA = \{.*?\};/, `const STATIC_DATA = ${JSON.stringify(columnsData)};`);
                 currentHtml = currentHtml.replace(/const SHEET_ID = '.*?';/, `const SHEET_ID = '${finalSheetId}';`);
 
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('code-output').value = "<!DOCTYPE html>\n<html lang=\"vi\">\n" + currentHtml + "\n</html>";
                 document.getElementById('output-area').style.display = 'block';
-                status.innerText = "Tạo mã thành công!";
+                status.innerText = "Tạo mã thành công! Hãy copy mã bên dưới.";
                 status.style.color = "green";
             })
             .catch(err => {
@@ -724,7 +737,5 @@
             alert("Đã sao chép thành công mã mới!");
         }
     </script>
-
-
-</body></html>
+</body>
 </html>
