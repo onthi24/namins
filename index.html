@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAMINS - Hệ thống học tập</title>
+    <title>NAMINS - Hệ thống tự học</title>
     <style>
         :root {
             --primary-green: #1abc9c;
@@ -26,8 +26,60 @@
             overflow-x: hidden;
         }
 
-        /* HEADER & LOGO */
-        .header {
+        /* --- CẤU TRÚC HEADER MỚI --- */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto 10px auto;
+            width: 100%;
+            background-color: #f1f4f6;
+            padding: 0 10px;
+            border-radius: 4px;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 45px; /* Điều chỉnh chiều cao logo cho phù hợp */
+            object-fit: contain;
+            display: block;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #333;
+            padding: 14px 20px;
+            font-weight: 500;
+            font-size: 16px;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        /* Menu Trang chủ đang chọn có gạch chân đen */
+        .nav-item.active {
+            font-weight: bold;
+            background-color: #fff;
+            border-bottom: 4px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Tiêu đề chính và ô tìm kiếm */
+        .header-main {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -36,21 +88,12 @@
             width: 100%;
         }
 
-        .logo-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-text {
-            font-size: 36px;
+        .main-title {
+            font-size: 38px;
             font-weight: 800;
-            color: #1a4d2e;
-            line-height: 1;
+            color: #134e4a; /* Màu xanh lá đậm */
+            margin: 0;
         }
-
-        .logo-text span { color: #e67e22; }
-        .logo-domain { font-size: 14px; color: #888; display: block; margin-top: 0px; } 
 
         /* TÌM KIẾM */
         .search-box input {
@@ -94,12 +137,10 @@
         }
 
         .bg-green { background: #1a4d2e; }
-        .bg-blue { background: #3498db; }
-        
-        /* Thay đổi màu nền cam cũ thành màu nâu gốm #B5782A theo ảnh yêu cầu */
+        .bg-blue { background: #78281f; } /* Đồng bộ màu nâu gốm/đỏ gạch cho cột 2 */
         .bg-orange { background: #B5782A; }
 
-        /* THIẾT KẾ Ô KHOÁ HỌC (ĐÃ TỐI ƯU THÀNH THẺ A) */
+        /* THIẾT KẾ Ô KHOÁ HỌC */
         .item-card {
             background: #fff;
             padding: 14px 18px; 
@@ -108,7 +149,7 @@
             cursor: pointer;
             transition: 0.2s;
             box-shadow: 0 3px 8px rgba(0,0,0,0.08); 
-            text-decoration: none; /* Xóa gạch chân mặc định của thẻ a */
+            text-decoration: none;
             display: block;
         }
 
@@ -148,7 +189,7 @@
         }
 
         .link-detail { color: blue; font-weight: bold; text-decoration: none; font-size: 15px; text-transform: uppercase; } 
-        .copyright { color: #999; font-size: 14px; margin-left: auto; }
+        .copyright { color: #999; font-size: 14px; padding-left: 20px; max-width: 1100px; margin: 0 auto 20px auto; }
 
         /* --- ĐIỀU CHỈNH HOÀN TOÀN CHO ĐIỆN THOẠI (DƯỚI 768PX) --- */
         @media (max-width: 768px) {
@@ -156,14 +197,20 @@
                 padding: 0;
             }
 
-            .header {
+            .top-navbar {
                 flex-direction: column;
-                padding: 20px 10px;
+                padding: 10px;
+                border-radius: 0;
+            }
+
+            .header-main {
+                flex-direction: column;
+                padding: 10px 15px;
                 gap: 15px;
             }
 
-            .logo-text { font-size: 32px; text-align: center; }
-            .search-box { width: 100%; padding: 0 15px; }
+            .main-title { text-align: center; font-size: 32px; }
+            .search-box { width: 100%; }
             .search-box input { width: 100%; font-size: 15px; }
 
             .container {
@@ -199,21 +246,28 @@
             }
 
             .btn-register { width: 100%; font-size: 16px; }
-            .copyright { margin-left: 0; text-align: center; font-size: 13px; }
+            .copyright { text-align: center; font-size: 13px; padding-left: 0; }
 
-            /* ẨN CÁC THÀNH PHẦN BÁO CÁO DƯỚI CÙNG */
             .goog-te-banner-frame, .skiptranslate, #goog-gt-tt { display: none !important; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo-wrap">
-            <div class="logo-text">  Trang chủ <span>   </span><span class="logo-domain"> </span></div>
+    <div class="top-navbar">
+        <div class="logo-box">
+            <img src="https://raw.githubusercontent.com/onthi24/namins/main/logo.github2.png" alt="NAMINS LOGO" class="logo-img">
         </div>
+        <div class="nav-menu">
+            <a href="https://onthi24.github.io/namins/" class="nav-item active">Trang chủ</a>
+            <a href="https://onthi24.github.io/namins/video/video-toan12.html" class="nav-item">Video</a>
+        </div>
+    </div>
+
+    <div class="header-main">
+        <h1 class="main-title">Trang chủ</h1>
          
-        <form class="search-box" action="https://www.google.com/search" method="GET" target="_blank">
+        <form class="search-box" action="https://www.google.com/search" method="GET">
             <input type="text" name="q" placeholder="Tìm qua Google...">
         </form>
     </div>
@@ -221,53 +275,53 @@
     <div class="container">
          
         <div class="column">
-            <div class="column-header bg-green">1. Toán THCS </div>
+            <div class="column-header bg-green">1. Toán THCS</div>
              
-            <a class="item-card" href="https://www.namins.com/toán-thcs/toán-9" target="_blank">
+            <a class="item-card" href="https://www.namins.com/toán-thcs/toán-9">
                 <h2>Toán 9</h2>
             </a>
 
-            <a class="item-card" href="https://www.namins.com/toán-thcs/toán-8" target="_blank">
+            <a class="item-card" href="https://www.namins.com/toán-thcs/toán-8">
                 <h2>Toán 8</h2>
             </a>
 
-            <a class="item-card" href="https://www.namins.com/toán-thcs/toán-7" target="_blank">
+            <a class="item-card" href="https://www.namins.com/toán-thcs/toán-7">
                 <h2>Toán 7</h2>
             </a>
 
-            <a class="item-card" href="https://www.namins.com/toán-thcs/toán-6" target="_blank">
+            <a class="item-card" href="https://www.namins.com/toán-thcs/toán-6">
                 <h2>Toán 6</h2>
             </a>
         </div>
 
         <div class="column">
-            <div class="column-header" style="background-color: #78281f; color: white;"> 2. Toán THPT   </div>
+            <div class="column-header bg-blue">2. Toán THPT</div>
                                      
-            <a class="item-card" href="https://onthi24.github.io/namins/video/video-toan12.html" target="_blank">
+            <a class="item-card" href="https://onthi24.github.io/namins/video/video-toan12.html">
                 <h2>Toán 12</h2>
             </a>
 
-            <a class="item-card" href="https://onthi24.github.io/namins/toan-thpt/toan11.html" target="_blank">
+            <a class="item-card" href="https://onthi24.github.io/namins/toan-thpt/toan11.html">
                 <h2>Toán 11</h2>
             </a>
 
-            <a class="item-card" href="https://onthi24.github.io/namins/toan-thpt/toan10.html" target="_blank">
+            <a class="item-card" href="https://onthi24.github.io/namins/toan-thpt/toan10.html">
                 <h2>Toán 10</h2>
             </a>
         </div>
 
         <div class="column">
-            <div class="column-header bg-orange">3. Vật lí & KHTN </div>
+            <div class="column-header bg-orange">3. Vật lí & KHTN</div>
              
-            <a class="item-card" href="https://www.namins.com/vật-lí/vật-lí-12" target="_blank">
+            <a class="item-card" href="https://www.namins.com/vật-lí/vật-lí-12">
                 <h2>Vật Lí 12</h2>
             </a>
 
-            <a class="item-card" href="https://www.namins.com/vật-lí/vật-lí-11" target="_blank">
+            <a class="item-card" href="https://www.namins.com/vật-lí/vật-lí-11">
                 <h2>Vật Lí 11</h2>
             </a>
 
-            <a class="item-card" href="https://www.namins.com/vật-lí/vật-lí-10" target="_blank">
+            <a class="item-card" href="https://www.namins.com/vật-lí/vật-lí-10">
                 <h2>Vật Lí 10</h2>
             </a>
         </div>
