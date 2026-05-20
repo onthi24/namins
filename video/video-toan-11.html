@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="vi"><head><base target="_blank">
 <base target="_blank">
-<base target="_blank">
 
 
     <meta charset="UTF-8">
@@ -25,7 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* Khung bao bọc trung tâm để đồng bộ độ rộng với hệ thống chính */
         .wrapper-layout {
             max-width: 1100px;
             margin: 0 auto;
@@ -33,7 +31,6 @@
             width: 100%;
         }
 
-        /* Tiêu đề môn học kết hợp tên bài học đang phát */
         .subject-title {
             font-size: 24px;
             font-weight: bold;
@@ -46,7 +43,6 @@
             line-height: 1.2;
         }
 
-        /* Vùng hiển thị tên bài giảng căn giữa hoàn hảo theo video, không bị dính nền đen */
         .current-lesson-bottom-display {
             text-align: center;
             font-size: 16px;
@@ -54,13 +50,12 @@
             color: #1e4620;
             margin-top: 20px;
             margin-bottom: 10px;
-            margin-right: 256px; /* Ép lệch khoảng trống bằng đúng độ rộng của mục lục (256px) */
+            margin-right: 256px;
             width: auto;
             background: transparent;
             transition: all 0.3s ease;
         }
 
-        /* TÌM KIẾM ẨN - DÙNG ĐỂ GÕ MẬT KHẨU ADMIN */
         .search-box {
             float: right;
             margin-bottom: 15px;
@@ -95,7 +90,6 @@
             transition: all 0.3s ease;
         }
 
-        /* CỘT TRÁI: VIDEO */
         .video-column {
             background-color: #000;
             display: flex;
@@ -103,7 +97,6 @@
             width: 100%;
         }
 
-        /* Thanh tiêu đề trên video - Độ mỏng chuẩn 32px */
         .video-header {
             background-color: #1e4620; 
             color: #ffffff;
@@ -116,7 +109,6 @@
             height: 32px; 
         }
 
-        /* Nút phóng to thu nhỏ giả lập chỉ chứa icon độc lập */
         .btn-maximize {
             background: rgba(255, 255, 255, 0.15);
             color: white;
@@ -136,7 +128,6 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Ép khung hình video luôn chuẩn tỉ lệ 16:9 */
         .video-wrapper {
             position: relative;
             width: 100%;
@@ -153,7 +144,6 @@
             border: none;
         }
 
-        /* CỘT PHẢI: MỤC LỤC BÀI GIẢNG */
         .sidebar-column {
             background-color: #ffffff;
             border-left: 1px solid #dcdcdc;
@@ -170,7 +160,6 @@
             }
         }
 
-        /* Thanh tiêu đề mục lục bài giảng */
         .sidebar-header {
             background-color: #ffffff;
             color: #1e4620;
@@ -184,14 +173,16 @@
             flex-shrink: 0;
         }
 
-        /* Vùng danh sách bài học có thanh cuộn dọc */
         .menu-scroll-container {
             flex-grow: 1;
             overflow-y: auto; 
             padding-top: 5px;
         }
 
-        /* Tiêu đề bài lớn trong menu (Nút bấm để Đóng/Mở khối con) */
+        .lesson-row-block {
+            border-bottom: 1px dashed #f1f5f9;
+        }
+
         .menu-lesson-header {
             background-color: #ffffff;
             padding: 10px 12px;
@@ -200,7 +191,6 @@
             color: #334155;
             cursor: pointer;
             user-select: none;
-            border-bottom: 1px dashed #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -209,54 +199,83 @@
 
         .menu-lesson-header:hover {
             background-color: #f8fafc;
-            color: #1e4620;
         }
 
-        /* Biểu tượng mũi tên nhỏ báo hiệu trạng thái đóng mở */
-        .menu-lesson-header::after {
+        .menu-lesson-header.has-child::after {
             content: '▾';
             font-size: 10px;
             color: #94a3b8;
             transition: transform 0.2s;
+            margin-left: 6px;
+            flex-shrink: 0;
         }
-        .menu-lesson-header.collapsed::after {
+        .menu-lesson-header.has-child.collapsed::after {
             transform: rotate(-90deg);
         }
 
-        /* Container bọc các phần con để xử lý ẩn hiện */
         .lesson-parts-container {
             display: block;
             overflow: hidden;
+            background-color: #fafbfc;
         }
         .lesson-parts-container.hidden {
             display: none;
         }
 
-        /* Danh sách các phần con */
         .menu-item {
-            padding: 8px 12px 8px 20px;
+            padding: 8px 12px 8px 24px;
             font-size: 12.5px;
             color: #475569;
             display: flex;
-            flex-direction: column;
+            flex-direction: row; 
+            align-items: center;
+            justify-content: space-between;
             cursor: pointer;
             transition: background 0.2s;
+            border-top: 1px solid #f1f5f9;
         }
 
         .menu-item:hover {
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
         }
 
-        /* Trạng thái bài học đang chạy */
-        .menu-item.active {
+        .lesson-name {
+            flex-grow: 1;
+            padding-right: 5px;
+        }
+
+        .btn-download-icon-only {
+            background: #1e4620;
+            color: #ffffff !important;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 6px;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto; 
+            z-index: 10;
+            text-decoration: none;
+            transition: background 0.2s;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .btn-download-icon-only:hover {
+            background: #cfa846;
+        }
+
+        .menu-item.active, .menu-lesson-header.active-flat {
             background-color: #f0fdf4;
             color: #166534 !important;
             font-weight: 600;
             border-left: 4px solid #1e4620;
-            padding-left: 16px; 
+        }
+        .menu-item.active {
+            padding-left: 20px; 
         }
 
-        /* Trạng thái mở rộng tối đa (ẩn mục lục) */
         .main-container.maximized-mode {
             grid-template-columns: 1fr 0px;
         }
@@ -264,13 +283,12 @@
             display: none;
         }
 
-        /* Khi ở chế độ Phóng to, chữ tự động trả về giữa toàn màn hình chuẩn xác */
         .main-container.maximized-mode + .current-lesson-bottom-display {
             margin-right: 0px;
         }
 
         /* ==========================================
-           KHU VỰC CỦA ADMIN (MẶC ĐỊNH ẨN HOÀN TOÀN)
+           KHU VỰC CỦA ADMIN (MẶC ĐỊNH LUÔN ẨN)
            ========================================== */
         #admin-panel {
             background: #fff3cd;
@@ -313,9 +331,6 @@
             font-weight: bold;
         }
 
-        /* ==========================================
-           FOOTER CÁC NÚT ĐIỀU HƯỚNG BÊN DƯỚI
-           ========================================== */
         .footer-action {
             margin: 40px 0 15px 0;
             display: flex;
@@ -340,37 +355,9 @@
         }
 
         .btn-register:hover { opacity: 0.9; }
-
-        .link-detail { 
-            color: #1e4620; 
-            font-weight: bold; 
-            text-decoration: none; 
-            font-size: 16px; 
-            text-transform: uppercase; 
-        } 
-
+        .link-detail { color: #1e4620; font-weight: bold; text-decoration: none; font-size: 16px; text-transform: uppercase; } 
         .link-detail:hover { text-decoration: underline; }
-
-        .copyright { 
-            color: #999; 
-            font-size: 14px; 
-            margin-top: 15px;
-            text-align: left;
-        }
-
-        /* Tối ưu hiển thị Responsive trên Điện thoại */
-        @media (max-width: 768px) {
-            .wrapper-layout { padding: 10px; }
-            .search-box { width: 100%; float: none; margin-bottom: 10px; }
-            .search-box input { width: 100%; }
-            .subject-title { flex-direction: column; align-items: flex-start; gap: 4px; }
-            .main-container { display: flex; flex-direction: column; }
-            .main-container.maximized-mode .sidebar-column { display: none; }
-            .sidebar-column { width: 100%; height: 350px; }
-            .footer-action { flex-direction: column; align-items: center; gap: 20px; }
-            .btn-register { width: 100%; text-align: center; }
-            .current-lesson-bottom-display { font-size: 15px; margin-top: 15px; margin-right: 0px; }
-        }
+        .copyright { color: #999; font-size: 14px; margin-top: 15px; text-align: left;}
     </style>
 </head>
 <body>
@@ -382,27 +369,23 @@
         </div>
 
         <div class="subject-title">
-            <span id="base-subject-text">Toán 9</span>
+            <span id="base-subject-text">Toán 10</span>
         </div>
 
         <div class="main-container" id="main-layout-container">
-            
             <div class="video-column">
                 <div class="video-header">
-                    <span id="current-lesson-title">Phần 2. Tính chất</span> 
-                    <button class="btn-maximize" id="maximize-btn" onclick="toggleMaximizeVideo()" title="Phóng to/Thu nhỏ khung hình">
-                        ⛶
-                    </button>
+                    <span id="current-lesson-title">Phần 1. Tính chất</span> 
+                    <button class="btn-maximize" id="maximize-btn" onclick="toggleMaximizeVideo()" title="Phóng to/Thu nhỏ khung hình">⛶</button>
                 </div>
                 <div class="video-wrapper">
-                    <iframe id="video-player" src="https://www.youtube.com/embed/OOfiMWzeZig?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-                    </iframe>
+                    <iframe id="video-player" src="https://www.youtube.com/embed/ho87M1-qPLk?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
                 </div>
             </div>
 
             <div class="sidebar-column">
-                <div class="sidebar-header" id="sidebar-title"><span>Khoá nền tảng</span></div>
-                <div class="menu-scroll-container" id="menu-container"><div class="menu-lesson-header collapsed" style="color: rgb(179, 125, 50);">Chương 1. Vật Lí Nhiệt</div><div class="lesson-parts-container hidden"></div><div class="menu-lesson-header">Bài 1. Đại cương vật lí nhiệt</div><div class="lesson-parts-container"><div class="menu-item active"><span class="lesson-name">Phần 2. Tính chất</span></div><div class="menu-item"><span class="lesson-name">Phần 3. Ứng dụng</span></div></div><div class="menu-lesson-header collapsed">Bài 2. Khí lí tưởng</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 1. Một số khái niệm về khí lí tưởng</span></div><div class="menu-item"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item"><span class="lesson-name">Phần 3. Quá trình đẳng tích</span></div><div class="menu-item"><span class="lesson-name">Phần 4. Quá trình đẳng áp</span></div></div><div class="menu-lesson-header collapsed">Bài 3. Từ trường</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item"><span class="lesson-name">Phần 2. Lực từ</span></div><div class="menu-item"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div></div><div class="menu-lesson-header collapsed">Bài 4. Đại cương vật lí nhiệt</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item"><span class="lesson-name">Phần 2. Tính chất</span></div><div class="menu-item"><span class="lesson-name">Phần 3. Ứng dụng</span></div></div><div class="menu-lesson-header collapsed">Bài 5. Khí lí tưởng</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 1. Một số khái niệm về khí lí tưởng</span></div><div class="menu-item"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div></div><div class="menu-lesson-header collapsed">Bài 6. Khí lí tưởng</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 3. Quá trình đẳng tích</span></div><div class="menu-item"><span class="lesson-name">Phần 4. Quá trình đẳng áp</span></div></div><div class="menu-lesson-header collapsed">Bài 7. Từ trường</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item"><span class="lesson-name">Phần 2. Lực từ</span></div></div><div class="menu-lesson-header collapsed">Bài 8. Từ trường</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div></div><div class="menu-lesson-header collapsed">Bài 8. Đại cương vật lí nhiệt</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 1. Một số khái niệm</span></div></div><div class="menu-lesson-header collapsed">Bài 9. Đại cương vật lí nhiệt</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 2. Tính chất</span></div></div><div class="menu-lesson-header collapsed">Bài 10. Đại cương vật lí nhiệt</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 3. Ứng dụng</span></div></div><div class="menu-lesson-header collapsed">Bài 11. Khí lí tưởng</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 1. Một số khái niệm về khí lí tưởng</span></div><div class="menu-item"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div></div><div class="menu-lesson-header collapsed">Bài 12. Khí lí tưởng</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 3. Quá trình đẳng tích</span></div></div><div class="menu-lesson-header collapsed">Bài 13. Khí lí tưởng</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 4. Quá trình đẳng áp</span></div></div><div class="menu-lesson-header collapsed">Bài 13. Từ trường</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 1. Một số khái niệm</span></div></div><div class="menu-lesson-header collapsed">Bài 14. Từ trường</div><div class="lesson-parts-container hidden"><div class="menu-item"><span class="lesson-name">Phần 2. Lực từ</span></div><div class="menu-item"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div></div></div>
+                <div class="sidebar-header" id="sidebar-title"><span>Khóa bồi dưỡng kiến thức</span></div>
+                <div class="menu-scroll-container" id="menu-container"><div class="lesson-row-block"><div class="menu-lesson-header" style="color: rgb(179, 125, 50);"><span>Chương 1. Vật Lí Nhiệt</span></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child"><span>Bài 1. Đại cương vật lí nhiệt</span></div><div class="lesson-parts-container"><div class="menu-item active" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Phần 1. Tính chất</span></div><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Phần 2. Ứng dụng</span></div><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Tài liệu 1</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 2. Khí lí tưởng</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 3. Quá trình đẳng tích</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 4. Quá trình đẳng áp</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Tài liệu 2</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 3. Từ trường</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Tài liệu 3</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header"><span>Chương 3. Vật lí hạt nhân</span></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 1.Đại cương về VLHN</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 2. Tính chất</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 3. Ứng dụng</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Tài liệu 4</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 2. Phóng xạ</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Phần 1. Một số khái niệm về khí lí tưởng</span></div><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Tài liệu 4</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div></div>
             </div>
         </div>
 
@@ -410,14 +393,12 @@
 
         <div id="admin-panel" style="display: block;">
             <h3 style="margin-top:0; color: #856404;">🛠️ HỆ THỐNG CẬP NHẬT CODE TỰ ĐỘNG</h3>
-            
             <div class="admin-input-group">
-                <label for="sheet-id-input">Thay đổi ID Google Sheet (Để trống nếu giữ nguyên ID hiện tại):</label>
+                <label for="sheet-id-input">Thay đổi ID Google Sheet (Để trống nếu giữ nguyên):</label>
                 <input type="text" id="sheet-id-input" placeholder="Nhập mã ID Google Sheet mới...">
-                <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại: 1GaziLrmpjOMaw6gPnXrj7wlqFs4hXU5JQFX62pL79Nk</small>
+                <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại: 1gqJdNl016JPHyL1ZW7OSL2_UiWgKmWTbH_ThQ5o1toA</small>
             </div>
-
-            <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang tải bảng tính (ID: 1aC_WhBor3qJhVbHchKXQJgAmmDrw69ylOmFuZbDOuuA)...</p>
+            <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang kết nối API Google Sheet...</p>
             <button class="btn-admin" id="btn-fetch" onclick="generateNewCode()">Bắt đầu lấy dữ liệu mới từ Sheets</button>
             
             <div id="output-area" style="display: none; margin-top: 15px;">
@@ -431,53 +412,50 @@
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSdX0G3eI0fttdhqXR_YAexVfp2LlgFBJTWZUpS4gGjICfkZ_Q/viewform?usp=sharing" target="_blank" style="text-decoration: none;">
                 <button class="btn-register">ĐĂNG KÍ HỌC NGAY</button>
             </a>
-            <a href="https://sites.google.com/view/namins2" target="_blank" class="link-detail">
-                GIỚI THIỆU VỀ NAMINS.COM
-            </a>
+            <a href="https://sites.google.com/view/namins2" target="_blank" class="link-detail">GIỚI THIỆU VỀ NAMINS.COM</a>
         </div>
-
-        <div class="copyright">
-            © 2026 NAMINS
-        </div>
-
+        <div class="copyright">© 2026 NAMINS</div>
     </div>
 
     <script>
         // ==========================================
-        // CẤU HÌNH HỆ THỐNG GỐC
+        // CẤU HÌNH HỆ THỐNG CỐ ĐỊNH
         // ==========================================
         const SHEET_ID = '1aC_WhBor3qJhVbHchKXQJgAmmDrw69ylOmFuZbDOuuA'; 
-        const SHEET_TITLE = 'sheet1'; 
-        const SHEET_RANGE = 'A2:G200'; 
+        const SHEET_TITLE = 'Trang tính1'; 
         const ADMIN_PASSWORD = 'admin123'; 
 
         // ==========================================
-        // DỮ LIỆU TĨNH BAN ĐẦU (ĐÃ ĐƯỢC ĐỒNG BỘ)
+        // DỮ LIỆU ĐÃ ĐƯỢC GỘP NHÓM HOÀN CHỈNH
         // ==========================================
-        const STATIC_DATA = {"subjectTitle":"Toán 11","sidebarTitle":"Khoá nền tảng","lessons":[{"lessonHeaderName":"Chương 1. Vật Lí Nhiệt","headerColor":"#b37d32","parts":[]},{"lessonHeaderName":"Bài 1. Đại cương vật lí nhiệt","headerColor":"","parts":[{"partName":"Phần 2. Tính chất","videoId":"OOfiMWzeZig","color":""},{"partName":"Phần 3. Ứng dụng","videoId":"CblkKDYNg3I","color":""}]},{"lessonHeaderName":"Bài 2. Khí lí tưởng","headerColor":"","parts":[{"partName":"Phần 1. Một số khái niệm về khí lí tưởng","videoId":"nAVXKagUUM8","color":""},{"partName":"Phần 2. Quá trình đẳng nhiệt","videoId":"LTRMbJTgeT8","color":""},{"partName":"Phần 3. Quá trình đẳng tích","videoId":"6rguojXOCsA","color":""},{"partName":"Phần 4. Quá trình đẳng áp","videoId":"HlrSYLXQyQQ","color":""}]},{"lessonHeaderName":"Bài 3. Từ trường","headerColor":"","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"Yu2ZnBZffeE","color":""},{"partName":"Phần 2. Lực từ","videoId":"oBCwKqTRt68","color":""},{"partName":"Phần 3. Cảm ứng điện từ","videoId":"VwoioQYe1Gk","color":""}]},{"lessonHeaderName":"Bài 4. Đại cương vật lí nhiệt","headerColor":"","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"-0i88XI9ibE","color":""},{"partName":"Phần 2. Tính chất","videoId":"OOfiMWzeZig","color":""},{"partName":"Phần 3. Ứng dụng","videoId":"CblkKDYNg3I","color":""}]},{"lessonHeaderName":"Bài 5. Khí lí tưởng","headerColor":"","parts":[{"partName":"Phần 1. Một số khái niệm về khí lí tưởng","videoId":"nAVXKagUUM8","color":""},{"partName":"Phần 2. Quá trình đẳng nhiệt","videoId":"LTRMbJTgeT8","color":""}]},{"lessonHeaderName":"Bài 6. Khí lí tưởng","headerColor":"","parts":[{"partName":"Phần 3. Quá trình đẳng tích","videoId":"6rguojXOCsA","color":""},{"partName":"Phần 4. Quá trình đẳng áp","videoId":"HlrSYLXQyQQ","color":""}]},{"lessonHeaderName":"Bài 7. Từ trường","headerColor":"","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"Yu2ZnBZffeE","color":""},{"partName":"Phần 2. Lực từ","videoId":"oBCwKqTRt68","color":""}]}]}; 
+        const STATIC_DATA = {"subjectTitle":"Toán 11","sidebarTitle":"Khóa bồi dưỡng kiến thức","lessons":[{"lessonTitle":"Chương 1. Vật Lí Nhiệt","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 3. Từ trường","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=WvRFuee6flU"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=nK0Mu9FYJIg"},{"partTitle":"Tài liệu 3","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 3. Vật lí hạt nhân","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1.Đại cương về VLHN","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"https://www.youtube.com/watch?v=1HwGFQaeR9c"},{"partTitle":"Phần 2. Tính chất","linkUrl":"https://www.youtube.com/watch?v=OOfiMWzeZig"},{"partTitle":"Phần 3. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Phóng xạ","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm về khí lí tưởng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]}; 
 
         function extractYouTubeId(url) {
             if (!url) return '';
             url = url.trim();
-            if (url.indexOf('http') !== 0) {
-                return url.replace('v=', '');
-            }
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
             const match = url.match(regExp);
             return (match && match[2].length === 11) ? match[2] : '';
         }
 
+        function isYouTubeLink(url) {
+            if (!url) return false;
+            return url.includes('youtube.com') || url.includes('youtu.be');
+        }
+
         function toggleMaximizeVideo() {
-            const container = document.getElementById("main-layout-container");
-            container.classList.toggle("maximized-mode");
+            document.getElementById("main-layout-container").classList.toggle("maximized-mode");
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             renderMenuAndVideo(STATIC_DATA);
         });
 
+        // ==========================================
+        // THUẬT TOÁN RENDERING MỤC LỤC ĐÃ FIX LỖI TÊN BÀI
+        // ==========================================
         function renderMenuAndVideo(data) {
-            document.getElementById('base-subject-text').innerText = data.subjectTitle || "Vật lí 12";
+            document.getElementById('base-subject-text').innerText = data.subjectTitle || "Toán 12";
             document.getElementById('sidebar-title').innerHTML = `<span>${data.sidebarTitle || "Mục lục bài giảng"}</span>`;
 
             const menuContainer = document.getElementById('menu-container');
@@ -491,83 +469,126 @@
             let isFirstVideoLoaded = false;
 
             data.lessons.forEach((lesson) => {
+                const rowBlock = document.createElement('div');
+                rowBlock.className = 'lesson-row-block';
+
                 const headerDiv = document.createElement('div');
                 headerDiv.className = 'menu-lesson-header';
-                headerDiv.innerText = lesson.lessonHeaderName;
                 
-                // Đổ màu cho tiêu đề bài lớn (như dòng số 2 của bạn)
-                if(lesson.headerColor && lesson.headerColor.trim() !== '') {
-                    headerDiv.style.color = lesson.headerColor.trim();
+                const titleTextSpan = document.createElement('span');
+                titleTextSpan.innerText = lesson.lessonTitle;
+                headerDiv.appendChild(titleTextSpan);
+
+                if (lesson.colorCode && lesson.colorCode.trim() !== '' && lesson.colorCode.toLowerCase() !== 'none') {
+                    headerDiv.style.color = lesson.colorCode.trim();
                 }
-                menuContainer.appendChild(headerDiv);
 
                 const partsContainer = document.createElement('div');
                 partsContainer.className = 'lesson-parts-container';
-                menuContainer.appendChild(partsContainer);
-
-                // Mặc định ẩn, sẽ mở nếu chứa bài học con active đầu tiên
-                headerDiv.classList.add('collapsed');
-                partsContainer.classList.add('hidden');
-
-                headerDiv.addEventListener('click', function() {
-                    const isCollapsed = this.classList.contains('collapsed');
-                    document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.add('collapsed'));
-                    document.querySelectorAll('.lesson-parts-container').forEach(c => c.classList.add('hidden'));
-                    
-                    if (isCollapsed) {
-                        this.classList.remove('collapsed');
-                        partsContainer.classList.remove('hidden');
-                    }
-                });
 
                 if (!lesson.parts || lesson.parts.length === 0) {
-                    // Nếu là bài lớn dạng Tiêu đề (như Chương 1), bấm vào chỉ đóng/mở khối trống
-                    return;
+                    headerDiv.classList.remove('has-child');
+                    rowBlock.appendChild(headerDiv);
+                } else {
+                    headerDiv.classList.add('has-child', 'collapsed');
+                    partsContainer.classList.add('hidden');
+
+                    headerDiv.addEventListener('click', function() {
+                        const isCollapsed = this.classList.contains('collapsed');
+                        
+                        if (isCollapsed) {
+                            document.querySelectorAll('.menu-lesson-header.has-child').forEach(h => h.classList.add('collapsed'));
+                            document.querySelectorAll('.lesson-parts-container').forEach(c => c.classList.add('hidden'));
+                            
+                            this.classList.remove('collapsed');
+                            partsContainer.classList.remove('hidden');
+                        } else {
+                            this.classList.add('collapsed');
+                            partsContainer.classList.add('hidden');
+                        }
+                    });
+
+                    lesson.parts.forEach((part) => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'menu-item';
+                        
+                        // Khóa chặt tên bài giảng của cha (`parentLessonName`) vào từng phần tử con
+                        itemDiv.setAttribute('data-parent-lesson', lesson.lessonTitle);
+                        
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'lesson-name';
+                        nameSpan.innerText = part.partTitle;
+                        itemDiv.appendChild(nameSpan);
+
+                        if (isYouTubeLink(part.linkUrl)) {
+                            const videoId = extractYouTubeId(part.linkUrl);
+                            
+                            itemDiv.addEventListener('click', function(e) {
+                                e.stopPropagation();
+                                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                                document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.remove('active-flat'));
+                                itemDiv.classList.add('active');
+
+                                document.getElementById('video-player').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&controls=1`;
+                                document.getElementById('current-lesson-title').innerText = part.partTitle;
+                                
+                                // ĐÃ SỬA GỐC: Truy xuất trực tiếp thuộc tính đã khóa để hiển thị chuẩn xác 100% tên Bài lớn ở dưới
+                                document.getElementById('subject-lesson-append').innerText = this.getAttribute('data-parent-lesson');
+                            });
+
+                            if (!isFirstVideoLoaded && videoId) {
+                                headerDiv.classList.remove('collapsed');
+                                partsContainer.classList.remove('hidden');
+                                itemDiv.classList.add('active');
+
+                                document.getElementById('video-player').src = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&showinfo=0&controls=1`;
+                                document.getElementById('current-lesson-title').innerText = part.partTitle;
+                                
+                                // Đọc giá trị mặc định lúc load trang đầu tiên
+                                document.getElementById('subject-lesson-append').innerText = itemDiv.getAttribute('data-parent-lesson');
+                                isFirstVideoLoaded = true;
+                            }
+                        } else {
+                            if (part.linkUrl && part.linkUrl.trim() !== '') {
+                                const dlBtn = document.createElement('a');
+                                dlBtn.className = 'btn-download-icon-only';
+                                dlBtn.innerHTML = '📥';
+                                dlBtn.href = part.linkUrl;
+                                dlBtn.target = '_blank';
+                                dlBtn.addEventListener('click', (e) => e.stopPropagation());
+                                itemDiv.appendChild(dlBtn);
+                            }
+
+                            itemDiv.addEventListener('click', function(e) {
+                                e.stopPropagation();
+                                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                                document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.remove('active-flat'));
+                                itemDiv.classList.add('active');
+                                document.getElementById('current-lesson-title').innerText = part.partTitle;
+                                
+                                // ĐÃ SỬA GỐC: Bấm mục tải học liệu vẫn cập nhật chuẩn xác tên bài lớn ở dưới
+                                document.getElementById('subject-lesson-append').innerText = this.getAttribute('data-parent-lesson');
+                            });
+                        }
+                        partsContainer.appendChild(itemDiv);
+                    });
+
+                    rowBlock.appendChild(headerDiv);
+                    rowBlock.appendChild(partsContainer);
                 }
 
-                lesson.parts.forEach(part => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'menu-item';
-                    itemDiv.innerHTML = `<span class="lesson-name">${part.partName}</span>`;
-
-                    if (part.color && part.color.trim() !== '') {
-                        itemDiv.style.color = part.color.trim();
-                    }
-
-                    function activateItem(autoplay) {
-                        document.getElementById('video-player').src = `https://www.youtube.com/embed/${part.videoId}?autoplay=${autoplay ? 1 : 0}&rel=0&showinfo=0&controls=1`;
-                        document.getElementById('subject-lesson-append').innerText = lesson.lessonHeaderName;
-                        document.getElementById('current-lesson-title').innerText = part.partName;
-                        
-                        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-                        itemDiv.classList.add('active');
-                        
-                        headerDiv.classList.remove('collapsed');
-                        partsContainer.classList.remove('hidden');
-                    }
-
-                    if (!isFirstVideoLoaded) {
-                        activateItem(false);
-                        isFirstVideoLoaded = true;
-                    }
-
-                    itemDiv.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        activateItem(true);
-                    });
-                    
-                    partsContainer.appendChild(itemDiv);
-                });
+                menuContainer.appendChild(rowBlock);
             });
 
-            if(!isFirstVideoLoaded) {
-                document.getElementById('subject-lesson-append').innerText = data.lessons[0].lessonHeaderName;
+            // Nếu trang tính chỉ toàn file tải (không có video tự chạy), lấy tên bài đầu tiên điền vào chân trang
+            if (!isFirstVideoLoaded && data.lessons.length > 0) {
+                document.getElementById('subject-lesson-append').innerText = data.lessons[0].lessonTitle;
                 document.getElementById('current-lesson-title').innerText = "Chọn bài học ở mục lục";
             }
         }
 
         // ==========================================
-        // LOGIC XỬ LÝ KHU VỰC QUẢN TRỊ (ADMIN)
+        // LOGIC ADMIN QUẢN TRỊ FILE SHEETS
         // ==========================================
         function checkAdminPass(val) {
             if (val.trim() === ADMIN_PASSWORD) {
@@ -584,10 +605,10 @@
             let inputId = document.getElementById('sheet-id-input').value.trim();
             let finalSheetId = inputId ? inputId : SHEET_ID;
 
-            status.innerText = `Đang tải bảng tính (ID: ${finalSheetId})...`;
+            status.innerText = `Đang kết nối API Google Sheet...`;
             status.style.color = "blue";
 
-            const FULL_URL = `https://docs.google.com/spreadsheets/d/${finalSheetId}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
+            const FULL_URL = `https://docs.google.com/spreadsheets/d/${finalSheetId}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=B2:G200`;
 
             fetch(FULL_URL)
             .then(res => {
@@ -603,10 +624,16 @@
                     return;
                 }
 
-                // Tiêu đề trang mặc định lấy từ dòng đầu tiên
-                const firstRow = rows[0].c;
-                const finalSubjectTitle = (firstRow && firstRow[1] && firstRow[1].v) ? firstRow[1].v : 'Vật lí 12';
-                const finalSidebarTitle = (firstRow && firstRow[2] && firstRow[2].v) ? firstRow[2].v : 'Mục lục bài giảng';
+                function getVal(cols, index) {
+                    if (!cols || index >= cols.length || !cols[index] || cols[index].v === null || cols[index].v === undefined) {
+                        return '';
+                    }
+                    return cols[index].v.toString().trim();
+                }
+
+                const firstRowCols = rows[0].c;
+                const finalSubjectTitle = getVal(firstRowCols, 0) || 'Toán 12';
+                const finalSidebarTitle = getVal(firstRowCols, 1) || 'Khóa bồi dưỡng kiến thức';
 
                 let structuredData = {
                     subjectTitle: finalSubjectTitle,
@@ -614,56 +641,47 @@
                     lessons: []
                 };
 
-                let lessonMap = {};
+                let currentLessonObj = null;
 
-                rows.forEach((row) => {
-                    const cols = row.c;
-                    if (!cols) return;
+                for (let i = 0; i < rows.length; i++) {
+                    const cols = rows[i].c;
+                    if (!cols) continue;
 
-                    // Null-safe bảo vệ chống crash
-                    const lessonHeaderName = (cols[3] && cols[3].v) ? cols[3].v.toString().trim() : ''; 
-                    let partName = (cols[4] && cols[4].v) ? cols[4].v.toString().trim() : '';          
-                    const videoRawUrl = (cols[5] && cols[5].v) ? cols[5].v.toString().trim() : '';      
-                    const rowColor = (cols[6] && cols[6].v) ? cols[6].v.toString().trim() : ''; 
+                    const checkSidebarCol = getVal(cols, 1);
+                    if (!checkSidebarCol) {
+                        break;
+                    }
 
-                    if (!lessonHeaderName) return; // Dòng trống hoàn toàn cột D thì bỏ qua
+                    const lessonTitle = getVal(cols, 2);
+                    const partTitle   = getVal(cols, 3);
+                    const linkUrl     = getVal(cols, 4);
+                    const colorCode   = getVal(cols, 5);
 
-                    // XỬ LÝ ĐẶC BIỆT DÒNG CHỈ CÓ TIÊU ĐỀ (Giống dòng số 2 của bạn)
-                    if (!lessonMap[lessonHeaderName]) {
-                        lessonMap[lessonHeaderName] = {
-                            lessonHeaderName: lessonHeaderName,
-                            headerColor: rowColor, // Lưu lại màu của tiêu đề bài lớn
+                    if (!lessonTitle) continue;
+
+                    if (!currentLessonObj || currentLessonObj.lessonTitle !== lessonTitle) {
+                        currentLessonObj = {
+                            lessonTitle: lessonTitle,
+                            colorCode: colorCode,
                             parts: []
                         };
-                        structuredData.lessons.push(lessonMap[lessonHeaderName]);
+                        structuredData.lessons.push(currentLessonObj);
                     }
 
-                    const videoId = extractYouTubeId(videoRawUrl);
-                    // Nếu dòng này có video và tên phần đầy đủ thì mới đưa vào mảng con
-                    if (videoId && partName) {
-                        if (partName.includes(lessonHeaderName)) {
-                            partName = partName.replace(lessonHeaderName, '').replace(/^\s*[-–—:]\s*/, '').trim();
-                        }
-                        lessonMap[lessonHeaderName].parts.push({
-                            partName: partName,
-                            videoId: videoId,
-                            color: rowColor
+                    if (partTitle && partTitle.trim() !== '') {
+                        currentLessonObj.parts.push({
+                            partTitle: partTitle,
+                            linkUrl: linkUrl
                         });
                     }
-                });
+                }
 
-                // Đọc toàn bộ file HTML hiện tại làm mẫu chuỗi
                 let pageSource = document.documentElement.outerHTML;
-
-                // Xóa bỏ hoàn toàn giá trị admin tạm thời trong ô input để tránh bị lưu đè cứng vào code mới
-                pageSource = pageSource.replace(/id="sheet-id-input"/g, 'id="sheet-id-input"');
-                pageSource = pageSource.replace(/id="search-input"/g, 'id="search-input"');
                 
-                // ĐÃ SỬA THEO YÊU CẦU: Ẩn hoàn toàn khung admin sau khi code mới xuất bản chạy
-                pageSource = pageSource.replace(/id="admin-panel" style="display: none;" style="display: none;" style="display:\s*block;"/g, 'id="admin-panel" style="display: none;" style="display: none;"');
+                // Ép mã nguồn xuất bản luôn luôn đóng ẩn bảng cập nhật code tự động
+                pageSource = pageSource.replace(/id="admin-panel" style="display: none;" style="display: none;" style="display: none;"/g, 'id="admin-panel" style="display: none;" style="display: none;" style="display: none;"');
                 pageSource = pageSource.replace(/id="admin-panel" style="display: none;" style="display: none;"/g, 'id="admin-panel" style="display: none;" style="display: none;" style="display: none;"');
 
-                // Thay thế dữ liệu cấu trúc tĩnh và ID mới
                 const jsonStr = JSON.stringify(structuredData);
                 pageSource = pageSource.replace(/const STATIC_DATA = \{.*?\};/, `const STATIC_DATA = ${jsonStr};`);
                 pageSource = pageSource.replace(/const SHEET_ID = '.*?';/, `const SHEET_ID = '${finalSheetId}';`);
@@ -671,12 +689,14 @@
                 document.getElementById('code-output').value = "<!DOCTYPE html>\n" + pageSource;
                 document.getElementById('output-area').style.display = 'block';
 
-                status.innerText = "Đã đồng bộ dữ liệu dòng 2 thành công! Hãy copy đoạn mã phía dưới.";
+                status.innerText = "Đã gộp nhóm và tạo mã nhúng bảo mât thành công!";
                 status.style.color = "green";
+                
+                renderMenuAndVideo(structuredData);
             })
             .catch(err => {
                 console.error(err);
-                status.innerText = "Lỗi tải dữ liệu! Hãy kiểm tra lại ID Sheet hoặc quyền chia sẻ công khai của Sheet.";
+                status.innerText = "Lỗi kết nối học liệu! Vui lòng kiểm tra thuộc tính chia sẻ.";
                 status.style.color = "red";
             });
         }
@@ -685,716 +705,11 @@
             const copyText = document.getElementById("code-output");
             navigator.clipboard.writeText(copyText.value)
                 .then(() => {
-                    alert("Đã sao chép! Hãy dán đè mã này vào mục nhúng HTML của Google Sites và nhấn Xuất bản.");
-                    // Ẩn bảng quản trị trên giao diện hiện tại sau khi copy thành công
+                    alert("Đã copy mã nguồn! Vui lòng dán đè đè vào Google Sites và ấn xuất bản.");
                     document.getElementById('admin-panel').style.display = 'none';
                     document.getElementById('output-area').style.display = 'none';
-                })
-                .catch(err => {
-                    copyText.select();
-                    document.execCommand("copy");
-                    alert("Đã sao chép thành công!");
                 });
         }
     </script>
-
-
-</body></html>
-<!DOCTYPE html>
-<html lang="vi"><head><base target="_blank">
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giao diện bài giảng NAMINS</title>
-    <style>
-        /* ==========================================
-           CẤU HÌNH CƠ BẢN & LAYOUT CHUẨN NAMINS
-           ========================================== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body, html {
-            width: 100%;
-            background-color: #fdfdfd;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Khung bao bọc trung tâm để đồng bộ độ rộng với hệ thống chính */
-        .wrapper-layout {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            width: 100%;
-        }
-
-        /* Tiêu đề môn học kết hợp tên bài học đang phát */
-        .subject-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1e4620;
-            margin-bottom: 15px;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            line-height: 1.2;
-        }
-
-        /* ĐÃ SỬA: Vùng hiển thị tên bài giảng căn giữa hoàn hảo theo video, không bị dính nền đen */
-        .current-lesson-bottom-display {
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            color: #1e4620;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            margin-right: 256px; /* Ép lệch khoảng trống bằng đúng độ rộng của mục lục (256px) */
-            width: auto;
-            background: transparent;
-            transition: all 0.3s ease;
-        }
-
-        /* TÌM KIẾM ẨN - DÙNG ĐỂ GÕ MẬT KHẨU ADMIN */
-        .search-box {
-            float: right;
-            margin-bottom: 15px;
-        }
-        .search-box input {
-            width: 200px; 
-            padding: 8px 15px; 
-            border-radius: 25px;
-            border: 1px solid #c7d2d8;
-            background: #f1f4f6;
-            outline: none;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-        .search-box input:focus {
-            border-color: #1e4620;
-            background: #fff;
-        }
-
-        /* ==========================================
-           LAYOUT HAI CỘT: VIDEO & MỤC LỤC
-           ========================================== */
-        .main-container {
-            display: grid;
-            grid-template-columns: 1fr 256px; 
-            width: 100%;
-            background-color: #000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-radius: 4px;
-            overflow: hidden;
-            clear: both;
-            transition: all 0.3s ease;
-        }
-
-        /* CỘT TRÁI: VIDEO */
-        .video-column {
-            background-color: #000;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        /* Thanh tiêu đề trên video - Độ mỏng chuẩn 32px */
-        .video-header {
-            background-color: #1e4620; 
-            color: #ffffff;
-            padding: 5px 15px;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 32px; 
-        }
-
-        /* Nút phóng to thu nhỏ giả lập chỉ chứa icon độc lập */
-        .btn-maximize {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        .btn-maximize:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Ép khung hình video luôn chuẩn tỉ lệ 16:9 */
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background-color: #000;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* CỘT PHẢI: MỤC LỤC BÀI GIẢNG */
-        .sidebar-column {
-            background-color: #ffffff;
-            border-left: 1px solid #dcdcdc;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: calc((1100px - 256px) * 9 / 16 + 32px); 
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 1100px) {
-            .sidebar-column {
-                height: calc((100vw - 296px) * 9 / 16 + 32px);
-            }
-        }
-
-        /* Thanh tiêu đề mục lục bài giảng */
-        .sidebar-header {
-            background-color: #ffffff;
-            color: #1e4620;
-            height: 32px;
-            font-size: 13.5px; 
-            font-weight: 800;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-bottom: 3px solid #1e4620;
-            flex-shrink: 0;
-        }
-
-        /* Vùng danh sách bài học có thanh cuộn dọc */
-        .menu-scroll-container {
-            flex-grow: 1;
-            overflow-y: auto; 
-            padding-top: 5px;
-        }
-
-        /* Tiêu đề bài lớn trong menu (Nút bấm để Đóng/Mở khối con) */
-        .menu-lesson-header {
-            background-color: #ffffff;
-            padding: 10px 12px;
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #334155;
-            cursor: pointer;
-            user-select: none;
-            border-bottom: 1px dashed #f1f5f9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
-        }
-
-        .menu-lesson-header:hover {
-            background-color: #f8fafc;
-            color: #1e4620;
-        }
-
-        /* Biểu tượng mũi tên nhỏ báo hiệu trạng thái đóng mở */
-        .menu-lesson-header::after {
-            content: '▾';
-            font-size: 10px;
-            color: #94a3b8;
-            transition: transform 0.2s;
-        }
-        .menu-lesson-header.collapsed::after {
-            transform: rotate(-90deg);
-        }
-
-        /* Container bọc các phần con để xử lý ẩn hiện */
-        .lesson-parts-container {
-            display: block;
-            overflow: hidden;
-        }
-        .lesson-parts-container.hidden {
-            display: none;
-        }
-
-        /* Danh sách các phần con */
-        .menu-item {
-            padding: 8px 12px 8px 20px;
-            font-size: 12.5px;
-            color: #475569;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .menu-item:hover {
-            background-color: #f8fafc;
-        }
-
-        /* Trạng thái bài học đang chạy */
-        .menu-item.active {
-            background-color: #f0fdf4;
-            color: #166534;
-            font-weight: 600;
-            border-left: 4px solid #1e4620;
-            padding-left: 16px; 
-        }
-
-        /* Trạng thái mở rộng tối đa (ẩn mục lục) */
-        .main-container.maximized-mode {
-            grid-template-columns: 1fr 0px;
-        }
-        .main-container.maximized-mode .sidebar-column {
-            display: none;
-        }
-
-        /* ĐÃ SỬA: Khi ở chế độ Phóng to, chữ tự động trả về giữa toàn màn hình chuẩn xác */
-        .main-container.maximized-mode + .current-lesson-bottom-display {
-            margin-right: 0px;
-        }
-
-        /* ==========================================
-           KHU VỰC CỦA ADMIN (CẬP NHẬT TỰ ĐỘNG)
-           ========================================== */
-        #admin-panel {
-            background: #fff3cd;
-            border: 2px dashed #ffc107;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 25px;
-            display: none; 
-        }
-        .admin-input-group {
-            margin-bottom: 15px;
-        }
-        .admin-input-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #533f03;
-        }
-        .admin-input-group input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ffc107;
-            border-radius: 5px;
-            outline: none;
-        }
-        #admin-panel textarea {
-            width: 100%;
-            height: 180px;
-            margin-top: 10px;
-            font-family: monospace;
-            font-size: 12px;
-        }
-        .btn-admin {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* ==========================================
-           FOOTER CÁC NÚT ĐIỀU HƯỚNG BÊN DƯỚI
-           ========================================== */
-        .footer-action {
-            margin: 40px 0 15px 0;
-            display: flex;
-            flex-direction: row; 
-            align-items: center;
-            justify-content: flex-start;
-            gap: 30px;
-            width: 100%;
-        }
-
-        .btn-register {
-            background: linear-gradient(to bottom, #cfa846, #9c7514);
-            color: #fff;
-            padding: 14px 35px; 
-            border-radius: 25px;
-            border: 1px solid #85630f;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-transform: uppercase;
-        }
-
-        .btn-register:hover { opacity: 0.9; }
-
-        .link-detail { 
-            color: #1e4620; 
-            font-weight: bold; 
-            text-decoration: none; 
-            font-size: 16px; 
-            text-transform: uppercase; 
-        } 
-
-        .link-detail:hover { text-decoration: underline; }
-
-        .copyright { 
-            color: #999; 
-            font-size: 14px; 
-            margin-top: 15px;
-            text-align: left;
-        }
-
-        /* Tối ưu hiển thị Responsive trên Điện thoại */
-        @media (max-width: 768px) {
-            .wrapper-layout { padding: 10px; }
-            .search-box { width: 100%; float: none; margin-bottom: 10px; }
-            .search-box input { width: 100%; }
-            .subject-title { flex-direction: column; align-items: flex-start; gap: 4px; }
-            .main-container { display: flex; flex-direction: column; }
-            .main-container.maximized-mode .sidebar-column { display: none; }
-            .sidebar-column { width: 100%; height: 350px; }
-            .footer-action { flex-direction: column; align-items: center; gap: 20px; }
-            .btn-register { width: 100%; text-align: center; }
-            /* Điện thoại giao diện xếp dọc thì bỏ margin-right */
-            .current-lesson-bottom-display { font-size: 15px; margin-top: 15px; margin-right: 0px; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="wrapper-layout">
-        
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Tìm kiếm học liệu..." oninput="checkAdminPass(this.value)">
-        </div>
-
-        <div class="subject-title">
-            <span id="base-subject-text">Vật lí 12</span>
-        </div>
-
-        <div class="main-container" id="main-layout-container">
-            
-            <div class="video-column">
-                <div class="video-header">
-                    <span id="current-lesson-title">Phần 1: Định nghĩa</span> 
-                    <button class="btn-maximize" id="maximize-btn" onclick="toggleMaximizeVideo()" title="Phóng to/Thu nhỏ khung hình">
-                        ⛶
-                    </button>
-                </div>
-                <div class="video-wrapper">
-                    <iframe id="video-player" src="https://www.youtube.com/embed/-0i88XI9ibE?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-                    </iframe>
-                </div>
-            </div>
-
-            <div class="sidebar-column">
-                <div class="sidebar-header" id="sidebar-title"><span>Mục lục bài giảng</span></div>
-                
-                <div class="menu-scroll-container" id="menu-container"><div class="menu-lesson-header">Bài 1. Đại cương nhiệt học</div><div class="lesson-parts-container"><div class="menu-item active" data-video="https://www.youtube.com/embed/-0i88XI9ibE"><span class="lesson-name">Phần 1: Định nghĩa</span></div><div class="menu-item" data-video="https://www.youtube.com/embed/ccIgSq-YA04"><span class="lesson-name">Phần 2: Tính chất</span></div></div><div class="menu-lesson-header collapsed">Bài 2. Phương trình</div><div class="lesson-parts-container hidden"><div class="menu-item" data-video="https://www.youtube.com/embed/g2Jfik5Omfc"><span class="lesson-name">Phần 1: Phương trình 1 ẩn</span></div><div class="menu-item" data-video="https://www.youtube.com/embed/8gVQm8IVQXA"><span class="lesson-name">Phần 2: Phương trình 2 ẩn</span></div></div><div class="menu-lesson-header collapsed">Bài 3: Phương trình sóng</div><div class="lesson-parts-container hidden"><div class="menu-item" data-video="https://www.youtube.com/embed/5y4zHlNyLTo"><span class="lesson-name">Phần 1: Định nghĩa</span></div><div class="menu-item" data-video="https://www.youtube.com/embed/MLBBADDZeic"><span class="lesson-name">Phần 2: Tính chất</span></div><div class="menu-item" data-video="https://www.youtube.com/embed/e-B-ImNxR1M"><span class="lesson-name">Phần 3: Nâng cao</span></div><div class="menu-item" data-video="https://www.youtube.com/embed/hv3dO9DgOts"><span class="lesson-name">Phần 4: Bài tập về nhà</span></div></div></div>
-            </div>
-        </div>
-
-        <div class="current-lesson-bottom-display" id="subject-lesson-append">
-            Bài 1. Đại cương vật lí nhiệt
-        </div>
-
-        <div id="admin-panel" style="display: none;">
-            <h3 style="margin-top:0; color: #856404;">🛠️ HỆ THỐNG CẬP NHẬT CODE TỰ ĐỘNG</h3>
-            
-            <div class="admin-input-group">
-                <label for="sheet-id-input">Thay đổi ID Google Sheet (Để trống nếu giữ nguyên ID hiện tại):</label>
-                <input type="text" id="sheet-id-input" placeholder="Nhập mã ID Google Sheet mới...">
-                <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại của trang này: 1IfHXn3LZepuQ_xJC-NKufvkUxnADo0Qz9awdYe-OnYo</small>
-            </div>
-
-            <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang kết nối tới Google Sheets (ID: 1IfHXn3LZepuQ_xJC-NKufvkUxnADo0Qz9awdYe-OnYo)...</p>
-            <button class="btn-admin" id="btn-fetch" onclick="generateNewCode()">Bắt đầu lấy dữ liệu mới từ Sheets</button>
-            
-            <div id="output-area" style="display:none; margin-top:15px;">
-                <p><b>Bước tiếp theo:</b> Bấm nút Copy dưới đây, vào Google Sites chỉnh sửa mã nhúng, <b>Xóa toàn bộ code cũ đi và Dán đè code mới này vào</b> rồi Xuất bản.</p>
-                <p><button class="btn-admin" style="background:#007bff;" onclick="copyNewCode()">Copy Toàn Bộ Code</button></p>
-                <textarea id="code-output" readonly=""></textarea>
-            </div>
-        </div>
-
-        <div class="footer-action">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdX0G3eI0fttdhqXR_YAexVfp2LlgFBJTWZUpS4gGjICfkZ_Q/viewform?usp=sharing" target="_blank" style="text-decoration: none;">
-                <button class="btn-register">ĐĂNG KÍ HỌC NGAY</button>
-            </a>
-
-            <a href="https://sites.google.com/view/namins2" target="_blank" class="link-detail">
-                GIỚI THIỆU VỀ NAMINS.COM
-            </a>
-        </div>
-
-        <div class="copyright">
-            © 2026 NAMINS
-        </div>
-
-    </div>
-
-    <script>
-        // ==========================================
-        // CẤU HÌNH HỆ THỐNG
-        // ==========================================
-        const SHEET_ID = '1IfHXn3LZepuQ_xJC-NKufvkUxnADo0Qz9awdYe-OnYo'; 
-        const SHEET_TITLE = 'sheet1'; 
-        const SHEET_RANGE = 'A2:F200'; 
-        const ADMIN_PASSWORD = 'admin123'; 
-
-        // ==========================================
-        // DỮ LIỆU TĨNH BAN ĐẦU
-        // ==========================================
-        const STATIC_DATA = {"subjectTitle":"Vật lí 12","sidebarTitle":"Khoá nền tảng","lessons":[{"lessonHeaderName":"Bài 1. Đại cương vật lí nhiệt","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"-0i88XI9ibE"},{"partName":"Phần 2. Tính chất","videoId":"OOfiMWzeZig"},{"partName":"Phần 3. Ứng dụng","videoId":"CblkKDYNg3I"}]},{"lessonHeaderName":"Bài 2. Khí lí tưởng","parts":[{"partName":"Phần 1. Một số khái niệm về khí lí tưởng","videoId":"nAVXKagUUM8"},{"partName":"Phần 2. Quá trình đẳng nhiệt","videoId":"LTRMbJTgeT8"},{"partName":"Phần 3. Quá trình đẳng tích","videoId":"6rguojXOCsA"},{"partName":"Phần 4. Quá trình đẳng áp","videoId":"HlrSYLXQyQQ"}]},{"lessonHeaderName":"Bài 3. Từ trường","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"Yu2ZnBZffeE"},{"partName":"Phần 2. Lực từ","videoId":"oBCwKqTRt68"},{"partName":"Phần 3. Cảm ứng điện từ","videoId":"VwoioQYe1Gk"}]},{"lessonHeaderName":"Bài 4. Đại cương vật lí nhiệt","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"-0i88XI9ibE"},{"partName":"Phần 2. Tính chất","videoId":"OOfiMWzeZig"},{"partName":"Phần 3. Ứng dụng","videoId":"CblkKDYNg3I"}]},{"lessonHeaderName":"Bài 5. Khí lí tưởng","parts":[{"partName":"Phần 1. Một số khái niệm về khí lí tưởng","videoId":"nAVXKagUUM8"},{"partName":"Phần 2. Quá trình đẳng nhiệt","videoId":"LTRMbJTgeT8"}]},{"lessonHeaderName":"Bài 6. Khí lí tưởng","parts":[{"partName":"Phần 3. Quá trình đẳng tích","videoId":"6rguojXOCsA"},{"partName":"Phần 4. Quá trình đẳng áp","videoId":"HlrSYLXQyQQ"}]},{"lessonHeaderName":"Bài 7. Từ trường","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"Yu2ZnBZffeE"},{"partName":"Phần 2. Lực từ","videoId":"oBCwKqTRt68"}]},{"lessonHeaderName":"Bài 8. Từ trường","parts":[{"partName":"Phần 3. Cảm ứng điện từ","videoId":"VwoioQYe1Gk"}]},{"lessonHeaderName":"Bài 8. Đại cương vật lí nhiệt","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"-0i88XI9ibE"}]},{"lessonHeaderName":"Bài 9. Đại cương vật lí nhiệt","parts":[{"partName":"Phần 2. Tính chất","videoId":"OOfiMWzeZig"}]},{"lessonHeaderName":"Bài 10. Đại cương vật lí nhiệt","parts":[{"partName":"Phần 3. Ứng dụng","videoId":"CblkKDYNg3I"}]},{"lessonHeaderName":"Bài 11. Khí lí tưởng","parts":[{"partName":"Phần 1. Một số khái niệm về khí lí tưởng","videoId":"nAVXKagUUM8"},{"partName":"Phần 2. Quá trình đẳng nhiệt","videoId":"LTRMbJTgeT8"}]},{"lessonHeaderName":"Bài 12. Khí lí tưởng","parts":[{"partName":"Phần 3. Quá trình đẳng tích","videoId":"6rguojXOCsA"}]},{"lessonHeaderName":"Bài 13. Khí lí tưởng","parts":[{"partName":"Phần 4. Quá trình đẳng áp","videoId":"HlrSYLXQyQQ"}]},{"lessonHeaderName":"Bài 13. Từ trường","parts":[{"partName":"Phần 1. Một số khái niệm","videoId":"Yu2ZnBZffeE"}]},{"lessonHeaderName":"Bài 14. Từ trường","parts":[{"partName":"Phần 2. Lực từ","videoId":"oBCwKqTRt68"},{"partName":"Phần 3. Cảm ứng điện từ","videoId":"VwoioQYe1Gk"}]}]}; 
-
-        // Hàm bóc tách ID Youtube 
-        function extractYouTubeId(url) {
-            if (!url) return '';
-            url = url.trim();
-            if (url.indexOf('http') !== 0) {
-                return url.replace('v=', '');
-            }
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : '';
-        }
-
-        // Bật tắt chế độ phóng to/thu nhỏ giả lập toàn khung
-        function toggleMaximizeVideo() {
-            const container = document.getElementById("main-layout-container");
-            if (container.classList.contains("maximized-mode")) {
-                container.classList.remove("maximized-mode");
-            } else {
-                container.classList.add("maximized-mode");
-            }
-        }
-
-        // Khởi chạy hiển thị dữ liệu tĩnh ngay lập tức khi trang load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderMenuAndVideo(STATIC_DATA);
-        });
-
-        // Hàm render giao diện từ dữ liệu tĩnh cấu trúc sẵn
-        function renderMenuAndVideo(data) {
-            const baseSubjectTitle = data.subjectTitle || "Vật lí 12";
-            document.getElementById('base-subject-text').innerText = baseSubjectTitle;
-            document.getElementById('sidebar-title').innerHTML = `<span>${data.sidebarTitle || "Mục lục bài giảng"}</span>`;
-
-            const menuContainer = document.getElementById('menu-container');
-            menuContainer.innerHTML = '';
-
-            if (!data.lessons || data.lessons.length === 0) {
-                menuContainer.innerHTML = '<div class="loading-text">Chưa có dữ liệu bài học. Hãy sử dụng tài khoản admin để nạp dữ liệu từ Google Sheet.</div>';
-                return;
-            }
-
-            let isFirstItem = true;
-
-            data.lessons.forEach((lesson, index) => {
-                // Tạo thẻ header của bài lớn
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'menu-lesson-header';
-                headerDiv.innerText = lesson.lessonHeaderName;
-                menuContainer.appendChild(headerDiv);
-
-                // Tạo container bọc các phần con
-                const partsContainer = document.createElement('div');
-                partsContainer.className = 'lesson-parts-container';
-                menuContainer.appendChild(partsContainer);
-
-                // Thiết lập trạng thái Đóng/Mở thông minh mặc định ban đầu
-                if (isFirstItem) {
-                    headerDiv.classList.remove('collapsed');
-                    partsContainer.classList.remove('hidden');
-                } else {
-                    headerDiv.classList.add('collapsed');
-                    partsContainer.classList.add('hidden');
-                }
-
-                // Sự kiện click Accordion vào bài lớn (Mở bài này - Đóng tất cả bài khác)
-                headerDiv.addEventListener('click', function() {
-                    const isCollapsed = this.classList.contains('collapsed');
-                    
-                    // Đóng tất cả các bài khác lại trước
-                    document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.add('collapsed'));
-                    document.querySelectorAll('.lesson-parts-container').forEach(c => c.classList.add('hidden'));
-                    
-                    // Nếu trước đó đang đóng thì mở ra, ngược lại đang mở bấm vào sẽ thu gọn vào
-                    if (isCollapsed) {
-                        this.classList.remove('collapsed');
-                        partsContainer.classList.remove('hidden');
-                    }
-                });
-
-                // Render các phần học con vào trong container bọc của bài đó
-                lesson.parts.forEach(part => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'menu-item';
-                    itemDiv.setAttribute('data-video', `https://www.youtube.com/embed/${part.videoId}`);
-                    itemDiv.innerHTML = `<span class="lesson-name">${part.partName}</span>`;
-
-                    function activateItem() {
-                        document.getElementById('video-player').src = `https://www.youtube.com/embed/${part.videoId}?autoplay=${isFirstItem ? 0 : 1}&rel=0&showinfo=0&controls=1`;
-                        
-                        // Cập nhật tên bài giảng lớn
-                        document.getElementById('subject-lesson-append').innerText = lesson.lessonHeaderName;
-                        
-                        // Cập nhật Thanh xanh: Tên riêng của phần học
-                        document.getElementById('current-lesson-title').innerText = part.partName;
-                        
-                        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-                        itemDiv.classList.add('active');
-                    }
-
-                    if (isFirstItem) {
-                        activateItem();
-                        isFirstItem = false;
-                    }
-
-                    // Khi nhấn vào phần con, ngăn chặn lan truyền sự kiện click ra bài lớn làm đóng menu
-                    itemDiv.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        activateItem();
-                    });
-                    
-                    partsContainer.appendChild(itemDiv);
-                });
-            });
-        }
-
-        // ==========================================
-        // LOGIC XỬ LÝ DÀNH CHO ADMIN (SINH CODE TỰ ĐỘNG)
-        // ==========================================
-        function checkAdminPass(val) {
-            if (val.trim() === ADMIN_PASSWORD) {
-                document.getElementById('admin-panel').style.display = 'block';
-                document.getElementById('current-id-hint').innerText = `ID hiện tại của trang này: ${SHEET_ID}`;
-                document.getElementById('search-input').value = ''; 
-                alert('Đã mở Chế độ Quản trị viên! Cuộn xuống dưới để cập nhật code.');
-                document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function generateNewCode() {
-            const status = document.getElementById('admin-status');
-            let inputId = document.getElementById('sheet-id-input').value.trim();
-            let finalSheetId = inputId ? inputId : SHEET_ID;
-
-            status.innerText = `Đang kết nối tới Google Sheets (ID: ${finalSheetId})...`;
-            status.style.color = "blue";
-
-            const FULL_URL = `https://docs.google.com/spreadsheets/d/${finalSheetId}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
-
-            fetch(FULL_URL)
-            .then(res => res.text())
-            .then(rep => {
-                const data = JSON.parse(rep.substr(47).slice(0, -2));
-                const rows = data.table.rows;
-                
-                if (!rows || rows.length === 0) {
-                    alert('Không tìm thấy dữ liệu trong Google Sheet.');
-                    return;
-                }
-
-                const firstRow = rows[0].c;
-                const finalSubjectTitle = (firstRow && firstRow[1]) ? firstRow[1].v : 'Vật lí 12';
-                const finalSidebarTitle = (firstRow && firstRow[2]) ? firstRow[2].v : 'Mục lục bài giảng';
-
-                let structuredData = {
-                    subjectTitle: finalSubjectTitle,
-                    sidebarTitle: finalSidebarTitle,
-                    lessons: []
-                };
-
-                let currentLessonMap = {};
-
-                rows.forEach((row) => {
-                    const cols = row.c;
-                    if (!cols) return;
-
-                    const lessonHeaderName = cols[3] ? cols[3].v.toString().trim() : ''; 
-                    let partName = cols[4] ? cols[4].v.toString().trim() : '';          
-                    const videoRawUrl = cols[5] ? cols[5].v.toString().trim() : '';      
-
-                    const videoId = extractYouTubeId(videoRawUrl);
-                    if (!videoId || !partName || !lessonHeaderName) return; 
-
-                    // Tự động xóa tên bài học lớn lặp lại trong chuỗi tên phần con
-                    if (partName.includes(lessonHeaderName)) {
-                        partName = partName.replace(lessonHeaderName, '').replace(/^\s*[-–—:]\s*/, '').trim();
-                    }
-
-                    if (!currentLessonMap[lessonHeaderName]) {
-                        currentLessonMap[lessonHeaderName] = {
-                            lessonHeaderName: lessonHeaderName,
-                            parts: []
-                        };
-                        structuredData.lessons.push(currentLessonMap[lessonHeaderName]);
-                    }
-
-                    currentLessonMap[lessonHeaderName].parts.push({
-                        partName: partName,
-                        videoId: videoId
-                    });
-                });
-
-                document.getElementById('admin-panel').style.display = 'none';
-                document.getElementById('output-area').style.display = 'none';
-                document.getElementById('code-output').value = '';
-
-                let currentHtml = document.documentElement.outerHTML;
-                
-                const dataString = JSON.stringify(structuredData);
-                const regexData = /const STATIC_DATA = \{.*?\};/;
-                currentHtml = currentHtml.replace(regexData, `const STATIC_DATA = ${dataString};`);
-
-                const regexId = /const SHEET_ID = '.*?';/;
-                currentHtml = currentHtml.replace(regexId, `const SHEET_ID = '${finalSheetId}';`);
-
-                let updatedHtml = "<!DOCTYPE html>\n" + currentHtml;
-
-                document.getElementById('admin-panel').style.display = 'block';
-                document.getElementById('code-output').value = updatedHtml;
-                document.getElementById('output-area').style.display = 'block';
-
-                status.innerText = "Tạo mã thành công! Hãy copy đoạn mã bên dưới.";
-                status.style.color = "green";
-            })
-            .catch(err => {
-                console.error(err);
-                status.innerText = "Lỗi tải dữ liệu! Hãy kiểm tra lại ID Sheet hoặc quyền chia sẻ công khai của Sheet.";
-                status.style.color = "red";
-            });
-        }
-
-        function copyNewCode() {
-            const copyText = document.getElementById("code-output");
-            
-            navigator.clipboard.writeText(copyText.value)
-                .then(() => {
-                    alert("Đã tự động copy toàn bộ mã mới thành công! Bạn hãy vào Google Sites xóa code cũ và dán đè code này vào.");
-                })
-                .catch(err => {
-                    copyText.select();
-                    copyText.setSelectionRange(0, 99999);
-                    document.execCommand("copy");
-                    alert("Đã copy thành công!");
-                });
-        }
-    </script>
-
 
 </body></html>
