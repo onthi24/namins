@@ -447,11 +447,11 @@
 
     <script>
         // ==========================================
-        // CẤU HÌNH HỆ THỐNG
+        // CẤU HÌNH HỆ THỐNG GỐC
         // ==========================================
         const SHEET_ID = '1IfHXn3LZepuQ_xJC-NKufvkUxnADo0Qz9awdYe-OnYo'; 
         const SHEET_TITLE = 'sheet1'; 
-        const SHEET_RANGE = 'A2:G200'; // ĐÃ CẬP NHẬT: Mở rộng vùng quét dữ liệu để lấy thêm cột G
+        const SHEET_RANGE = 'A2:G200'; 
         const ADMIN_PASSWORD = 'admin123'; 
 
         // ==========================================
@@ -471,23 +471,19 @@
             return (match && match[2].length === 11) ? match[2] : '';
         }
 
-        // Bật tắt chế độ phóng to/thu nhỏ giả lập toàn khung
         function toggleMaximizeVideo() {
             const container = document.getElementById("main-layout-container");
             if (container.classList.contains("maximized-mode")) {
                 container.classList.remove("maximized-mode");
             } else {
-                container.classList.add("main-layout-container");
                 container.classList.add("maximized-mode");
             }
         }
 
-        // Khởi chạy hiển thị dữ liệu tĩnh ngay lập tức khi trang load
         window.addEventListener('DOMContentLoaded', () => {
             renderMenuAndVideo(STATIC_DATA);
         });
 
-        // Hàm render giao diện từ dữ liệu tĩnh cấu trúc sẵn
         function renderMenuAndVideo(data) {
             const baseSubjectTitle = data.subjectTitle || "Vật lí 12";
             document.getElementById('base-subject-text').innerText = baseSubjectTitle;
@@ -504,24 +500,21 @@
             let isFirstItem = true;
 
             data.lessons.forEach((lesson, index) => {
-                // Tạo thẻ header của bài lớn
                 const headerDiv = document.createElement('div');
                 headerDiv.className = 'menu-lesson-header';
                 headerDiv.innerText = lesson.lessonHeaderName;
                 
-                // ĐÃ CẬP NHẬT: Đổ màu nền từ cột G nếu tồn tại dữ liệu màu sắc
+                // Đổ màu nền từ cột G nếu tồn tại màu sắc riêng biệt
                 if (lesson.color && lesson.color.trim() !== '') {
                     headerDiv.style.backgroundColor = lesson.color.trim();
                 }
                 
                 menuContainer.appendChild(headerDiv);
 
-                // Tạo container bọc các phần con
                 const partsContainer = document.createElement('div');
                 partsContainer.className = 'lesson-parts-container';
                 menuContainer.appendChild(partsContainer);
 
-                // Thiết lập trạng thái Đóng/Mở thông minh mặc định ban đầu
                 if (isFirstItem) {
                     headerDiv.classList.remove('collapsed');
                     partsContainer.classList.remove('hidden');
@@ -530,22 +523,17 @@
                     partsContainer.classList.add('hidden');
                 }
 
-                // Sự kiện click Accordion vào bài lớn (Mở bài này - Đóng tất cả bài khác)
                 headerDiv.addEventListener('click', function() {
                     const isCollapsed = this.classList.contains('collapsed');
-                    
-                    // Đóng tất cả các bài khác lại trước
                     document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.add('collapsed'));
                     document.querySelectorAll('.lesson-parts-container').forEach(c => c.classList.add('hidden'));
                     
-                    // Nếu trước đó đang đóng thì mở ra, ngược lại đang mở bấm vào sẽ thu gọn vào
                     if (isCollapsed) {
                         this.classList.remove('collapsed');
                         partsContainer.classList.remove('hidden');
                     }
                 });
 
-                // Render các phần học con vào trong container bọc của bài đó
                 lesson.parts.forEach(part => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'menu-item';
@@ -554,11 +542,7 @@
 
                     function activateItem() {
                         document.getElementById('video-player').src = `https://www.youtube.com/embed/${part.videoId}?autoplay=${isFirstItem ? 0 : 1}&rel=0&showinfo=0&controls=1`;
-                        
-                        // Cập nhật tên bài giảng lớn
                         document.getElementById('subject-lesson-append').innerText = lesson.lessonHeaderName;
-                        
-                        // Cập nhật Thanh xanh: Tên riêng của phần học
                         document.getElementById('current-lesson-title').innerText = part.partName;
                         
                         document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
@@ -570,7 +554,6 @@
                         isFirstItem = false;
                     }
 
-                    // Khi nhấn vào phần con, ngăn chặn lan truyền sự kiện click ra bài lớn làm đóng menu
                     itemDiv.addEventListener('click', function(e) {
                         e.stopPropagation();
                         activateItem();
@@ -582,7 +565,7 @@
         }
 
         // ==========================================
-        // LOGIC XỬ LÝ DÀNH CHO ADMIN (SINH CODE TỰ ĐỘNG)
+        // LOGIC XỬ LÝ DÀNH CHO ADMIN 
         // ==========================================
         function checkAdminPass(val) {
             if (val.trim() === ADMIN_PASSWORD) {
@@ -597,6 +580,7 @@
         function generateNewCode() {
             const status = document.getElementById('admin-status');
             let inputId = document.getElementById('sheet-id-input').value.trim();
+            // Nếu ô nhập trống, lấy giá trị biến SHEET_ID hiện tại trên trang
             let finalSheetId = inputId ? inputId : SHEET_ID;
 
             status.innerText = `Đang kết nối tới Google Sheets (ID: ${finalSheetId})...`;
@@ -634,13 +618,11 @@
                     const lessonHeaderName = cols[3] ? cols[3].v.toString().trim() : ''; 
                     let partName = cols[4] ? cols[4].v.toString().trim() : '';          
                     const videoRawUrl = cols[5] ? cols[5].v.toString().trim() : '';      
-                    // ĐÃ CẬP NHẬT: Lấy dữ liệu màu sắc từ cột G (vị trí index 6)
                     const lessonColor = cols[6] ? cols[6].v.toString().trim() : '';
 
                     const videoId = extractYouTubeId(videoRawUrl);
                     if (!videoId || !partName || !lessonHeaderName) return; 
 
-                    // Tự động xóa tên bài học lớn lặp lại trong chuỗi tên phần con
                     if (partName.includes(lessonHeaderName)) {
                         partName = partName.replace(lessonHeaderName, '').replace(/^\s*[-–—:]\s*/, '').trim();
                     }
@@ -648,7 +630,7 @@
                     if (!currentLessonMap[lessonHeaderName]) {
                         currentLessonMap[lessonHeaderName] = {
                             lessonHeaderName: lessonHeaderName,
-                            color: lessonColor, // Lưu màu sắc tương ứng của bài lớn vào object dữ liệu cấu trúc
+                            color: lessonColor, 
                             parts: []
                         };
                         structuredData.lessons.push(currentLessonMap[lessonHeaderName]);
@@ -660,22 +642,22 @@
                     });
                 });
 
-                document.getElementById('admin-panel').style.display = 'none';
-                document.getElementById('output-area').style.display = 'none';
-                document.getElementById('code-output').value = '';
+                // XỬ LÝ LỖI KHÔNG NHẬN ID MỚI: 
+                // Tạo một bản sao HTML tĩnh thuần túy trước khi bị ảnh hưởng bởi nội dung admin thay đổi
+                let cleanHtml = document.documentElement.outerHTML;
 
-                let currentHtml = document.documentElement.outerHTML;
-                
+                // Đồng bộ thay thế biến STATIC_DATA 
                 const dataString = JSON.stringify(structuredData);
                 const regexData = /const STATIC_DATA = \{.*?\};/;
-                currentHtml = currentHtml.replace(regexData, `const STATIC_DATA = ${dataString};`);
+                cleanHtml = cleanHtml.replace(regexData, `const STATIC_DATA = ${dataString};`);
 
+                // Đồng bộ ghi đè biến SHEET_ID cứng ở trên đầu file script thành ID mới vừa nạp
                 const regexId = /const SHEET_ID = '.*?';/;
-                currentHtml = currentHtml.replace(regexId, `const SHEET_ID = '${finalSheetId}';`);
+                cleanHtml = cleanHtml.replace(regexId, `const SHEET_ID = '${finalSheetId}';`);
 
-                let updatedHtml = "<!DOCTYPE html>\n" + currentHtml;
+                let updatedHtml = "<!DOCTYPE html>\n" + cleanHtml;
 
-                document.getElementById('admin-panel').style.display = 'block';
+                // Đổ ngược code hoàn chỉnh ra khung hiển thị cho người dùng
                 document.getElementById('code-output').value = updatedHtml;
                 document.getElementById('output-area').style.display = 'block';
 
@@ -689,10 +671,8 @@
             });
         }
 
-        // Hàm copy mã nguồn tự động
         function copyNewCode() {
             const copyText = document.getElementById("code-output");
-            
             navigator.clipboard.writeText(copyText.value)
                 .then(() => {
                     alert("Đã tự động copy toàn bộ mã mới thành công! Bạn hãy vào Google Sites xóa code cũ và dán đè code này vào.");
