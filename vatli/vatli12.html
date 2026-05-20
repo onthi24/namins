@@ -1,13 +1,11 @@
 
 <!DOCTYPE html>
 <html lang="vi">
-<html lang="vi"><head><base target="_blank">
-
-
-    <base target="_blank">
+<html lang="vi"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toán 11 - NAMINS</title>
+    <title id="page-title">Vật Lí 12</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-green: #1a4d2e;  /* Màu xanh từ ảnh (dành cho ô F1) */
@@ -29,7 +27,114 @@
             overflow-x: hidden;
         }
 
-        /* HEADER & LOGO */
+        /* --- THANH ĐIỀU HƯỚNG MÁY TÍNH (TOP NAVBAR) --- */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto 10px auto;
+            width: 100%;
+            background-color: #f1f4f6;
+            padding: 0 10px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 45px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Nút ba gạch mở menu di động (Mặc định ẩn trên PC) */
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            padding: 10px;
+        }
+
+        /* Menu ngang cho máy tính */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item-wrap {
+            position: relative;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #333;
+            padding: 14px 15px;
+            font-weight: 500;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+            border-bottom: 4px solid transparent;
+        }
+
+        /* Vết gạch đen dưới mục đang chọn */
+        .nav-item.active {
+            font-weight: bold;
+            background-color: #fff;
+            border-bottom: 4px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* DROPDOWN MENU CON TRÊN PC */
+        .dropdown-content {
+            display: none; 
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+            top: 100%; 
+            left: 0;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: var(--primary-orange);
+        }
+
+        /* Hiển thị dropdown khi di chuột trên máy tính */
+        .nav-item-wrap:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Nút đóng (X) trên điện thoại, mặc định ẩn trên PC */
+        .mobile-close-btn { display: none; }
+
+        /* TIÊU ĐỀ NỘI DUNG CHÍNH */
         .header {
             display: flex;
             justify-content: space-between;
@@ -52,16 +157,8 @@
             text-transform: uppercase;
         }
 
-        /* Chữ ở ô F1: Màu xanh đậm chuẩn theo ảnh */
-        #subject-text {
-            color: var(--primary-green);
-        }
-
-        /* Chữ ở ô G1 (số lớp): Màu cam đất chuẩn theo ảnh */
-        #grade-text {
-            color: var(--image-orange);
-            margin-left: 5px;
-        }
+        #subject-text { color: var(--primary-green); }
+        #grade-text { color: var(--image-orange); margin-left: 5px; }
 
         /* TÌM KIẾM */
         .search-box input {
@@ -80,7 +177,7 @@
             background: #fff;
         }
 
-        /* LAYOUT 2 CỘT */
+        /* LAYOUT CHÍNH */
         .container {
             display: flex;
             gap: 20px;
@@ -109,7 +206,7 @@
         .bg-green { background: var(--primary-green); }
         .bg-orange { background: var(--image-orange); }
 
-        /* THIẾT KẾ Ô KHOÁ HỌC (ITEM CARD) */
+        /* THIẾT KẾ Ô KHÓA HỌC (ITEM CARD) */
         .item-card {
             background: #fff;
             padding: 16px 20px; 
@@ -134,11 +231,9 @@
             transition: color 0.2s ease;
         }
 
-        .item-card:hover h2 {
-            color: var(--primary-orange) !important;
-        }
+        .item-card:hover h2 { color: var(--primary-orange) !important; }
 
-        /* DROPDOWN MENU CON */
+        /* DROPDOWN Ô BÀI HỌC DƯỚI CARD */
         .dropdown {
             margin-top: 14px;          
             padding-top: 14px;         
@@ -158,13 +253,12 @@
         }
 
         .dropdown a:last-child { margin-bottom: 0; }
-        
         .dropdown a:hover { 
             color: var(--primary-orange) !important; 
             text-decoration: underline; 
         }
 
-        /* FOOTER ACTION */
+        /* FOOTER ACTIONS */
         .footer-action {
             margin: 40px auto 20px auto;
             max-width: 1100px;
@@ -189,25 +283,8 @@
             transition: 0.2s;
         }
 
-        .btn-register:hover { opacity: 0.9; }
-
-        .link-detail { 
-            color: var(--primary-green); 
-            font-weight: bold; 
-            text-decoration: none; 
-            font-size: 18px; 
-            text-transform: uppercase; 
-        } 
-        
-        .link-detail:hover { text-decoration: underline; }
-
-        .copyright { 
-            max-width: 1100px;
-            margin: 20px auto;
-            color: #999; 
-            font-size: 14px; 
-            text-align: left;
-        }
+        .link-detail { color: var(--primary-green); font-weight: bold; text-decoration: none; font-size: 18px; text-transform: uppercase; } 
+        .copyright { max-width: 1100px; margin: 20px auto; color: #999; font-size: 14px; text-align: left;}
 
         /* KHU VỰC CỦA ADMIN */
         #admin-panel {
@@ -219,60 +296,191 @@
             border-radius: 10px;
             display: none; 
         }
-        .admin-input-group {
-            margin-bottom: 15px;
-        }
-        .admin-input-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #533f03;
-        }
-        .admin-input-group input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ffc107;
-            border-radius: 5px;
-            outline: none;
-        }
-        #admin-panel textarea {
-            width: 100%;
-            height: 180px;
-            margin-top: 10px;
-            font-family: monospace;
-            font-size: 12px;
-        }
-        .btn-admin {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        .admin-input-group { margin-bottom: 15px; }
+        .admin-input-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #533f03; }
+        .admin-input-group input { width: 100%; padding: 8px 12px; border: 1px solid #ffc107; border-radius: 5px; outline: none; }
+        #admin-panel textarea { width: 100%; height: 180px; margin-top: 10px; font-family: monospace; font-size: 12px; }
+        .btn-admin { background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
 
+        /* =======================================================
+           📱 CHỈNH SỬA GIAO DIỆN MOBILE CHUẨN XỊN THEO ẢNH CỦA BẠN
+           ======================================================= */
         @media (max-width: 768px) {
-            body { padding: 10px; }
-            .header { flex-direction: column; padding: 10px; gap: 15px; }
-            .logo-text { font-size: 32px; text-align: center; }
-            .search-box { width: 100%; }
-            .search-box input { width: 100%; }
-            .container { flex-direction: column; gap: 15px; }
-            .column-header { font-size: 18px; padding: 14px; text-align: center; }
-            .item-card { border-radius: 12px; padding: 14px; }
+            body { padding: 0px; } 
+
+            .top-navbar { 
+                padding: 8px 15px; 
+                border-radius: 0; 
+                margin-bottom: 10px;
+                justify-content: flex-start; 
+                gap: 15px;
+                background-color: #f1f4f6;
+            }
+
+            .mobile-menu-btn { 
+                display: block; 
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                left: -280px; 
+                width: 260px;
+                height: 100%;
+                background-color: #f4f6f8; 
+                flex-direction: column;
+                z-index: 99999;
+                padding: 60px 0px 20px 0px; 
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+                display: flex !important; 
+            }
+
+            .nav-menu.open {
+                left: 0 !important;
+            }
+
+            .mobile-close-btn {
+                display: block !important;
+                position: absolute;
+                top: 15px;
+                left: 20px;
+                font-size: 24px;
+                cursor: pointer;
+                color: #222;
+                font-weight: bold;
+            }
+
+            .nav-item-wrap { 
+                width: 100%; 
+            }
+
+            .nav-item { 
+                padding: 14px 24px; 
+                font-size: 20px; 
+                color: #222;
+                font-weight: 600;
+                border-bottom: none;
+                border-left: 5px solid transparent; 
+                justify-content: space-between; 
+                width: 100%;
+                background-color: transparent;
+            }
+
+            .nav-item.active {
+                background-color: #e2e8f0;
+                border-left: 6px solid #000 !important; 
+                border-bottom: none !important;
+                font-weight: bold;
+            }
+
+            .nav-item-wrap .dropdown-content {
+                display: none; 
+                position: static; 
+                width: 100%;
+                box-shadow: none;
+                background-color: #eaedf1; 
+                padding-left: 20px;
+                border-radius: 0;
+            }
+
+            .nav-item-wrap .dropdown-content a {
+                padding: 12px 25px;
+                font-size: 16px;
+                color: #333;
+                border-bottom: 1px solid #d1d5db;
+            }
+
+            .nav-item-wrap.active-mobile .dropdown-content {
+                display: block !important;
+            }
+
+            .nav-item-wrap:hover .dropdown-content { display: none; }
+
+            .header { 
+                flex-direction: column; 
+                padding: 0 15px; 
+                gap: 12px; 
+                align-items: flex-start;
+            }
+            .logo-wrap { display: flex; } 
+            
+            .logo-text { 
+                font-size: 32px; 
+                font-weight: 800;
+                margin: 5px 0 0 0;
+            }
+
+            .search-box { width: 100%; padding: 0 15px; }
+            .search-box input { width: 100%; border-radius: 20px; }
+
+            .container { flex-direction: column; gap: 8px; padding: 0; margin-top: 15px; }
+            .column-header { border-radius: 0; font-size: 18px; padding: 14px; text-align: center; }
+            .item-card { border-radius: 0; border-left: none; border-right: none; padding: 14px; }
             .item-card h2 { font-size: 16px; text-align: center; }
-            .footer-action { flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+
+            .footer-action { flex-direction: column; align-items: center; gap: 20px; text-align: center; padding: 20px; }
             .btn-register { width: 100%; }
-            .copyright { text-align: center; font-size: 13px; }
+            .copyright { text-align: center; font-size: 13px; padding-left: 0; }
         }
     </style>
 </head>
 <body>
 
+    <div class="top-navbar">
+        <div class="mobile-menu-btn" onclick="openMobileMenu(event)"><i class="fa fa-bars"></i></div>
+
+        <div class="logo-box">
+            <img src="https://raw.githubusercontent.com/onthi24/namins/main/logo.github2.png" alt="NAMINS LOGO" class="logo-img">
+        </div>
+        
+        <div class="nav-menu" id="mobileNavMenu">
+            <div class="mobile-close-btn" onclick="closeMobileMenu(event)"><i class="fa fa-times"></i></div>
+
+            <div class="nav-item-wrap">
+                <a href="https://namins.com/" class="nav-item" id="menu-home">Trang chủ</a>
+            </div>
+
+            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
+                <a href="#" class="nav-item active" id="menu-thpt">Toán THPT <i class="fa fa-chevron-down" style="font-size: 12px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="https://namins.com/toan-thpt/toan12.html">Toán 12</a>
+                    <a href="https://namins.com/toan-thpt/toan11.html">Toán 11</a>
+                    <a href="https://namins.com/toan-thpt/toan10.html">Toán 10</a>
+                </div>
+            </div>
+
+            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
+                <a href="#" class="nav-item" id="menu-thcs">Toán THCS <i class="fa fa-chevron-down" style="font-size: 12px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="https://namins.com/toan-thcs/toan9.html">Toán 9</a>
+                    <a href="https://namins.com/toan-thcs/toan8.html">Toán 8</a>
+                    <a href="https://namins.com/toan-thcs/toan7.html">Toán 7</a>
+                    <a href="https://namins.com/toan-thcs/toan6.html">Toán 6</a>
+                </div>
+            </div>
+
+            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
+                <a href="#" class="nav-item" id="menu-vatli">Vật Lí <i class="fa fa-chevron-down" style="font-size: 12px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="https://namins.com/vatli/vatli12.html">Vật Lí 12</a>
+                    <a href="https://namins.com/vatli/vatli11.html">Vật Lí 11</a>
+                    <a href="https://namins.com/vatli/vatli10.html">Vật Lí 10</a>
+                </div>
+            </div>
+
+            <div class="nav-item-wrap">
+                <a href="https://namins.com/video/video-kho.html" class="nav-item" id="menu-video">Video</a>
+            </div>
+        </div>
+    </div>
+
     <div class="header">
         <div class="logo-wrap">
-            <div class="logo-text"><span id="subject-text">Vật Lí</span><span id="grade-text">12</span></div>
+            <h1 class="logo-text">
+                <span id="subject-text">Vật Lí</span>
+                <span id="grade-text">12</span>
+            </h1>
         </div>
         <div class="search-box">
             <input type="text" id="search-input" placeholder="Tìm qua Google..." oninput="checkAdminPass(this.value)">
@@ -281,27 +489,23 @@
 
     <div id="admin-panel" style="display: none;">
         <h3 style="margin-top:0; color: #856404;">🛠️ HỆ THỐNG CẬP NHẬT CODE TỰ ĐỘNG</h3>
-        
         <div class="admin-input-group">
-            <label for="sheet-id-input">Thay đổi ID Google Sheet (Để trống nếu giữ nguyên ID hiện tại):</label>
+            <label for="sheet-id-input">Thay đổi ID Google Sheet:</label>
             <input type="text" id="sheet-id-input" placeholder="Ví dụ: 17I3YobOlAHAW7CPK1XBVCSKinVj3ggT7PrbZz5zGMWU">
-            <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại của trang này: 17I3YobOlAHAW7CPK1XBVCSKinVj3ggT7PrbZz5zGMWU</small>
+            <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại của trang này: 16m9526VzuBdl_z-gENN3W17CqJ3ieX6KldQp59mn15A</small>
         </div>
-
-        <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang kết nối tới Google Sheets (ID: 1R7NwWZC-H_LzOPJt1MtHOj40O9d6_6rIHrxrsppIDug)...</p>
+        <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang kết nối tới Google Sheets...</p>
         <button class="btn-admin" id="btn-fetch" onclick="generateNewCode()">Bắt đầu lấy dữ liệu mới từ Sheets</button>
-        
         <div id="output-area" style="display: none; margin-top: 15px;">
-            <p><b>Bước tiếp theo:</b> Bấm nút Copy dưới đây, vào Google Sites chỉnh sửa mã nhúng, <b>Xóa toàn bộ code cũ đi và Dán đè code mới này vào</b> rồi Xuất bản.</p>
+            <p><b>Bước tiếp theo:</b> Bấm nút Copy dưới đây, vào kho lưu trữ mã nguồn, xóa hết code cũ và dán đè code mới vào rồi Commit.</p>
             <button class="btn-admin" style="background:#007bff;" onclick="copyNewCode()">Copy Toàn Bộ Code</button>
             <textarea id="code-output" readonly=""></textarea>
         </div>
     </div>
 
     <div class="container">
-        <div class="column" id="column-1"><div class="column-header bg-green">1. Bài giảng</div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_1')"><h2>Chương 1. Tập hợp các số tự nhiên</h2><div class="dropdown" id="chuong_col1_1"><a href="https://www.youtube.com/watch?v=BL9G6A2q7tU" target="_blank"><span>Bài 1. Tập hợp.</span></a><a href="#" target="_blank"><span>Bài 2. Cách ghi số tự nhiên.</span></a><a href="#" target="_blank"><span>Bài 3. Thứ tự trong tập hợp các số tự nhiên.</span></a><a href="#" target="_blank"><span>Bài 4. Phép cộng và phép trừ số tự nhiên.</span></a><a href="#" target="_blank"><span>Bài 5. Phép nhân và phép chia số tự nhiên.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài 6. Luỹ thừa với số mũ tự nhiên.</span></a><a href="#" target="_blank"><span>Bài 7. Thứ tự thực hiện các phép tính.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 1</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_2')"><h2>Chương 2. Tính chia hết trong tập hợp số tự nhiên</h2><div class="dropdown" id="chuong_col1_2"><a href="#" target="_blank"><span>Bài 8. Quan hệ chia hết và tính chất.</span></a><a href="#" target="_blank"><span>Bài 9. Dấu hiệu chia hết.</span></a><a href="#" target="_blank"><span>Bài 10. Số nguyên tố.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài 11. Ước chung. Ước chung lớn nhất.</span></a><a href="#" target="_blank"><span>Bài 12. Bội chung. Bội chung nhỏ nhất.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 2</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_3')"><h2>Chương 3. Số nguyên</h2><div class="dropdown" id="chuong_col1_3"><a href="#" target="_blank"><span>Bài 13. Tập hợp các số nguyên.</span></a><a href="#" target="_blank"><span>Bài 14. Phép cộng và phép trừ số nguyên.</span></a><a href="#" target="_blank"><span>Bài 15. Quy tắc dấu ngoặc.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài 16. Phép nhân số nguyên.</span></a><a href="#" target="_blank"><span>Bài 17. Phép chia hết. Ước và bội của một số nguyên.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 3</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_4')"><h2>Chương 4. Một số hình phẳng trong thực tiễn</h2><div class="dropdown" id="chuong_col1_4"><a href="#" target="_blank"><span>Bài 18. Hình tam giác đều. Hình vuông. Hình lục giác đều.</span></a><a href="#" target="_blank"><span>Bài 19. Hình chữ nhật. Hình thoi. Hình bình hành. Hình thang cân.</span></a><a href="#" target="_blank"><span>Bài 20. Chu vi và diện tích của một số tứ giác đã học.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_5')"><h2>Chương 5. Tính đối xứng của hình phằng trong tự nhiên</h2><div class="dropdown" id="chuong_col1_5"><a href="#" target="_blank"><span>Bài 21. Hình có trục đối xứng.</span></a><a href="#" target="_blank"><span>Bài 22. Hình có tâm đối xứng.</span></a><a href="#" target="_blank"><span>Luyện tập chung.</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 5</span></a></div></div></div>
-
-        <div class="column" id="column-2"><div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_1')"><h2>1.1 Đề cương giữa kì 1</h2><div class="dropdown" id="chuong_col2_1"><a href="https://www.youtube.com/watch?v=wyLaay_sHtk&amp;list=RDwyLaay_sHtk&amp;start_radio=1" target="_blank"><span>Đề cương 1</span></a><a href="https://www.youtube.com/watch?v=BL9G6A2q7tU" target="_blank"><span>Đề cương 2</span></a><a href="#" target="_blank"><span>Đề cương 3</span></a><a href="#" target="_blank"><span>Đề cương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_2')"><h2>1.2 Đề thi giữ kì 1</h2><div class="dropdown" id="chuong_col2_2"><a href="#" target="_blank"><span>Bộ đề thi 1</span></a><a href="#" target="_blank"><span>Bộ đề thi 2</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_3')"><h2>1.3 Đề cương học kì 1</h2><div class="dropdown" id="chuong_col2_3"><a href="#" target="_blank"><span>Đề cương 1</span></a><a href="#" target="_blank"><span>Đề cương 2</span></a><a href="#" target="_blank"><span>Đề cương 3</span></a><a href="#" target="_blank"><span>Đề cương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_4')"><h2>1.4 Đề thi học kì 1</h2><div class="dropdown" id="chuong_col2_4"><a href="#" target="_blank"><span>Bộ đề thi 1</span></a><a href="#" target="_blank"><span>Bộ đề thi 2</span></a></div></div></div>
+        <div class="column" id="column-1"><div class="column-header bg-green">1. Bài giảng</div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_1')"><h2>Chương 1. Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số</h2><div class="dropdown" id="chuong_col1_1"><a href="#" target="_blank"><span>Bài 1. Tính đơn điệu và cực trị của hàm số</span></a><a href="#" target="_blank"><span>Bài 2. Giá trị lớn nhất và giá trị nhỏ nhất của hàm số</span></a><a href="#" target="_blank"><span>Bài 3. Đường tiệm cận của đồ thị hàm số</span></a><a href="#" target="_blank"><span>Bài 4. Khảo sát sự biến thiên và vẽ đồ thị hàm số</span></a><a href="#" target="_blank"><span>Bài 5. Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 1</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_2')"><h2>Chương 2. Véc tơ và trục tọa độ trong không gian</h2><div class="dropdown" id="chuong_col1_2"><a href="#" target="_blank"><span>Bài 6. Vectơ trong không gian</span></a><a href="#" target="_blank"><span>Bài 7. Hệ trục tọa độ trong không gian</span></a><a href="#" target="_blank"><span>Bài 8. Biểu thức tọa độ của các phép toán vectơ</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 2</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_3')"><h2>Chương 3. Các số đo đặc trưng</h2><div class="dropdown" id="chuong_col1_3"><a href="#" target="_blank"><span>Bài 9. Khoảng biến thiên và khoảng tứ phân vị</span></a><a href="#" target="_blank"><span>Bài 10. Phương sai và độ lệch chuẩn</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_4')"><h2>Chuyên đề học kì 1</h2><div class="dropdown" id="chuong_col1_4"><a href="#" target="_blank"><span>Chuyên đề 1: Tính đơn điệu và cực trị của hàm số chứa tham số, hàm hợp, hàm ẩn</span></a><a href="#" target="_blank"><span>Chuyên đề 2: Bài toán tối ưu, Max - Min chứa dấu giá trị tuyệt đối và hàm hợp</span></a><a href="#" target="_blank"><span>Chuyên đề 3: Khảo sát chuyên sâu về tiệm cận và sự tương giao của đồ thị hàm số</span></a><a href="#" target="_blank"><span>Chuyên đề 4: Ứng dụng đạo hàm giải bài toán thực tế và tối ưu hóa chi phí, năng suất</span></a><a href="#" target="_blank"><span>Bài tập cuối chương II</span></a><a href="#" target="_blank"><span>Chuyên đề 5: Khối hình học không gian thuần túy giải bằng phương pháp Vectơ</span></a><a href="#" target="_blank"><span>Chuyên đề 6: Cực trị hình học không gian sử dụng phương pháp Vectơ và Tọa độ</span></a><a href="#" target="_blank"><span>Chuyên đề 7: Phương pháp tọa độ hóa (Gắn trục tọa độ Oxyz) giải bài toán hình học cổ điển</span></a><a href="#" target="_blank"><span>Chuyên đề 9: Ứng dụng phương sai, độ lệch chuẩn đánh giá rủi ro kinh tế và kiểm định hiệu quả</span></a><a href="#" target="_blank"><span>Chuyên đề 10: Ứng dụng tích hợp Đạo hàm, Tọa độ không gian và Thống kê trong các bài toán tích hợp</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_5')"><h2>Chương 4. Nguyên hàm và tích phân</h2><div class="dropdown" id="chuong_col1_5"><a href="#" target="_blank"><span>Bài 11. Nguyên hàm</span></a><a href="#" target="_blank"><span>Bài 12. Tích phân</span></a><a href="#" target="_blank"><span>Bài 13. Ứng dụng hình học của tích phân</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_6')"><h2>Chương 5. Phương pháp tọa độ trong không gian</h2><div class="dropdown" id="chuong_col1_6"><a href="#" target="_blank"><span>Bài 14. Phương trình mặt phẳng</span></a><a href="#" target="_blank"><span>Bài 15. Phương trình đường thẳng trong không gian</span></a><a href="#" target="_blank"><span>Bài 16. Công thức tính góc trong không gian</span></a><a href="#" target="_blank"><span>Bài 17. Phương trình mặt cầu</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 5</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_7')"><h2>Chương 6. Xác suất có điều kiện</h2><div class="dropdown" id="chuong_col1_7"><a href="#" target="_blank"><span>Bài 18. Xác suất có điều kiện</span></a><a href="#" target="_blank"><span>Bài 19. Công thức xác suất toàn phần và công thức Bayes</span></a><a href="#" target="_blank"><span>Bài tập cuối chương 6</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col1_8')"><h2>Chuyên đề học kì 2</h2><div class="dropdown" id="chuong_col1_8"><a href="#" target="_blank"><span>Chuyên đề 1: Kỹ thuật xử lý Nguyên hàm - Tích phân của hàm hợp và hàm ẩn</span></a><a href="#" target="_blank"><span>Chuyên đề 2: Các phương pháp tính tích phân đặc biệt và hàm số chứa dấu giá trị tuyệt đối</span></a><a href="#" target="_blank"><span>Chuyên đề 3: Ứng dụng tích phân giải quyết bài toán Diện tích, Thể tích phức tạp và Hình phẳng ghép</span></a><a href="#" target="_blank"><span>Chuyên đề 4: Bài toán vị trí tương đối và tương giao giữa Đường thẳng, Mặt phẳng, Mặt cầu</span></a><a href="#" target="_blank"><span>Chuyên đề 5: Các bài toán về Góc và Khoảng cách nâng cao trong không gian Oxyz</span></a><a href="#" target="_blank"><span>Chuyên đề 6: Biện luận Cực trị hình học Oxyz bằng phương pháp Hình học cổ điển</span></a><a href="#" target="_blank"><span>Chuyên đề 7: Biện luận Cực trị hình học Oxyz bằng phương pháp Đại số và Khảo sát hàm số</span></a><a href="#" target="_blank"><span>Chuyên đề 8: Xác suất có điều kiện và kỹ thuật xây dựng Sơ đồ cây</span></a><a href="#" target="_blank"><span>Chuyên đề 9: Công thức xác suất toàn phần và Định lý Bayes nâng cao</span></a><a href="#" target="_blank"><span>Chuyên đề 10: Một số bài tính xác suất đặc biệt</span></a></div></div></div>
+        <div class="column" id="column-2"><div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_1')"><h2>1.1 Đề cương giữa kì 1</h2><div class="dropdown" id="chuong_col2_1"><a href="https://www.youtube.com/watch?v=wyLaay_sHtk&amp;list=RDwyLaay_sHtk&amp;start_radio=1" target="_blank"><span>Đề cương 1</span></a><a href="#" target="_blank"><span>Đề cương 2</span></a><a href="#" target="_blank"><span>Đề cương 3</span></a><a href="#" target="_blank"><span>Đề cương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_2')"><h2>1.2 Đề thi giữ kì 1</h2><div class="dropdown" id="chuong_col2_2"><a href="#" target="_blank"><span>Bộ đề thi 1</span></a><a href="#" target="_blank"><span>Bộ đề thi 2</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_3')"><h2>1.3 Đề cương học kì 1</h2><div class="dropdown" id="chuong_col2_3"><a href="#" target="_blank"><span>Đề cương 1</span></a><a href="#" target="_blank"><span>Đề cương 2</span></a><a href="#" target="_blank"><span>Đề cương 3</span></a><a href="#" target="_blank"><span>Đề cương 4</span></a></div></div><div class="item-card" style="margin-bottom: 12px;" onclick="toggleMenu('chuong_col2_4')"><h2>1.4 Đề thi học kì 1</h2><div class="dropdown" id="chuong_col2_4"><a href="#" target="_blank"><span>Bộ đề thi 1</span></a><a href="#" target="_blank"><span>Bộ đề thi 2</span></a></div></div></div>
     </div>
 
     <div class="footer-action">
@@ -316,29 +520,41 @@
     <div class="copyright">© 2026 NAMINS</div>
 
     <script>
-        // ==========================================
-        // CẤU HÌNH HỆ THỐNG
-        // ==========================================
         const SHEET_ID = '1R7NwWZC-H_LzOPJt1MtHOj40O9d6_6rIHrxrsppIDug'; 
         const SHEET_TITLE = 'Sheet1'; 
-        const SHEET_RANGE = 'A1:G100'; 
+        const SHEET_RANGE = 'A1:H100'; // Mở rộng vùng quét lên cột H để lấy tiêu đề trang
         const ADMIN_PASSWORD = 'admin123'; 
 
-        // ==========================================
-        // DỮ LIỆU TĨNH (ĐỔ TỰ ĐỘNG KHI BUILD)
-        // ==========================================
         const STATIC_DATA = {"1":{"Chương 1. Vật lí nhiệt":{"color":"","items":[{"name":"Bài 1. Cấu trúc của chất. Sự chuyển thể.","link":"#","color":""},{"name":"Bài 2. Nội năng. Định luật I của nhiệt động lực học.","link":"#","color":""},{"name":"Bài 3. Nhiệt độ. Thang nhiệt độ – nhiệt kế.","link":"#","color":""},{"name":"Bài 4. Nhiệt dung riêng.","link":"#","color":""},{"name":"Bài 5. Nhiệt nóng chảy riêng.","link":"#","color":""},{"name":"Bài 6. Nhiệt hóa hơi riêng.","link":"#","color":""},{"name":"Bài 7. Bài tập về vật lí nhiệt.","link":"#","color":""}]},"Chương 2. Khí lí tưởng":{"color":"","items":[{"name":"Bài 8. Mô hình động học phân tử chất khí.","link":"#","color":""},{"name":"Bài 9. Định luật Boyle.","link":"#","color":""},{"name":"Bài 10. Định luật Charles.","link":"#","color":""},{"name":"Bài 11. Phương trình trạng thái của khí lí tưởng.","link":"#","color":""},{"name":"Bài 12. Áp suất khí theo mô hình động học phân tử. Quan hệ giữa động năng phần tử và nhiệt độ.","link":"#","color":""},{"name":"Bài 13. Bài tập về khí lí tưởng.","link":"#","color":""}]},"Chương 3. Từ trường":{"color":"","items":[{"name":"Bài 14. Từ trường.","link":"#","color":""},{"name":"Bài 15. Lực tử tác dụng lên dây dẫn mang dòng điện. Cảm ứng từ.","link":"#","color":""},{"name":"Bài 16. Từ thông. Hiện tượng cảm ứng điện từ.","link":"#","color":""},{"name":"Bài 17. Máy phát điện xoay chiều.","link":"#","color":""}]},"Chương 4. Vật lí hạt nhân":{"color":"","items":[{"name":"Bài 18. Ứng dụng hiện tượng cảm ứng điện từ.","link":"#","color":""},{"name":"Bài 19. Điện từ trường. Mô hình sóng điện từ.","link":"#","color":""},{"name":"Bài 20. Bài tập về tử trường.","link":"#","color":""},{"name":"Bài 21. Cấu trúc hạt nhân.","link":"#","color":""},{"name":"Bài 22. Phản ứng hạt nhần và năng lượng liên kết.","link":"#","color":""},{"name":"Bài 23. Hiện tượng phóng xạ.","link":"#","color":""},{"name":"Bài 24. Công nghiệp hạt nhân.","link":"#","color":""},{"name":"Bải 25. Bài tập về vật lí hạt nhân.","link":"#","color":""}]}},"2":{"1.1 Đề cương giữa kì 1":{"color":"","items":[{"name":"Đề cương 1","link":"https://www.youtube.com/watch?v=wyLaay_sHtk&list=RDwyLaay_sHtk&start_radio=1","color":""},{"name":"Đề cương 2","link":"#","color":""},{"name":"Đề cương 3","link":"#","color":""},{"name":"Đề cương 4","link":"#","color":""}]},"1.2 Đề thi giữ kì 1":{"color":"","items":[{"name":"Bộ đề thi 1","link":"#","color":""},{"name":"Bộ đề thi 2","link":"#","color":""}]},"1.3 Đề cương học kì 1":{"color":"","items":[{"name":"Đề cương 1","link":"#","color":""},{"name":"Đề cương 2","link":"#","color":""},{"name":"Đề cương 3","link":"#","color":""},{"name":"Đề cương 4","link":"#","color":""}]},"1.4 Đề thi học kì 1":{"color":"","items":[{"name":"Bộ đề thi 1","link":"#","color":""},{"name":"Bộ đề thi 2","link":"#","color":""}]}}}; 
+
+        function openMobileMenu(e) {
+            e.stopPropagation();
+            document.getElementById('mobileNavMenu').classList.add('open');
+        }
+
+        function closeMobileMenu(e) {
+            e.stopPropagation();
+            document.getElementById('mobileNavMenu').classList.remove('open');
+        }
+
+        function handleMobileClick(wrapper, event) {
+            if (window.innerWidth <= 768) {
+                if (event.target.tagName === 'A' && event.target.getAttribute('href') !== '#') {
+                    return; 
+                }
+                event.preventDefault();
+                event.stopPropagation();
+                wrapper.classList.toggle('active-mobile');
+            }
+        }
 
         function toggleMenu(id) {
             let targetMenu = document.getElementById(id);
             if (targetMenu) {
                 const currentDisplay = window.getComputedStyle(targetMenu).display;
-                
-                let allDropdowns = document.querySelectorAll('.dropdown');
-                allDropdowns.forEach(menu => {
+                document.querySelectorAll('.container .dropdown').forEach(menu => {
                     menu.style.display = 'none';
                 });
-
                 if (currentDisplay === "none") {
                     targetMenu.style.display = "block";
                 }
@@ -346,8 +562,32 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            const currentUrl = window.location.href;
+            document.querySelectorAll('.nav-menu .nav-item').forEach(el => el.classList.remove('active'));
+            
+            if (currentUrl.includes('/toan-thpt/')) {
+                document.getElementById('menu-thpt').classList.add('active');
+            } else if (currentUrl.includes('/toan-thcs/')) {
+                document.getElementById('menu-thcs').classList.add('active');
+            } else if (currentUrl.includes('/vatli/')) {
+                document.getElementById('menu-vatli').classList.add('active');
+            } else if (currentUrl.includes('/video/')) {
+                document.getElementById('menu-video').classList.add('active');
+            } else {
+                document.getElementById('menu-home').classList.add('active');
+            }
+
             renderColumn(1, STATIC_DATA[1]);
             renderColumn(2, STATIC_DATA[2]);
+            
+            document.addEventListener('click', (e) => {
+                if(window.innerWidth <= 768) {
+                    const menu = document.getElementById('mobileNavMenu');
+                    if(!menu.contains(e.target)) {
+                        menu.classList.remove('open');
+                    }
+                }
+            });
         });
 
         function renderColumn(colNum, chapters) {
@@ -378,9 +618,7 @@
                 dropdown.className = 'dropdown';
                 dropdown.id = menuId;
 
-                if (!chapterData.items || chapterData.items.length === 0) {
-                    dropdown.innerHTML = '<span style="color:#888; font-style:italic; font-size:14px;">(Chưa cập nhật bài học)</span>';
-                } else {
+                if (chapterData.items && chapterData.items.length > 0) {
                     chapterData.items.forEach(item => {
                         const a = document.createElement('a');
                         a.href = item.link;
@@ -398,13 +636,6 @@
                 card.appendChild(dropdown);
                 columnEl.appendChild(card);
             }
-            
-            if (Object.keys(chapters || {}).length === 0) {
-                const emptyNotify = document.createElement('div');
-                emptyNotify.className = 'loading';
-                emptyNotify.innerText = 'Hiện tại mục này chưa cập nhật nội dung.';
-                columnEl.appendChild(emptyNotify);
-            }
         }
 
         function checkAdminPass(val) {
@@ -412,17 +643,19 @@
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('current-id-hint').innerText = `ID hiện tại của trang này: ${SHEET_ID}`;
                 document.getElementById('search-input').value = ''; 
-                alert('Đã mở Chế độ Quản trị viên! Cuộn xuống dưới để cập nhật code.');
+                alert('Đã mở Chế độ Quản trị viên!');
             }
         }
 
+        // ==========================================
+        // KHU VỰC ĐIỀU CHỈNH ĐỌC DỮ LIỆU ĐỘNG CHUẨN Ô H1, F1, G1
+        // ==========================================
         function generateNewCode() {
             const status = document.getElementById('admin-status');
-            
             let inputId = document.getElementById('sheet-id-input').value.trim();
             let finalSheetId = inputId ? inputId : SHEET_ID;
 
-            status.innerText = `Đang kết nối tới Google Sheets (ID: ${finalSheetId})...`;
+            status.innerText = `Đang kết nối tới Google Sheets...`;
             status.style.color = "blue";
 
             const FULL_URL = `https://docs.google.com/spreadsheets/d/${finalSheetId}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
@@ -433,23 +666,25 @@
                 const data = JSON.parse(rep.substr(47).slice(0, -2));
                 const rows = data.table.rows;
                 
-                if (!rows || rows.length === 0) {
-                    alert('Không tìm thấy dữ liệu.');
-                    return;
-                }
+                if (!rows || rows.length === 0) { alert('Không tìm thấy dữ liệu.'); return; }
 
+                // Đọc dữ liệu từ dòng đầu tiên (A1:H1) để gán cho các ô cấu trúc
                 let subjectVal = "Toán";
-                let gradeVal = "6";
+                let gradeVal = "11";
+                let titleVal = "Toán 11 - NAMINS";
+                
                 if (rows[0] && rows[0].c) {
-                    if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim();
-                    if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();
+                    if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim(); // Ô F1
+                    if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();   // Ô G1
+                    if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();   // Ô H1
                 }
 
+                // Cập nhật dữ liệu ngay tại giao diện hiện tại để kiểm tra trực quan
+                document.getElementById('page-title').innerText = titleVal;
                 document.getElementById('subject-text').innerText = subjectVal;
                 document.getElementById('grade-text').innerText = gradeVal;
 
                 let columnsData = { 1: {}, 2: {} };
-
                 rows.forEach((row, rowIndex) => {
                     if (!row.c) return; 
                     if (rowIndex === 0 && !row.c[0]) return; 
@@ -469,37 +704,25 @@
                             columnsData[colNum][chuongName].items.push({ 
                                 name: baiName, link: linkUrl, color: customColor 
                             });
-                        } else if (customColor) {
-                            columnsData[colNum][chuongName].color = customColor;
                         }
                     }
                 });
 
                 document.getElementById('admin-panel').style.display = 'none';
-                document.getElementById('output-area').style.display = 'none';
-                document.getElementById('code-output').value = '';
-
                 let currentHtml = document.documentElement.outerHTML;
                 
-                const dataString = JSON.stringify(columnsData);
-                const regexData = /const STATIC_DATA = \{.*?\};/;
-                currentHtml = currentHtml.replace(regexData, `const STATIC_DATA = ${dataString};`);
-
-                const regexId = /const SHEET_ID = '.*?';/;
-                currentHtml = currentHtml.replace(regexId, `const SHEET_ID = '${finalSheetId}';`);
-
-                let updatedHtml = "<!DOCTYPE html>\n<html lang=\"vi\">\n" + currentHtml + "\n</html>";
+                // Thay thế chuỗi dữ liệu tĩnh
+                currentHtml = currentHtml.replace(/const STATIC_DATA = \{.*?\};/, `const STATIC_DATA = ${JSON.stringify(columnsData)};`);
+                currentHtml = currentHtml.replace(/const SHEET_ID = '.*?';/, `const SHEET_ID = '${finalSheetId}';`);
 
                 document.getElementById('admin-panel').style.display = 'block';
-                document.getElementById('code-output').value = updatedHtml;
+                document.getElementById('code-output').value = "<!DOCTYPE html>\n<html lang=\"vi\">\n" + currentHtml + "\n</html>";
                 document.getElementById('output-area').style.display = 'block';
-
-                status.innerText = "Tạo mã thành công! Hãy copy đoạn mã bên dưới.";
+                status.innerText = "Tạo mã thành công! Hãy copy mã bên dưới.";
                 status.style.color = "green";
             })
             .catch(err => {
-                console.error(err);
-                status.innerText = "Lỗi tải dữ liệu! Hãy kiểm tra lại ID Sheet hoặc quyền chia sẻ công khai của Sheet.";
+                status.innerText = "Lỗi dữ liệu Google Sheet!";
                 status.style.color = "red";
             });
         }
@@ -507,11 +730,13 @@
         function copyNewCode() {
             const copyText = document.getElementById("code-output");
             copyText.select();
-            copyText.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(copyText.value);
-            alert("Đã copy thành công! Hãy mang dán đè vào Google Sites và bấm Xuất bản.");
+            alert("Đã sao chép thành công mã mới!");
         }
     </script>
+
+
+
 
 </body></html>
 </html>
