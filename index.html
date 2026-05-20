@@ -37,6 +37,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
         .logo-box {
@@ -50,7 +51,16 @@
             display: block;
         }
 
-        /* Khối chứa danh sách Menu */
+        /* Nút ba gạch ☰ mở menu di động (Ẩn mặc định trên PC) */
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            padding: 10px;
+        }
+
+        /* Khối chứa danh sách Menu hiển thị nằm ngang trên PC */
         .nav-menu {
             display: flex;
             list-style: none;
@@ -77,7 +87,7 @@
             cursor: pointer;
         }
 
-        /* Vết gạch chân màu đen dưới mục đang chọn */
+        /* Vết gạch chân màu đen dưới mục đang chọn trên PC */
         .nav-item.active {
             font-weight: bold;
             background-color: #fff;
@@ -88,7 +98,7 @@
             background-color: #e2e8f0;
         }
 
-        /* KHỐI DROPDOWN THẢ XUỐNG KHI RE CHUỘT (DÀNH CHO PC) */
+        /* KHỐI DROPDOWN THẢ XUỐNG KHI RE CHUỘT (PC) */
         .dropdown-content {
             display: none; 
             position: absolute;
@@ -124,6 +134,9 @@
                 display: block;
             }
         }
+
+        /* Nút Close X ẩn mặc định trên PC */
+        .mobile-close-btn { display: none; }
 
         /* --- PHẦN TIÊU ĐỀ TRANG VÀ TÌM KIẾM --- */
         .header-main {
@@ -229,102 +242,139 @@
 
 
         /* ========================================================
-           📱 ĐIỀU CHỈNH GIAO DIỆN TRÊN ĐIỆN THOẠI CHUẨN XỊN THEO ẢNH
+           📱 ĐIỀU CHỈNH GIAO DIỆN TRÊN ĐIỆN THOẠI CHUẨN XỊN 100% THEO ẢNH
            ======================================================== */
         @media (max-width: 768px) {
-            body { padding: 10px; } 
+            body { padding: 0px; } /* Xóa khoảng trắng viền để khớp sát ảnh nền */
 
-            /* Thiết lập thanh menu trên cùng xếp dọc: Logo trên, Danh mục dưới giống ảnh */
+            /* Cấu trúc thanh trên cùng: Nút 3 gạch ☰ nằm bên trái, Logo nằm cạnh giống ảnh */
             .top-navbar {
-                flex-direction: column; 
-                padding: 15px 10px;
+                justify-content: flex-start; 
+                gap: 15px;
+                padding: 10px 15px;
                 background-color: #f4f6f9;
-                gap: 12px;
-                align-items: center;
+                border-radius: 0;
+                margin-bottom: 10px;
+            }
+
+            .mobile-menu-btn {
+                display: block; /* Hiện nút ☰ ở góc bên trái */
             }
 
             .logo-box {
-                justify-content: center;
-                width: 100%;
-                margin-bottom: 5px;
+                width: auto;
+                margin-bottom: 0;
             }
 
-            /* Hộp menu chứa các nút chữ ngang xếp đều thành 2 hàng giống hệt ảnh */
+            /* CHUYỂN TOÀN BỘ DANH MỤC THÀNH SIDEBAR KHUẤT BÊN TRÁI (KHI BẤM NÚT ☰ MỚI HIỆN) */
             .nav-menu {
-                display: flex;
-                flex-direction: row; 
-                flex-wrap: wrap; /* Tự động xuống dòng khi hết màn hình */
-                justify-content: center;
-                gap: 4px;
-                width: 100%;
+                position: fixed;
+                top: 0;
+                left: -280px; /* Giấu sang lề trái màn hình */
+                width: 260px;
+                height: 100%;
+                background-color: #f4f6f8;
+                box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+                z-index: 99999;
+                flex-direction: column;
+                padding-top: 60px;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                gap: 0;
             }
 
-            .nav-item {
-                padding: 8px 10px;
-                font-size: 14px; /* Chữ nhỏ gọn gàng ôm sát viền giống ảnh */
-                font-weight: 600;
-                border-bottom: 3px solid transparent;
+            /* Khi bấm nút ☰, class này sẽ được kích hoạt để đẩy Sidebar xuất hiện dọc */
+            .nav-menu.open {
+                left: 0 !important;
             }
 
-            /* Vết gạch đen nằm ngay ngắn sát dưới chữ trên điện thoại */
-            .nav-item.active {
-                border-bottom: 3px solid #000 !important;
-                background-color: transparent;
+            /* Nút Đóng (✕) nằm ở góc trái trên cùng Sidebar */
+            .mobile-close-btn {
+                display: block !important;
+                position: absolute;
+                top: 15px;
+                left: 20px;
+                font-size: 24px;
+                cursor: pointer;
+                color: #222;
                 font-weight: bold;
             }
 
-            /* ĐIỀU CHỈNH DROPDOWN KHI BẤM CHẠM TRÊN MOBILE */
-            .nav-item-wrap .dropdown-content {
-                position: absolute; /* Định vị thả xuống ngay tại chỗ giống PC */
-                top: 100%;
-                left: 50%;
-                transform: translateX(-50%); /* Căn giữa hộp dropdown theo chữ tương ứng */
-                min-width: 150px;
-                box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
-                background-color: #ffffff;
-                border-radius: 4px;
-                z-index: 99999;
+            .nav-item-wrap { width: 100%; }
+
+            /* Định dạng các dòng văn bản menu dọc bên trong Sidebar */
+            .nav-item {
+                padding: 14px 24px;
+                font-size: 18px;
+                color: #222;
+                font-weight: 600;
+                border-bottom: none;
+                border-left: 5px solid transparent;
+                justify-content: space-between; /* Chữ bên trái, mũi tên bên phải */
+                width: 100%;
+                background-color: transparent;
             }
 
-            /* Hiển thị dropdown khi mục cha được click (thêm class open-mobile) */
-            .nav-item-wrap.open-mobile .dropdown-content {
-                display: block !important;
+            /* Vết gạch đứng màu đen ở biên trái của mục đang được kích hoạt */
+            .nav-item.active {
+                background-color: #e2e8f0;
+                border-left: 6px solid #000 !important;
+                border-bottom: none !important;
+                font-weight: bold;
+            }
+
+            /* CẤU TRÚC DROPDOWN CON MỞ RỘNG TRÊN DI ĐỘNG */
+            .nav-item-wrap .dropdown-content {
+                display: none;
+                position: static; /* Hủy absolute của PC để xếp chồng bên dưới */
+                width: 100%;
+                box-shadow: none;
+                background-color: #eaedf1;
+                padding-left: 15px;
+                border-radius: 0;
+            }
+
+            /* Hiển thị menu dọc con khi bấm chọn danh mục cha */
+            .nav-item-wrap.active-mobile .dropdown-content {
+                display: flex !important;
+                flex-direction: column;
             }
 
             .nav-item-wrap .dropdown-content a {
-                padding: 10px 15px;
-                font-size: 14px;
-                font-weight: 500;
+                padding: 12px 25px;
+                font-size: 16px;
                 color: #333;
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid #cbd5e1;
             }
 
-            /* Thân nội dung chính */
+            /* Vô hiệu hóa hover trên Mobile */
+            .nav-item-wrap:hover .dropdown-content { display: none; }
+
+            /* Định dạng phần thân tiêu đề và tìm kiếm */
             .header-main {
                 flex-direction: column;
-                padding: 0 10px;
-                gap: 10px;
-                align-items: center;
+                padding: 0 15px;
+                gap: 12px;
+                align-items: flex-start; /* Căn trái tiêu đề Trang chủ đúng ảnh số 1 */
             }
 
             .main-title {
                 font-size: 32px;
                 font-weight: 800;
-                color: #1a4d2e;
-                text-align: center;
-                margin: 10px 0 0 0;
+                color: #1a4d2e; /* Màu xanh đậm của chữ Trang chủ */
+                margin: 5px 0 0 0;
+                text-align: left;
             }
 
-            .search-box { width: 100%; padding: 0 10px; }
+            .search-box { width: 100%; padding: 0 15px; }
             .search-box input { width: 100%; border-radius: 20px; }
 
-            /* Danh sách các khối bài học bên dưới */
+            /* Bo sát viền các khối bài học xếp chồng đúng ảnh 1 */
             .container { flex-direction: column; gap: 8px; padding: 0; margin-top: 15px; }
-            .column-header { border-radius: 10px; font-size: 18px; padding: 14px; text-align: center; }
-            .item-card { border-radius: 16px; padding: 14px; }
+            .column-header { border-radius: 0; font-size: 18px; padding: 14px; text-align: center; }
+            .item-card { border-radius: 0; border-left: none; border-right: none; padding: 14px; }
             .item-card h2 { font-size: 16px; text-align: center; }
 
-            .footer-action { flex-direction: column; align-items: center; gap: 15px; text-align: center; padding: 10px; }
+            .footer-action { flex-direction: column; align-items: center; gap: 20px; text-align: center; padding: 20px; }
             .btn-register { width: 100%; }
             .copyright { text-align: center; font-size: 13px; padding-left: 0; }
         }
@@ -333,16 +383,20 @@
 <body>
 
     <div class="top-navbar">
+        <div class="mobile-menu-btn" onclick="openMobileMenu(event)"><i class="fa fa-bars"></i></div>
+
         <div class="logo-box">
             <img src="https://raw.githubusercontent.com/onthi24/namins/main/logo.github2.png" alt="NAMINS LOGO" class="logo-img">
         </div>
         
-        <div class="nav-menu">
+        <div class="nav-menu" id="mobileNavMenu">
+            <div class="mobile-close-btn" onclick="closeMobileMenu(event)"><i class="fa fa-times"></i></div>
+
             <div class="nav-item-wrap">
                 <a href="https://namins.com/" class="nav-item" id="menu-home">Trang chủ</a>
             </div>
 
-            <div class="nav-item-wrap" onclick="toggleMobileDropdown(this, event)">
+            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
                 <a href="#" class="nav-item" id="menu-thpt">Toán THPT <i class="fa fa-chevron-down" style="font-size: 11px;"></i></a>
                 <div class="dropdown-content">
                     <a href="https://namins.com/toan-thpt/toan12.html">Toán 12</a>
@@ -351,7 +405,7 @@
                 </div>
             </div>
 
-            <div class="nav-item-wrap" onclick="toggleMobileDropdown(this, event)">
+            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
                 <a href="#" class="nav-item" id="menu-thcs">Toán THCS <i class="fa fa-chevron-down" style="font-size: 11px;"></i></a>
                 <div class="dropdown-content">
                     <a href="https://namins.com/toan-thcs/toan9.html">Toán 9</a>
@@ -361,7 +415,7 @@
                 </div>
             </div>
 
-            <div class="nav-item-wrap" onclick="toggleMobileDropdown(this, event)">
+            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
                 <a href="#" class="nav-item" id="menu-vatli">Vật Lí <i class="fa fa-chevron-down" style="font-size: 11px;"></i></a>
                 <div class="dropdown-content">
                     <a href="https://namins.com/vatli/vatli12.html">Vật Lí 12</a>
@@ -419,31 +473,40 @@
     <div class="copyright">© 2026 NAMINS</div>
 
     <script>
-        // Hàm kích hoạt bật mở rộng hộp dropdown nhỏ ngay tại vị trí chữ trên di động
-        function toggleMobileDropdown(wrapper, event) {
+        // Hàm mở Sidebar menu dọc di động khi bấm ☰
+        function openMobileMenu(e) {
+            e.stopPropagation();
+            document.getElementById('mobileNavMenu').classList.add('open');
+        }
+
+        // Hàm đóng Sidebar menu dọc di động khi bấm X
+        function closeMobileMenu(e) {
+            e.stopPropagation();
+            document.getElementById('mobileNavMenu').classList.remove('open');
+        }
+
+        // Xử lý click đóng/mở danh mục mở rộng dọc bên dưới mục cha khi ở giao diện Sidebar di động (Ảnh số 2)
+        function handleMobileClick(wrapper, event) {
             if (window.innerWidth <= 768) {
-                // Nếu chạm đúng vào link con thì chuyển trang trực tiếp
                 if (event.target.tagName === 'A' && event.target.getAttribute('href') !== '#') {
-                    return; 
+                    return; // Nếu chọn bài học con cụ thể thì chuyển trang đi luôn
                 }
                 event.preventDefault();
                 event.stopPropagation();
 
-                // Đóng các dropdown di động đang mở khác trước
+                // Tự động thu gọn các danh mục mở rộng khác trước khi hiển thị danh mục mới
                 document.querySelectorAll('.nav-item-wrap').forEach(el => {
-                    if (el !== wrapper) el.classList.remove('open-mobile');
+                    if (el !== wrapper) el.classList.remove('active-mobile');
                 });
 
-                // Bật/tắt trạng thái mở menu con tại chỗ
-                wrapper.classList.toggle('open-mobile');
+                wrapper.classList.toggle('active-mobile');
             }
         }
 
-        // Tự động nhận diện URL của trang hiện tại để gán vết gạch chân màu đen chính xác
+        // Tự động nhận diện URL của trang hiện tại để phân phối thanh gạch chân đen / gạch dọc biên trái chính xác
         window.addEventListener('DOMContentLoaded', () => {
             const currentUrl = window.location.href;
             
-            // Xóa sạch trạng thái active cũ
             document.querySelectorAll('.nav-menu .nav-item').forEach(el => el.classList.remove('active'));
             
             if (currentUrl.includes('/toan-thpt/')) {
@@ -455,14 +518,17 @@
             } else if (currentUrl.includes('/video/')) {
                 document.getElementById('menu-video').classList.add('active');
             } else {
-                // Nếu đang ở trang chủ, vết gạch đen giữ nguyên dưới chữ Trang chủ một cách hoàn hảo
+                // Khi người dùng gõ hoặc bấm về trang chủ, vết đen được giữ cố định ở Trang chủ cực kỳ chuẩn chỉnh
                 document.getElementById('menu-home').classList.add('active');
             }
 
-            // Click ra khu vực trống ngoài màn hình di động thì tự động thu gọn menu con lại
-            document.addEventListener('click', () => {
+            // Chạm click ra vùng trống bên ngoài Sidebar di động thì tự động thu gọn menu trượt lại gọn gàng
+            document.addEventListener('click', (e) => {
                 if (window.innerWidth <= 768) {
-                    document.querySelectorAll('.nav-item-wrap').forEach(el => el.classList.remove('open-mobile'));
+                    const menu = document.getElementById('mobileNavMenu');
+                    if (!menu.contains(e.target)) {
+                        menu.classList.remove('open');
+                    }
                 }
             });
         });
