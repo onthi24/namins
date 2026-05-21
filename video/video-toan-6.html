@@ -1,9 +1,9 @@
 
 <!DOCTYPE html>
 <html lang="vi"><head><base target="_blank">
-<base target="_blank">
 
 
+    <base target="_blank">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giao diện bài giảng NAMINS</title>
@@ -245,12 +245,9 @@
         }
 
         .btn-download-icon-only {
-            background: #1e4620;
-            color: #ffffff !important;
+            background: transparent !important;
             border: none;
-            border-radius: 4px;
-            padding: 4px 6px;
-            font-size: 12px;
+            padding: 2px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -258,12 +255,19 @@
             margin-left: auto; 
             z-index: 10;
             text-decoration: none;
-            transition: background 0.2s;
             flex-shrink: 0;
-            line-height: 1;
+            width: 20px;
+            height: 20px;
         }
-        .btn-download-icon-only:hover {
-            background: #cfa846;
+        .btn-download-icon-only svg {
+            width: 100%;
+            height: 100%;
+            fill: #0076a3;
+            transition: transform 0.2s;
+        }
+        .btn-download-icon-only:hover svg {
+            transform: translateY(1px);
+            fill: #00567a;
         }
 
         .menu-item.active, .menu-lesson-header.active-flat {
@@ -358,6 +362,36 @@
         .link-detail { color: #1e4620; font-weight: bold; text-decoration: none; font-size: 16px; text-transform: uppercase; } 
         .link-detail:hover { text-decoration: underline; }
         .copyright { color: #999; font-size: 14px; margin-top: 15px; text-align: left;}
+
+        /* ==========================================
+           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI
+           ========================================== */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-column {
+                border-left: none;
+                border-top: 1px solid #dcdcdc;
+                height: auto;
+                max-height: 320px;
+            }
+            .current-lesson-bottom-display {
+                margin-right: 0px;
+                text-align: center;
+            }
+            /* Chuyển chân trang thành 2 hàng dọc và căn giữa trên điện thoại */
+            .footer-action {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                text-align: center;
+            }
+            .copyright {
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -369,29 +403,27 @@
         </div>
 
         <div class="subject-title">
-            <span id="base-subject-text">Toán 12</span>
+            <span id="base-subject-text">Toán 10</span>
         </div>
 
         <div class="main-container" id="main-layout-container">
             <div class="video-column">
                 <div class="video-header">
-                    <span id="current-lesson-title">Phần 3. Ứng dụng</span> 
+                    <span id="current-lesson-title">Phần 1. Tính chất</span> 
                     <button class="btn-maximize" id="maximize-btn" onclick="toggleMaximizeVideo()" title="Phóng to/Thu nhỏ khung hình">⛶</button>
                 </div>
-                <div class="video-wrapper">
-                    <iframe id="video-player" src="https://www.youtube.com/embed/8Sdx-W5ghgs?autoplay=1&amp;rel=0&amp;showinfo=0&amp;controls=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-                </div>
+                <div class="video-wrapper" id="wrapper-video-player"><iframe id="video-player" src="https://www.youtube.com/embed/ho87M1-qPLk?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1&amp;playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
             </div>
 
             <div class="sidebar-column">
                 <div class="sidebar-header" id="sidebar-title"><span>Khóa bồi dưỡng kiến thức</span></div>
-                <div class="menu-scroll-container" id="menu-container"><div class="lesson-row-block"><div class="menu-lesson-header" style="color: rgb(179, 125, 50);"><span>Chương 1. Vật Lí Nhiệt</span></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 1. Đại cương vật lí nhiệt</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Phần 1. Tính chất</span></div><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Phần 2. Ứng dụng</span></div><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Tài liệu 1</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 2. Khí lí tưởng</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 3. Quá trình đẳng tích</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 4. Quá trình đẳng áp</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Tài liệu 2</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 3. Từ trường</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Tài liệu 3</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header" style="color: rgb(179, 125, 50);"><span>Chương 3. Vật lí hạt nhân</span></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child"><span>Bài 1.Đại cương về VLHN</span></div><div class="lesson-parts-container"><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 2. Tính chất</span></div><div class="menu-item active" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 3. Ứng dụng</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Tài liệu 4</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 2. Phóng xạ</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Phần 1. Một số khái niệm về khí lí tưởng</span></div><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Tài liệu 4</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank">📥</a></div></div></div></div>
+                <div class="menu-scroll-container" id="menu-container"><div class="lesson-row-block"><div class="menu-lesson-header" style="color: rgb(179, 125, 50);"><span>Chương 1. Vật Lí Nhiệt</span></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child"><span>Bài 1. Đại cương vật lí nhiệt</span></div><div class="lesson-parts-container"><div class="menu-item active" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Phần 1. Tính chất</span></div><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Phần 2. Ứng dụng</span></div><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Tài liệu 1</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 2. Khí lí tưởng</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 3. Quá trình đẳng tích</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 4. Quá trình đẳng áp</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Tài liệu 2</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 3. Từ trường</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Tài liệu 3</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header"><span>Chương 3. Vật lí hạt nhân</span></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 1.Đại cương về VLHN</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 2. Tính chất</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 3. Ứng dụng</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Tài liệu 4</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 2. Phóng xạ</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Phần 1. Một số khái niệm về khí lí tưởng</span></div><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Tài liệu 4</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div></div>
             </div>
         </div>
 
-        <div class="current-lesson-bottom-display" id="subject-lesson-append">Bài 1.Đại cương về VLHN</div>
+        <div class="current-lesson-bottom-display" id="subject-lesson-append">Bài 1. Đại cương vật lí nhiệt</div>
 
-        <div id="admin-panel" style="display: block;">
+        <div id="admin-panel" style="display: none;" style="display: none;">
             <h3 style="margin-top:0; color: #856404;">🛠️ HỆ THỐNG CẬP NHẬT CODE TỰ ĐỘNG</h3>
             <div class="admin-input-group">
                 <label for="sheet-id-input">Thay đổi ID Google Sheet (Để trống nếu giữ nguyên):</label>
@@ -401,7 +433,7 @@
             <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang kết nối API Google Sheet...</p>
             <button class="btn-admin" id="btn-fetch" onclick="generateNewCode()">Bắt đầu lấy dữ liệu mới từ Sheets</button>
             
-            <div id="output-area" style="display:none; margin-top:15px;">
+            <div id="output-area" style="display: none; margin-top: 15px;">
                 <p><b>Bước tiếp theo:</b> Bấm nút Copy dưới đây, vào Google Sites chỉnh sửa mã nhúng, <b>Xóa toàn bộ code cũ đi và Dán đè code mới này vào</b> rồi ấn Xuất bản.</p>
                 <p><button class="btn-admin" style="background:#007bff;" onclick="copyNewCode()">Copy Toàn Bộ Code</button></p>
                 <textarea id="code-output" readonly=""></textarea>
@@ -421,14 +453,14 @@
         // ==========================================
         // CẤU HÌNH HỆ THỐNG CỐ ĐỊNH
         // ==========================================
-        const SHEET_ID = '1_NUBIXgXj5QrDP6cf0iAl1VYfhar4vteO50r0OTfk7Q'; 
+        const SHEET_ID = '1C3WaixtIhv8pJuOejXK1bHT3MOSnFefcBeuTZmSW48E'; 
         const SHEET_TITLE = 'Trang tính1'; 
         const ADMIN_PASSWORD = 'admin123'; 
 
         // ==========================================
         // DỮ LIỆU ĐÃ ĐƯỢC GỘP NHÓM HOÀN CHỈNH
         // ==========================================
-        const STATIC_DATA = {"subjectTitle":"Toán 6","sidebarTitle":"Khoá nền tảng","lessons":[{"lessonTitle":"Chương 1. Vật Lí Nhiệt","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 3. Từ trường","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=WvRFuee6flU"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=nK0Mu9FYJIg"},{"partTitle":"Tài liệu 3","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 3. Vật lí hạt nhân","colorCode":"","parts":[]},{"lessonTitle":"Bài 1.Đại cương về VLHN","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"https://www.youtube.com/watch?v=1HwGFQaeR9c"},{"partTitle":"Phần 2. Tính chất","linkUrl":"https://www.youtube.com/watch?v=OOfiMWzeZig"},{"partTitle":"Phần 3. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Phóng xạ","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm về khí lí tưởng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]}; 
+        const STATIC_DATA = {"subjectTitle":"Vật Lí 12","sidebarTitle":"Khoá nền tảng","lessons":[{"lessonTitle":"Chương 1. Vật Lí Nhiệt","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 3. Từ trường","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=WvRFuee6flU"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=nK0Mu9FYJIg"},{"partTitle":"Tài liệu 3","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 3. Vật lí hạt nhân","colorCode":"","parts":[]},{"lessonTitle":"Bài 1.Đại cương về VLHN","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"https://www.youtube.com/watch?v=1HwGFQaeR9c"},{"partTitle":"Phần 2. Tính chất","linkUrl":"https://www.youtube.com/watch?v=OOfiMWzeZig"},{"partTitle":"Phần 3. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Phóng xạ","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm về khí lí tưởng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]}; 
 
         function extractYouTubeId(url) {
             if (!url) return '';
@@ -447,12 +479,27 @@
             document.getElementById("main-layout-container").classList.toggle("maximized-mode");
         }
 
+        function updateVideoIframe(videoId, isAutoplay) {
+            const container = document.getElementById('wrapper-video-player');
+            const autoplayVal = isAutoplay ? 1 : 0;
+            
+            container.innerHTML = '';
+            
+            const newIframe = document.createElement('iframe');
+            newIframe.id = 'video-player';
+            newIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplayVal}&rel=0&showinfo=0&controls=1&playsinline=1`;
+            newIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+            newIframe.setAttribute('allowfullscreen', '');
+            
+            container.appendChild(newIframe);
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             renderMenuAndVideo(STATIC_DATA);
         });
 
         // ==========================================
-        // THUẬT TOÁN RENDERING MỤC LỤC ĐÃ FIX LỖI TÊN BÀI
+        // THUẬT TOÁN RENDERING MỤC LỤC
         // ==========================================
         function renderMenuAndVideo(data) {
             document.getElementById('base-subject-text').innerText = data.subjectTitle || "Toán 12";
@@ -512,7 +559,6 @@
                         const itemDiv = document.createElement('div');
                         itemDiv.className = 'menu-item';
                         
-                        // Khóa chặt tên bài giảng của cha (`parentLessonName`) vào từng phần tử con
                         itemDiv.setAttribute('data-parent-lesson', lesson.lessonTitle);
                         
                         const nameSpan = document.createElement('span');
@@ -529,10 +575,8 @@
                                 document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.remove('active-flat'));
                                 itemDiv.classList.add('active');
 
-                                document.getElementById('video-player').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&controls=1`;
+                                updateVideoIframe(videoId, true);
                                 document.getElementById('current-lesson-title').innerText = part.partTitle;
-                                
-                                // ĐÃ SỬA GỐC: Truy xuất trực tiếp thuộc tính đã khóa để hiển thị chuẩn xác 100% tên Bài lớn ở dưới
                                 document.getElementById('subject-lesson-append').innerText = this.getAttribute('data-parent-lesson');
                             });
 
@@ -541,10 +585,9 @@
                                 partsContainer.classList.remove('hidden');
                                 itemDiv.classList.add('active');
 
-                                document.getElementById('video-player').src = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&showinfo=0&controls=1`;
+                                updateVideoIframe(videoId, false);
                                 document.getElementById('current-lesson-title').innerText = part.partTitle;
                                 
-                                // Đọc giá trị mặc định lúc load trang đầu tiên
                                 document.getElementById('subject-lesson-append').innerText = itemDiv.getAttribute('data-parent-lesson');
                                 isFirstVideoLoaded = true;
                             }
@@ -552,7 +595,7 @@
                             if (part.linkUrl && part.linkUrl.trim() !== '') {
                                 const dlBtn = document.createElement('a');
                                 dlBtn.className = 'btn-download-icon-only';
-                                dlBtn.innerHTML = '📥';
+                                dlBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>`;
                                 dlBtn.href = part.linkUrl;
                                 dlBtn.target = '_blank';
                                 dlBtn.addEventListener('click', (e) => e.stopPropagation());
@@ -566,7 +609,6 @@
                                 itemDiv.classList.add('active');
                                 document.getElementById('current-lesson-title').innerText = part.partTitle;
                                 
-                                // ĐÃ SỬA GỐC: Bấm mục tải học liệu vẫn cập nhật chuẩn xác tên bài lớn ở dưới
                                 document.getElementById('subject-lesson-append').innerText = this.getAttribute('data-parent-lesson');
                             });
                         }
@@ -580,7 +622,6 @@
                 menuContainer.appendChild(rowBlock);
             });
 
-            // Nếu trang tính chỉ toàn file tải (không có video tự chạy), lấy tên bài đầu tiên điền vào chân trang
             if (!isFirstVideoLoaded && data.lessons.length > 0) {
                 document.getElementById('subject-lesson-append').innerText = data.lessons[0].lessonTitle;
                 document.getElementById('current-lesson-title').innerText = "Chọn bài học ở mục lục";
@@ -678,9 +719,9 @@
 
                 let pageSource = document.documentElement.outerHTML;
                 
-                // Ép mã nguồn xuất bản luôn luôn đóng ẩn bảng cập nhật code tự động
-                pageSource = pageSource.replace(/id="admin-panel" style="display: none;" style="display: none;" style="display: none;"/g, 'id="admin-panel" style="display: none;" style="display: none;" style="display: none;"');
-                pageSource = pageSource.replace(/id="admin-panel" style="display: none;" style="display: none;"/g, 'id="admin-panel" style="display: none;" style="display: none;" style="display: none;"');
+                // Triệt để ép mã nguồn sinh ra phải luôn đóng ẩn bảng cập nhật code tự động
+                pageSource = pageSource.replace(/id="admin-panel" style="display: none;" style="display:\s*block;"/g, 'id="admin-panel" style="display: none;" style="display: none;"');
+                pageSource = pageSource.replace(/id="admin-panel" style="display: none;"/g, 'id="admin-panel" style="display: none;" style="display: none;"');
 
                 const jsonStr = JSON.stringify(structuredData);
                 pageSource = pageSource.replace(/const STATIC_DATA = \{.*?\};/, `const STATIC_DATA = ${jsonStr};`);
@@ -689,7 +730,7 @@
                 document.getElementById('code-output').value = "<!DOCTYPE html>\n" + pageSource;
                 document.getElementById('output-area').style.display = 'block';
 
-                status.innerText = "Đã gộp nhóm và tạo mã nhúng bảo mât thành công!";
+                status.innerText = "Đã gộp nhóm và tạo mã nhúng bảo mật thành công!";
                 status.style.color = "green";
                 
                 renderMenuAndVideo(structuredData);
@@ -705,11 +746,12 @@
             const copyText = document.getElementById("code-output");
             navigator.clipboard.writeText(copyText.value)
                 .then(() => {
-                    alert("Đã copy mã nguồn! Vui lòng dán đè đè vào Google Sites và ấn xuất bản.");
+                    alert("Đã copy mã nguồn! Vui lòng dán đè vào Google Sites và ấn xuất bản.");
                     document.getElementById('admin-panel').style.display = 'none';
                     document.getElementById('output-area').style.display = 'none';
                 });
         }
     </script>
+
 
 </body></html>
