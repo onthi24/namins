@@ -1,16 +1,763 @@
 
-.video-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background-color: #000;
-}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Giao diện bài giảng NAMINS</title>
+    <style>
+        /* ==========================================
+           CẤU HÌNH CƠ BẢN & LAYOUT CHUẨN NAMINS
+           ========================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-.video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
+        body, html {
+            width: 100%;
+            background-color: #fdfdfd;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .wrapper-layout {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .subject-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e4620;
+            margin-bottom: 15px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.2;
+        }
+
+        .current-lesson-bottom-display {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #1e4620;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            margin-right: 256px;
+            width: auto;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .search-box {
+            float: right;
+            margin-bottom: 15px;
+        }
+        .search-box input {
+            width: 200px; 
+            padding: 8px 15px; 
+            border-radius: 25px;
+            border: 1px solid #c7d2d8;
+            background: #f1f4f6;
+            outline: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .search-box input:focus {
+            border-color: #1e4620;
+            background: #fff;
+        }
+
+        /* ==========================================
+           LAYOUT HAI CỘT: SỬ DỤNG FLEXBOX CHỐNG ĐÈ PHẦN TỬ TRÊN IPAD
+           ========================================== */
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            width: 100%;
+            background-color: #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 4px;
+            clear: both;
+            overflow: hidden; /* Cắt bỏ hoàn toàn vùng tràn vô hình của sidebar */
+        }
+
+        .video-column {
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+            min-width: 0; 
+        }
+
+        .video-header {
+            background-color: #1e4620; 
+            color: #ffffff;
+            padding: 5px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 32px; 
+        }
+
+        .btn-maximize {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .btn-maximize:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .video-wrapper {
+            width: 100%;
+            background-color: #000;
+            display: block;
+            position: relative;
+        }
+
+        /* Tối ưu hóa phản hồi cảm ứng lớp cho Iframe trên iOS/iPadOS */
+        .video-wrapper iframe {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9; 
+            border: none;
+            pointer-events: auto; /* Kích hoạt nhận diện chạm trực tiếp vào trình phát của YouTube */
+        }
+
+        /* ĐÃ SỬA: Thay thế cách tính chiều cao calc cũ bằng tỷ lệ tự động độc lập */
+        .sidebar-column {
+            background-color: #ffffff;
+            border-left: 1px solid #dcdcdc;
+            display: flex;
+            flex-direction: column;
+            width: 256px;
+            max-width: 256px;
+            flex-shrink: 0;
+            height: auto; 
+            align-self: stretch; /* Tự động co giãn khít theo chiều cao của cột video bên cạnh */
+        }
+
+        .sidebar-header {
+            background-color: #ffffff;
+            color: #1e4620;
+            height: 32px;
+            font-size: 13.5px; 
+            font-weight: 800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #1e4620;
+            flex-shrink: 0;
+        }
+
+        .menu-scroll-container {
+            flex-grow: 1;
+            overflow-y: auto; 
+            padding-top: 5px;
+            max-height: 450px; /* Khống chế vùng cuộn cố định để tương thích chế độ xoay ngang */
+        }
+
+        .lesson-row-block {
+            border-bottom: 1px dashed #f1f5f9;
+        }
+
+        .menu-lesson-header {
+            background-color: #ffffff;
+            padding: 10px 12px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #334155;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        .menu-lesson-header:hover {
+            background-color: #f8fafc;
+        }
+
+        .menu-lesson-header.has-child::after {
+            content: '▾';
+            font-size: 10px;
+            color: #94a3b8;
+            transition: transform 0.2s;
+            margin-left: 6px;
+            flex-shrink: 0;
+        }
+        .menu-lesson-header.has-child.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .lesson-parts-container {
+            display: block;
+            overflow: hidden;
+            background-color: #fafbfc;
+        }
+        .lesson-parts-container.hidden {
+            display: none;
+        }
+
+        .menu-item {
+            padding: 8px 12px 8px 24px;
+            font-size: 12.5px;
+            color: #475569;
+            display: flex;
+            flex-direction: row; 
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-top: 1px solid #f1f5f9;
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        .menu-item:hover {
+            background-color: #f1f5f9;
+        }
+
+        .lesson-name {
+            flex-grow: 1;
+            padding-right: 5px;
+        }
+
+        .btn-download-icon-only {
+            background: transparent !important;
+            border: none;
+            padding: 2px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto; 
+            z-index: 10;
+            text-decoration: none;
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+        .btn-download-icon-only svg {
+            width: 100%;
+            height: 100%;
+            fill: #0076a3;
+            transition: transform 0.2s;
+        }
+        .btn-download-icon-only:hover svg {
+            transform: translateY(1px);
+            fill: #00567a;
+        }
+
+        .menu-item.active, .menu-lesson-header.active-flat {
+            background-color: #f0fdf4;
+            color: #166534 !important;
+            font-weight: 600;
+            border-left: 4px solid #1e4620;
+        }
+        .menu-item.active {
+            padding-left: 20px; 
+        }
+
+        .main-container.maximized-mode .sidebar-column {
+            display: none !important;
+        }
+
+        .main-container.maximized-mode + .current-lesson-bottom-display {
+            margin-right: 0px;
+        }
+
+        /* ==========================================
+           KHU VỰC CỦA ADMIN (MẶC ĐỊNH LUÔN ẨN)
+           ========================================== */
+        #admin-panel {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            display: none; 
+        }
+        .admin-input-group {
+            margin-bottom: 15px;
+        }
+        .admin-input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #533f03;
+        }
+        .admin-input-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            outline: none;
+        }
+        #admin-panel textarea {
+            width: 100%;
+            height: 180px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .btn-admin {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .footer-action {
+            margin: 40px 0 15px 0;
+            display: flex;
+            flex-direction: row; 
+            align-items: center;
+            justify-content: flex-start;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .btn-register {
+            background: linear-gradient(to bottom, #cfa846, #9c7514);
+            color: #fff;
+            padding: 14px 35px; 
+            border-radius: 25px;
+            border: 1px solid #85630f;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+        }
+
+        .btn-register:hover { opacity: 0.9; }
+        .link-detail { color: #1e4620; font-weight: bold; text-decoration: none; font-size: 16px; text-transform: uppercase; } 
+        .link-detail:hover { text-decoration: underline; }
+        .copyright { color: #999; font-size: 14px; margin-top: 15px; text-align: left;}
+
+        /* ==========================================
+           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI VÀ IPAD DỌC
+           ========================================== */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .sidebar-column {
+                border-left: none;
+                border-top: 1px solid #dcdcdc;
+                width: 100%;
+                height: auto !important;
+            }
+            .menu-scroll-container {
+                max-height: 320px;
+            }
+            .current-lesson-bottom-display {
+                margin-right: 0px;
+                text-align: center;
+            }
+            .footer-action {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                text-align: center;
+            }
+            .copyright {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper-layout">
+        
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Tìm kiếm học liệu..." oninput="checkAdminPass(this.value)">
+        </div>
+
+        <div class="subject-title">
+            <span id="base-subject-text">Toán 12</span>
+        </div>
+
+        <div class="main-container" id="main-layout-container">
+            <div class="video-column">
+                <div class="video-header">
+                    <span id="current-lesson-title">Phần 1. Tính chất</span> 
+                    <button class="btn-maximize" id="maximize-btn" onclick="toggleMaximizeVideo()" title="Phóng to/Thu nhỏ khung hình">⛶</button>
+                </div>
+                <div class="video-wrapper" id="wrapper-video-player">
+                    <iframe id="video-player" src="https://www.youtube.com/embed/ho87M1-qPLk?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1&amp;playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="sidebar-column">
+                <div class="sidebar-header" id="sidebar-title"><span>Khóa bồi dưỡng kiến thức</span></div>
+                <div class="menu-scroll-container" id="menu-container"></div>
+            </div>
+        </div>
+
+        <div class="current-lesson-bottom-display" id="subject-lesson-append">Bài 1. Đại cương vật lí nhiệt</div>
+
+        <div id="admin-panel" style="display: none;">
+            <h3 style="margin-top:0; color: #856404;">🛠️ HỆ THỐNG CẬP NHẬT CODE TỰ ĐỘNG</h3>
+            <div class="admin-input-group">
+                <label for="sheet-id-input">Thay đổi ID Google Sheet (Để trống nếu giữ nguyên):</label>
+                <input type="text" id="sheet-id-input" placeholder="Nhập mã ID Google Sheet mới...">
+                <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại: 1GaziLrmpjOMaw6gPnXrj7wlqFs4hXU5JQFX62pL79Nk</small>
+            </div>
+            <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang kết nối API Google Sheet...</p>
+            <button class="btn-admin" id="btn-fetch" onclick="generateNewCode()">Bắt đầu lấy dữ liệu mới từ Sheets</button>
+            
+            <div id="output-area" style="display: none;">
+                <p><b>Bước tiếp theo:</b> Bấm nút Copy dưới đây, vào Google Sites chỉnh sửa mã nhúng, <b>Xóa toàn bộ code cũ đi và Dán đè code mới này vào</b> rồi ấn Xuất bản.</p>
+                <p><button class="btn-admin" style="background:#007bff;" onclick="copyNewCode()">Copy Toàn Bộ Code</button></p>
+                <textarea id="code-output" readonly></textarea>
+            </div>
+        </div>
+
+        <div class="footer-action">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdX0G3eI0fttdhqXR_YAexVfp2LlgFBJTWZUpS4gGjICfkZ_Q/viewform?usp=sharing" target="_blank" style="text-decoration: none;">
+                <button class="btn-register">ĐĂNG KÍ HỌC NGAY</button>
+            </a>
+            <a href="https://sites.google.com/view/namins2" target="_blank" class="link-detail">GIỚI THIỆU VỀ NAMINS.COM</a>
+        </div>
+        <div class="copyright">© 2026 NAMINS</div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CẤU HÌNH HỆ THỐNG CỐ ĐỊNH
+        // ==========================================
+        const SHEET_ID = '1GaziLrmpjOMaw6gPnXrj7wlqFs4hXU5JQFX62pL79Nk'; 
+        const SHEET_TITLE = 'Trang tính1'; 
+        const ADMIN_PASSWORD = 'admin123'; 
+
+        // ==========================================
+        // DỮ LIỆU ĐÃ ĐƯỢC GỘP NHÓM HOÀN CHỈNH
+        // ==========================================
+        const STATIC_DATA = {"subjectTitle":"Toán 9","sidebarTitle":"Khoá nền tảng","lessons":[{"lessonTitle":"Chương 1. Vật Lí Nhiệt","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 3. Từ trường","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=WvRFuee6flU"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=nK0Mu9FYJIg"},{"partTitle":"Tài liệu 3","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 3. Vật lí hạt nhân","colorCode":"","parts":[]},{"lessonTitle":"Bài 1.Đại cương về VLHN","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"https://www.youtube.com/watch?v=1HwGFQaeR9c"},{"partTitle":"Phần 2. Tính chất","linkUrl":"https://www.youtube.com/watch?v=OOfiMWzeZig"},{"partTitle":"Phần 3. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Phóng xạ","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm về khí lí tưởng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]}; 
+
+        function extractYouTubeId(url) {
+            if (!url) return '';
+            url = url.trim();
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : '';
+        }
+
+        function isYouTubeLink(url) {
+            if (!url) return false;
+            return url.includes('youtube.com') || url.includes('youtu.be');
+        }
+
+        function toggleMaximizeVideo() {
+            document.getElementById("main-layout-container").classList.toggle("maximized-mode");
+        }
+
+        function updateVideoIframe(videoId, isAutoplay) {
+            const container = document.getElementById('wrapper-video-player');
+            if (!container) return;
+
+            const autoplayVal = isAutoplay ? 1 : 0;
+            const srcUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplayVal}&rel=0&showinfo=0&controls=1&playsinline=1`;
+            
+            container.innerHTML = ''; 
+            
+            const newIframe = document.createElement('iframe');
+            newIframe.id = 'video-player';
+            newIframe.src = srcUrl;
+            newIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+            newIframe.setAttribute('allowfullscreen', '');
+            
+            container.appendChild(newIframe);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMenuAndVideo(STATIC_DATA);
+        });
+
+        // ==========================================
+        // THUẬT TOÁN RENDERING MỤC LỤC
+        // ==========================================
+        function renderMenuAndVideo(data) {
+            document.getElementById('base-subject-text').innerText = data.subjectTitle || "Toán 12";
+            document.getElementById('sidebar-title').innerHTML = `<span>${data.sidebarTitle || "Mục lục bài giảng"}</span>`;
+
+            const menuContainer = document.getElementById('menu-container');
+            menuContainer.innerHTML = '';
+
+            if (!data.lessons || data.lessons.length === 0) {
+                menuContainer.innerHTML = '<div style="padding:15px;font-size:13px;color:#666;">Chưa có dữ liệu bài học.</div>';
+                return;
+            }
+
+            let isFirstVideoLoaded = false;
+
+            data.lessons.forEach((lesson) => {
+                const rowBlock = document.createElement('div');
+                rowBlock.className = 'lesson-row-block';
+
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'menu-lesson-header';
+                
+                const titleTextSpan = document.createElement('span');
+                titleTextSpan.innerText = lesson.lessonTitle;
+                headerDiv.appendChild(titleTextSpan);
+
+                if (lesson.colorCode && lesson.colorCode.trim() !== '' && lesson.colorCode.toLowerCase() !== 'none') {
+                    headerDiv.style.color = lesson.colorCode.trim();
+                }
+
+                const partsContainer = document.createElement('div');
+                partsContainer.className = 'lesson-parts-container';
+
+                if (!lesson.parts || lesson.parts.length === 0) {
+                    headerDiv.classList.remove('has-child');
+                    rowBlock.appendChild(headerDiv);
+                } else {
+                    headerDiv.classList.add('has-child', 'collapsed');
+                    partsContainer.classList.add('hidden');
+
+                    headerDiv.addEventListener('click', function() {
+                        const isCollapsed = this.classList.contains('collapsed');
+                        
+                        if (isCollapsed) {
+                            document.querySelectorAll('.menu-lesson-header.has-child').forEach(h => h.classList.add('collapsed'));
+                            document.querySelectorAll('.lesson-parts-container').forEach(c => c.classList.add('hidden'));
+                            
+                            this.classList.remove('collapsed');
+                            partsContainer.classList.remove('hidden');
+                        } else {
+                            this.classList.add('collapsed');
+                            partsContainer.classList.add('hidden');
+                        }
+                    });
+
+                    lesson.parts.forEach((part) => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'menu-item';
+                        itemDiv.setAttribute('data-parent-lesson', lesson.lessonTitle);
+                        
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'lesson-name';
+                        nameSpan.innerText = part.partTitle;
+                        itemDiv.appendChild(nameSpan);
+
+                        if (isYouTubeLink(part.linkUrl)) {
+                            const videoId = extractYouTubeId(part.linkUrl);
+                            
+                            itemDiv.addEventListener('click', function(e) {
+                                if(e.target.closest('a')) return; 
+                                
+                                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                                document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.remove('active-flat'));
+                                itemDiv.classList.add('active');
+
+                                updateVideoIframe(videoId, true);
+                                document.getElementById('current-lesson-title').innerText = part.partTitle;
+                                document.getElementById('subject-lesson-append').innerText = this.getAttribute('data-parent-lesson');
+                            });
+
+                            if (!isFirstVideoLoaded && videoId) {
+                                headerDiv.classList.remove('collapsed');
+                                partsContainer.classList.remove('hidden');
+                                itemDiv.classList.add('active');
+
+                                updateVideoIframe(videoId, false);
+                                document.getElementById('current-lesson-title').innerText = part.partTitle;
+                                document.getElementById('subject-lesson-append').innerText = itemDiv.getAttribute('data-parent-lesson');
+                                isFirstVideoLoaded = true;
+                            }
+                        } else {
+                            if (part.linkUrl && part.linkUrl.trim() !== '') {
+                                const dlBtn = document.createElement('a');
+                                dlBtn.className = 'btn-download-icon-only';
+                                dlBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>`;
+                                dlBtn.href = part.linkUrl;
+                                dlBtn.setAttribute('target', '_blank');
+                                itemDiv.appendChild(dlBtn);
+                            }
+
+                            itemDiv.addEventListener('click', function(e) {
+                                if(e.target.closest('a')) return;
+                                
+                                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                                document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.remove('active-flat'));
+                                itemDiv.classList.add('active');
+                                document.getElementById('current-lesson-title').innerText = part.partTitle;
+                                document.getElementById('subject-lesson-append').innerText = this.getAttribute('data-parent-lesson');
+                            });
+                        }
+                        partsContainer.appendChild(itemDiv);
+                    });
+
+                    rowBlock.appendChild(headerDiv);
+                    rowBlock.appendChild(partsContainer);
+                }
+
+                menuContainer.appendChild(rowBlock);
+            });
+
+            if (!isFirstVideoLoaded && data.lessons.length > 0) {
+                document.getElementById('subject-lesson-append').innerText = data.lessons[0].lessonTitle;
+                document.getElementById('current-lesson-title').innerText = "Chọn bài học ở mục lục";
+            }
+        }
+
+        // ==========================================
+        // LOGIC ADMIN QUẢN TRỊ FILE SHEETS
+        // ==========================================
+        function checkAdminPass(val) {
+            if (val.trim() === ADMIN_PASSWORD) {
+                document.getElementById('admin-panel').style.display = 'block';
+                document.getElementById('current-id-hint').innerText = `ID hiện tại: ${SHEET_ID}`;
+                document.getElementById('search-input').value = ''; 
+                alert('Đã kích hoạt quyền Admin! Hãy cuộn xuống cuối trang để nạp dữ liệu.');
+                document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function generateNewCode() {
+            const status = document.getElementById('admin-status');
+            let inputId = document.getElementById('sheet-id-input').value.trim();
+            let finalSheetId = inputId ? inputId : SHEET_ID;
+
+            status.innerText = `Đang kết nối API Google Sheet...`;
+            status.style.color = "blue";
+
+            const FULL_URL = `https://docs.google.com/spreadsheets/d/${finalSheetId}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=B2:G200`;
+
+            fetch(FULL_URL)
+            .then(res => {
+                if(!res.ok) throw new Error("Thất bại");
+                return res.text();
+            })
+            .then(rep => {
+                const data = JSON.parse(rep.substr(47).slice(0, -2));
+                const rows = data.table.rows;
+                
+                if (!rows || rows.length === 0) {
+                    alert('Không tìm thấy dữ liệu.');
+                    return;
+                }
+
+                function getVal(cols, index) {
+                    if (!cols || index >= cols.length || !cols[index] || cols[index].v === null || cols[index].v === undefined) {
+                        return '';
+                    }
+                    return cols[index].v.toString().trim();
+                }
+
+                const firstRowCols = rows[0].c;
+                const finalSubjectTitle = getVal(firstRowCols, 0) || 'Toán 12';
+                const finalSidebarTitle = getVal(firstRowCols, 1) || 'Khóa bồi dưỡng kiến thức';
+
+                let structuredData = {
+                    subjectTitle: finalSubjectTitle,
+                    sidebarTitle: finalSidebarTitle,
+                    lessons: []
+                };
+
+                let currentLessonObj = null;
+
+                for (let i = 0; i < rows.length; i++) {
+                    const cols = rows[i].c;
+                    if (!cols) continue;
+
+                    const checkSidebarCol = getVal(cols, 1);
+                    if (!checkSidebarCol) {
+                        break;
+                    }
+
+                    const lessonTitle = getVal(cols, 2);
+                    const partTitle   = getVal(cols, 3);
+                    const linkUrl     = getVal(cols, 4);
+                    const colorCode   = getVal(cols, 5);
+
+                    if (!lessonTitle) continue;
+
+                    if (!currentLessonObj || currentLessonObj.lessonTitle !== lessonTitle) {
+                        currentLessonObj = {
+                            lessonTitle: lessonTitle,
+                            colorCode: colorCode,
+                            parts: []
+                        };
+                        structuredData.lessons.push(currentLessonObj);
+                    }
+
+                    if (partTitle && partTitle.trim() !== '') {
+                        currentLessonObj.parts.push({
+                            partTitle: partTitle,
+                            linkUrl: linkUrl
+                        });
+                    }
+                }
+
+                document.getElementById('admin-panel').style.display = 'none';
+                document.getElementById('output-area').style.display = 'none';
+
+                let pageSource = document.documentElement.outerHTML;
+
+                pageSource = pageSource.replace(/id="admin-panel"\s+style="[^"]*"/gi, 'id="admin-panel" style="display: none;"');
+                pageSource = pageSource.replace(/id="output-area"\s+style="[^"]*"/gi, 'id="output-area" style="display: none;"');
+
+                const jsonStr = JSON.stringify(structuredData);
+                pageSource = pageSource.replace(/const STATIC_DATA = \{.*?\};/, `const STATIC_DATA = ${jsonStr};`);
+                pageSource = pageSource.replace(/const SHEET_ID = '.*?';/, `const SHEET_ID = '${finalSheetId}';`);
+
+                document.getElementById('code-output').value = "<!DOCTYPE html>\n" + pageSource;
+                
+                document.getElementById('output-area').style.display = 'block';
+                document.getElementById('admin-panel').style.display = 'block';
+
+                status.innerText = "Đã gộp nhóm và tạo mã nhúng bảo mật thành công!";
+                status.style.color = "green";
+                
+                renderMenuAndVideo(structuredData);
+            })
+            .catch(err => {
+                console.error(err);
+                status.innerText = "Lỗi kết nối học liệu! Vui lòng kiểm tra thuộc tính chia sẻ.";
+                status.style.color = "red";
+            });
+        }
+
+        function copyNewCode() {
+            const copyText = document.getElementById("code-output");
+            navigator.clipboard.writeText(copyText.value)
+                .then(() => {
+                    alert("Đã copy mã nguồn! Vui lòng dán đè vào Google Sites và ấn xuất bản.");
+                    document.getElementById('admin-panel').style.display = 'none';
+                    document.getElementById('output-area').style.display = 'none';
+                });
+        }
+    </script>
+</body>
+</html>
