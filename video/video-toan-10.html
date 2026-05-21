@@ -3,7 +3,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Giao diện bài giảng NAMINS</title>
     <style>
         /* ==========================================
@@ -74,16 +74,16 @@
         }
 
         /* ==========================================
-           LAYOUT HAI CỘT: VIDEO & MỤC LỤC (ĐÃ TỐI ƯU CHO IPAD)
+           LAYOUT HAI CỘT: SỬ DỤNG FLEXBOX ĐỂ TƯƠNG THÍCH IPAD XOAY NGANG
            ========================================== */
         .main-container {
-            display: grid;
-            grid-template-columns: 1fr 256px; 
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
             width: 100%;
             background-color: #000;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border-radius: 4px;
-            overflow: hidden;
             clear: both;
             transition: all 0.3s ease;
         }
@@ -92,7 +92,9 @@
             background-color: #000;
             display: flex;
             flex-direction: column;
+            flex: 1;
             width: 100%;
+            min-width: 0; /* Ngăn chặn vỡ khung trên trình duyệt Webkit */
         }
 
         .video-header {
@@ -126,18 +128,18 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Tối ưu hóa lại khung bao tỷ lệ 16:9 để không bị vỡ giao diện trên iPad */
+        /* Giải pháp sửa lỗi mất hiển thị ruột video trên iPad khi xoay ngang */
         .video-wrapper {
             width: 100%;
-            position: relative;
-            aspect-ratio: 16 / 9;
             background-color: #000;
+            display: block;
         }
 
         .video-wrapper iframe {
             display: block;
             width: 100%;
-            height: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9; /* Ép cứng tỷ lệ chuẩn không phụ thuộc position absolute */
             border: none;
         }
 
@@ -146,7 +148,8 @@
             border-left: 1px solid #dcdcdc;
             display: flex;
             flex-direction: column;
-            width: 100%;
+            width: 256px;
+            flex-shrink: 0;
             height: calc((1100px - 256px) * 9 / 16 + 32px); 
             transition: all 0.3s ease;
         }
@@ -192,7 +195,7 @@
             justify-content: space-between;
             align-items: center;
             transition: background 0.2s;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: transparent; /* Tối ưu cảm ứng mượt trên iPad */
         }
 
         .menu-lesson-header:hover {
@@ -231,7 +234,7 @@
             cursor: pointer;
             transition: background 0.2s;
             border-top: 1px solid #f1f5f9;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: transparent; /* Tối ưu cảm ứng mượt trên iPad */
         }
 
         .menu-item:hover {
@@ -279,11 +282,9 @@
             padding-left: 20px; 
         }
 
-        .main-container.maximized-mode {
-            grid-template-columns: 1fr 0px;
-        }
+        /* Chế độ thu phóng */
         .main-container.maximized-mode .sidebar-column {
-            display: none;
+            display: none !important;
         }
 
         .main-container.maximized-mode + .current-lesson-bottom-display {
@@ -363,15 +364,16 @@
         .copyright { color: #999; font-size: 14px; margin-top: 15px; text-align: left;}
 
         /* ==========================================
-           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI VÀ IPAD DỌC (< 768px hoặc tầm 1024px dọc)
+           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI VÀ IPAD DỌC
            ========================================== */
         @media (max-width: 768px) {
             .main-container {
-                grid-template-columns: 1fr;
+                flex-direction: column;
             }
             .sidebar-column {
                 border-left: none;
                 border-top: 1px solid #dcdcdc;
+                width: 100%;
                 height: auto !important;
                 max-height: 320px;
             }
@@ -479,7 +481,7 @@
             document.getElementById("main-layout-container").classList.toggle("maximized-mode");
         }
 
-        // TẬP TRUNG SỬA ĐỔI CHÍNH TẠI ĐÂY: Hàm tạo mới phần tử Iframe cho iPad mượt mà
+        // ĐÃ SỬA: Hàm dựng mới iframe hoàn toàn sạch sẽ loại bỏ lỗi chặn luồng của iPad
         function updateVideoIframe(videoId, isAutoplay) {
             const container = document.getElementById('wrapper-video-player');
             if (!container) return;
@@ -487,7 +489,6 @@
             const autoplayVal = isAutoplay ? 1 : 0;
             const srcUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplayVal}&rel=0&showinfo=0&controls=1&playsinline=1`;
             
-            // Xóa sạch vùng chứa và dựng mới hoàn toàn để phá bỏ cơ chế cache hiển thị lỗi của Webkit Safari
             container.innerHTML = ''; 
             
             const newIframe = document.createElement('iframe');
@@ -573,8 +574,10 @@
                         if (isYouTubeLink(part.linkUrl)) {
                             const videoId = extractYouTubeId(part.linkUrl);
                             
+                            // ĐÃ SỬA: Loại bỏ hoàn toàn e.stopPropagation() để không gây lỗi kẹt lệnh trên iPad Safari
                             itemDiv.addEventListener('click', function(e) {
-                                e.stopPropagation();
+                                if(e.target.closest('a')) return; // Nếu bấm vào nút tài liệu thì bỏ qua
+                                
                                 document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
                                 document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.remove('active-flat'));
                                 itemDiv.classList.add('active');
@@ -601,12 +604,12 @@
                                 dlBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>`;
                                 dlBtn.href = part.linkUrl;
                                 dlBtn.setAttribute('target', '_blank');
-                                dlBtn.addEventListener('click', (e) => e.stopPropagation());
                                 itemDiv.appendChild(dlBtn);
                             }
 
                             itemDiv.addEventListener('click', function(e) {
-                                e.stopPropagation();
+                                if(e.target.closest('a')) return;
+                                
                                 document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
                                 document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.remove('active-flat'));
                                 itemDiv.classList.add('active');
