@@ -375,15 +375,15 @@
         .copyright { color: #999; font-size: 14px; margin-top: 15px; text-align: left;}
 
         /* ==========================================
-           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI (ĐÃ TINH CHỈNH VỆT ĐEN)
+           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI (ĐÃ CHỈNH VỆT ĐEN MỎNG CÒN 25%)
            ========================================== */
         @media (max-width: 768px) {
             .main-container {
                 grid-template-columns: 1fr;
             }
-            /* Thêm khoảng đệm đen phía dưới khu hình video trên điện thoại để giống máy tính */
+            /* ĐÃ SỬA: Giảm padding-bottom xuống 10px để vệt đen mỏng lại bằng 25% */
             .video-column {
-                padding-bottom: 40px; 
+                padding-bottom: 10px; 
                 background-color: #000;
             }
             .sidebar-column {
@@ -452,7 +452,7 @@
             <div id="output-area" style="display: none;">
                 <p><b>Bước tiếp theo:</b> Bấm nút Copy dưới đây, vào Google Sites chỉnh sửa mã nhúng, <b>Xóa toàn bộ code cũ đi và Dán đè code mới này vào</b> rồi ấn Xuất bản.</p>
                 <p><button class="btn-admin" style="background:#007bff;" onclick="copyNewCode()">Copy Toàn Bộ Code</button></p>
-                <textarea id="code-output" readonly=""></textarea>
+                <textarea id="code-output" readonly></textarea>
             </div>
         </div>
 
@@ -495,7 +495,6 @@
             document.getElementById("main-layout-container").classList.toggle("maximized-mode");
         }
 
-        // ĐÃ SỬA: Thay đổi phương thức cập nhật SRC trực tiếp của Iframe thay vì xóa DOM giúp tự động phát (Autoplay) mượt mà trên iPad
         function updateVideoIframe(videoId, isAutoplay) {
             const player = document.getElementById('video-player');
             const autoplayVal = isAutoplay ? 1 : 0;
