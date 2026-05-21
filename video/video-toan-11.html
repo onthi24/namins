@@ -292,7 +292,7 @@
         }
 
         /* ==========================================
-           KHU VỰC CỦA ADMIN (MẶC ĐỊNH BIẾN MẤT)
+           KHU VỰC CỦA ADMIN (MẶC ĐỊNH LUÔN ẨN)
            ========================================== */
         #admin-panel {
             background: #fff3cd;
@@ -300,7 +300,7 @@
             border-radius: 10px;
             padding: 20px;
             margin-top: 25px;
-            display: none;
+            display: none; 
         }
         .admin-input-group {
             margin-bottom: 15px;
@@ -363,7 +363,9 @@
         .link-detail:hover { text-decoration: underline; }
         .copyright { color: #999; font-size: 14px; margin-top: 15px; text-align: left;}
 
-        /* ĐIỀU CHỈNH RIÊNG CHO GIAO DIỆN DI ĐỘNG KHÔNG BỊ ĐÈ CHỮ */
+        /* ==========================================
+           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI
+           ========================================== */
         @media (max-width: 768px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -378,10 +380,16 @@
                 margin-right: 0px;
                 text-align: center;
             }
+            /* Chuyển chân trang thành 2 hàng dọc và căn giữa trên điện thoại */
             .footer-action {
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 gap: 15px;
+                text-align: center;
+            }
+            .copyright {
+                text-align: center;
             }
         }
     </style>
@@ -490,6 +498,9 @@
             renderMenuAndVideo(STATIC_DATA);
         });
 
+        // ==========================================
+        // THUẬT TOÁN RENDERING MỤC LỤC
+        // ==========================================
         function renderMenuAndVideo(data) {
             document.getElementById('base-subject-text').innerText = data.subjectTitle || "Toán 12";
             document.getElementById('sidebar-title').innerHTML = `<span>${data.sidebarTitle || "Mục lục bài giảng"}</span>`;
@@ -617,7 +628,9 @@
             }
         }
 
-        // Hiện bảng điều khiển admin duy nhất khi nhập mật khẩu chính xác
+        // ==========================================
+        // LOGIC ADMIN QUẢN TRỊ FILE SHEETS
+        // ==========================================
         function checkAdminPass(val) {
             if (val.trim() === ADMIN_PASSWORD) {
                 document.getElementById('admin-panel').style.display = 'block';
@@ -706,7 +719,7 @@
 
                 let pageSource = document.documentElement.outerHTML;
                 
-                // Thuật toán xử lý chuỗi loại bỏ trạng thái hiển thị của admin-panel trước khi đóng gói
+                // Triệt để ép mã nguồn sinh ra phải luôn đóng ẩn bảng cập nhật code tự động
                 pageSource = pageSource.replace(/id="admin-panel" style="display: none;" style="display:\s*block;"/g, 'id="admin-panel" style="display: none;" style="display: none;"');
                 pageSource = pageSource.replace(/id="admin-panel" style="display: none;"/g, 'id="admin-panel" style="display: none;" style="display: none;"');
 
