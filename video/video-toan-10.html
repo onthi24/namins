@@ -366,7 +366,7 @@
         .copyright { color: #999; font-size: 14px; margin-top: 15px; text-align: left;}
 
         /* ==========================================
-           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI
+           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI VÀ IPAD dọc
            ========================================== */
         @media (max-width: 768px) {
             .main-container {
@@ -375,7 +375,7 @@
             .sidebar-column {
                 border-left: none;
                 border-top: 1px solid #dcdcdc;
-                height: auto;
+                height: auto !important;
                 max-height: 320px;
             }
             .current-lesson-bottom-display {
@@ -414,9 +414,7 @@
                     <span id="current-lesson-title">Phần 1. Tính chất</span> 
                     <button class="btn-maximize" id="maximize-btn" onclick="toggleMaximizeVideo()" title="Phóng to/Thu nhỏ khung hình">⛶</button>
                 </div>
-                <div class="video-wrapper" id="wrapper-video-player">
-                    <iframe id="video-player" src="https://www.youtube.com/embed/ho87M1-qPLk?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1&amp;playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-                </div>
+                <div class="video-wrapper" id="wrapper-video-player"><iframe id="video-player" src="https://www.youtube.com/embed/ho87M1-qPLk?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1&amp;playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
             </div>
 
             <div class="sidebar-column">
@@ -483,12 +481,23 @@
             document.getElementById("main-layout-container").classList.toggle("maximized-mode");
         }
 
-        // SỬA ĐỔI CHÍNH: Thay đổi thuộc tính .src trực tiếp để vượt qua chính sách bảo mật luồng DOM của iPadOS Safari
         function updateVideoIframe(videoId, isAutoplay) {
             const player = document.getElementById('video-player');
+            const autoplayVal = isAutoplay ? 1 : 0;
+            const targetSrc = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplayVal}&rel=0&showinfo=0&controls=1&playsinline=1`;
+            
             if (player) {
-                const autoplayVal = isAutoplay ? 1 : 0;
-                player.src = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplayVal}&rel=0&showinfo=0&controls=1&playsinline=1`;
+                // Thay đổi trực tiếp src để qua mặt cơ chế chặn phần tử động của iPad Safari
+                player.src = targetSrc;
+            } else {
+                const container = document.getElementById('wrapper-video-player');
+                container.innerHTML = '';
+                const newIframe = document.createElement('iframe');
+                newIframe.id = 'video-player';
+                newIframe.src = targetSrc;
+                newIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                newIframe.setAttribute('allowfullscreen', '');
+                container.appendChild(newIframe);
             }
         }
 
