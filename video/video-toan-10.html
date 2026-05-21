@@ -1,11 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="vi"><head><base target="_blank">
-<base target="_blank">
-<base target="_blank">
-
-
-    <base target="_blank">
+<html lang="vi">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giao diện bài giảng NAMINS</title>
@@ -78,7 +74,7 @@
         }
 
         /* ==========================================
-           LAYOUT HAI CỘT: VIDEO & MỤC LỤC
+           LAYOUT HAI CỘT: VIDEO & MỤC LỤC (ĐÃ TỐI ƯU CHO IPAD)
            ========================================== */
         .main-container {
             display: grid;
@@ -130,17 +126,16 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
+        /* Tối ưu hóa lại khung bao tỷ lệ 16:9 để không bị vỡ giao diện trên iPad */
         .video-wrapper {
-            position: relative;
             width: 100%;
+            position: relative;
             aspect-ratio: 16 / 9;
             background-color: #000;
         }
 
         .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+            display: block;
             width: 100%;
             height: 100%;
             border: none;
@@ -197,6 +192,7 @@
             justify-content: space-between;
             align-items: center;
             transition: background 0.2s;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .menu-lesson-header:hover {
@@ -235,6 +231,7 @@
             cursor: pointer;
             transition: background 0.2s;
             border-top: 1px solid #f1f5f9;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .menu-item:hover {
@@ -366,7 +363,7 @@
         .copyright { color: #999; font-size: 14px; margin-top: 15px; text-align: left;}
 
         /* ==========================================
-           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI VÀ IPAD dọc
+           CẤU HÌNH RESPONSIVE CHO ĐIỆN THOẠI VÀ IPAD DỌC (< 768px hoặc tầm 1024px dọc)
            ========================================== */
         @media (max-width: 768px) {
             .main-container {
@@ -382,7 +379,6 @@
                 margin-right: 0px;
                 text-align: center;
             }
-            /* Chuyển chân trang thành 2 hàng dọc và căn giữa trên điện thoại */
             .footer-action {
                 flex-direction: column;
                 align-items: center;
@@ -414,12 +410,14 @@
                     <span id="current-lesson-title">Phần 1. Tính chất</span> 
                     <button class="btn-maximize" id="maximize-btn" onclick="toggleMaximizeVideo()" title="Phóng to/Thu nhỏ khung hình">⛶</button>
                 </div>
-                <div class="video-wrapper" id="wrapper-video-player"><iframe id="video-player" src="https://www.youtube.com/embed/ho87M1-qPLk?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1&amp;playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+                <div class="video-wrapper" id="wrapper-video-player">
+                    <iframe id="video-player" src="https://www.youtube.com/embed/ho87M1-qPLk?autoplay=0&amp;rel=0&amp;showinfo=0&amp;controls=1&amp;playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
             </div>
 
             <div class="sidebar-column">
                 <div class="sidebar-header" id="sidebar-title"><span>Khóa bồi dưỡng kiến thức</span></div>
-                <div class="menu-scroll-container" id="menu-container"><div class="lesson-row-block"><div class="menu-lesson-header" style="color: rgb(179, 125, 50);"><span>Chương 1. Vật Lí Nhiệt</span></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child"><span>Bài 1. Đại cương vật lí nhiệt</span></div><div class="lesson-parts-container"><div class="menu-item active" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Phần 1. Tính chất</span></div><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Phần 2. Ứng dụng</span></div><div class="menu-item" data-parent-lesson="Bài 1. Đại cương vật lí nhiệt"><span class="lesson-name">Tài liệu 1</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 2. Khí lí tưởng</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 3. Quá trình đẳng tích</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Phần 4. Quá trình đẳng áp</span></div><div class="menu-item" data-parent-lesson="Bài 2. Khí lí tưởng"><span class="lesson-name">Tài liệu 2</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 3. Từ trường</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Phần 3. Cảm ứng điện từ</span></div><div class="menu-item" data-parent-lesson="Bài 3. Từ trường"><span class="lesson-name">Tài liệu 3</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header" style="color: rgb(179, 125, 50);"><span>Chương 3. Vật lí hạt nhân</span></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 1.Đại cương về VLHN</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 1. Một số khái niệm</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 2. Tính chất</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Phần 3. Ứng dụng</span></div><div class="menu-item" data-parent-lesson="Bài 1.Đại cương về VLHN"><span class="lesson-name">Tài liệu 4</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div><div class="lesson-row-block"><div class="menu-lesson-header has-child collapsed"><span>Bài 2. Phóng xạ</span></div><div class="lesson-parts-container hidden"><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Phần 1. Một số khái niệm về khí lí tưởng</span></div><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Phần 2. Quá trình đẳng nhiệt</span></div><div class="menu-item" data-parent-lesson="Bài 2. Phóng xạ"><span class="lesson-name">Tài liệu 4</span><a class="btn-download-icon-only" href="https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link" target="_blank"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg></a></div></div></div></div>
+                <div class="menu-scroll-container" id="menu-container"></div>
             </div>
         </div>
 
@@ -430,7 +428,7 @@
             <div class="admin-input-group">
                 <label for="sheet-id-input">Thay đổi ID Google Sheet (Để trống nếu giữ nguyên):</label>
                 <input type="text" id="sheet-id-input" placeholder="Nhập mã ID Google Sheet mới...">
-                <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại: 1gqJdNl016JPHyL1ZW7OSL2_UiWgKmWTbH_ThQ5o1toA</small>
+                <small style="color: #666; display: block; margin-top: 4px;" id="current-id-hint">ID hiện tại: 1GaziLrmpjOMaw6gPnXrj7wlqFs4hXU5JQFX62pL79Nk</small>
             </div>
             <p id="admin-status" style="margin: 10px 0px 5px; color: blue;">Đang kết nối API Google Sheet...</p>
             <button class="btn-admin" id="btn-fetch" onclick="generateNewCode()">Bắt đầu lấy dữ liệu mới từ Sheets</button>
@@ -438,7 +436,7 @@
             <div id="output-area" style="display: none;">
                 <p><b>Bước tiếp theo:</b> Bấm nút Copy dưới đây, vào Google Sites chỉnh sửa mã nhúng, <b>Xóa toàn bộ code cũ đi và Dán đè code mới này vào</b> rồi ấn Xuất bản.</p>
                 <p><button class="btn-admin" style="background:#007bff;" onclick="copyNewCode()">Copy Toàn Bộ Code</button></p>
-                <textarea id="code-output" readonly=""></textarea>
+                <textarea id="code-output" readonly></textarea>
             </div>
         </div>
 
@@ -481,24 +479,24 @@
             document.getElementById("main-layout-container").classList.toggle("maximized-mode");
         }
 
+        // TẬP TRUNG SỬA ĐỔI CHÍNH TẠI ĐÂY: Hàm tạo mới phần tử Iframe cho iPad mượt mà
         function updateVideoIframe(videoId, isAutoplay) {
-            const player = document.getElementById('video-player');
+            const container = document.getElementById('wrapper-video-player');
+            if (!container) return;
+
             const autoplayVal = isAutoplay ? 1 : 0;
-            const targetSrc = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplayVal}&rel=0&showinfo=0&controls=1&playsinline=1`;
+            const srcUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplayVal}&rel=0&showinfo=0&controls=1&playsinline=1`;
             
-            if (player) {
-                // Thay đổi trực tiếp src để qua mặt cơ chế chặn phần tử động của iPad Safari
-                player.src = targetSrc;
-            } else {
-                const container = document.getElementById('wrapper-video-player');
-                container.innerHTML = '';
-                const newIframe = document.createElement('iframe');
-                newIframe.id = 'video-player';
-                newIframe.src = targetSrc;
-                newIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-                newIframe.setAttribute('allowfullscreen', '');
-                container.appendChild(newIframe);
-            }
+            // Xóa sạch vùng chứa và dựng mới hoàn toàn để phá bỏ cơ chế cache hiển thị lỗi của Webkit Safari
+            container.innerHTML = ''; 
+            
+            const newIframe = document.createElement('iframe');
+            newIframe.id = 'video-player';
+            newIframe.src = srcUrl;
+            newIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+            newIframe.setAttribute('allowfullscreen', '');
+            
+            container.appendChild(newIframe);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -565,7 +563,6 @@
                     lesson.parts.forEach((part) => {
                         const itemDiv = document.createElement('div');
                         itemDiv.className = 'menu-item';
-                        
                         itemDiv.setAttribute('data-parent-lesson', lesson.lessonTitle);
                         
                         const nameSpan = document.createElement('span');
@@ -594,7 +591,6 @@
 
                                 updateVideoIframe(videoId, false);
                                 document.getElementById('current-lesson-title').innerText = part.partTitle;
-                                
                                 document.getElementById('subject-lesson-append').innerText = itemDiv.getAttribute('data-parent-lesson');
                                 isFirstVideoLoaded = true;
                             }
@@ -604,7 +600,7 @@
                                 dlBtn.className = 'btn-download-icon-only';
                                 dlBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>`;
                                 dlBtn.href = part.linkUrl;
-                                dlBtn.target = '_blank';
+                                dlBtn.setAttribute('target', '_blank');
                                 dlBtn.addEventListener('click', (e) => e.stopPropagation());
                                 itemDiv.appendChild(dlBtn);
                             }
@@ -615,7 +611,6 @@
                                 document.querySelectorAll('.menu-lesson-header').forEach(h => h.classList.remove('active-flat'));
                                 itemDiv.classList.add('active');
                                 document.getElementById('current-lesson-title').innerText = part.partTitle;
-                                
                                 document.getElementById('subject-lesson-append').innerText = this.getAttribute('data-parent-lesson');
                             });
                         }
@@ -763,6 +758,5 @@
                 });
         }
     </script>
-
-
-</body></html>
+</body>
+</html>
