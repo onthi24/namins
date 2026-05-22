@@ -8,9 +8,9 @@
     <title>Giao diện bài giảng NAMINS</title>
 
     <script>
-        const SHEET_ID = '1_NUBIXgXj5QrDP6cf0iAl1VYfhar4vteO50r0OTfk7Q'; // Sửa ID Google Sheet của môn học tại đây khi nhân bản
+        const SHEET_ID = '1_NUBIXgXj5QrDP6cf0iAl1VYfhar4vteO50r0OTfk7Q'; // ID Google Sheet mới của bạn
         const SHEET_TITLE = 'Trang tính1'; // Tên Tab của Google Sheet
-        const SHEET_RANGE = 'B2:I200'; // Quét rộng đến cột I để lấy đường dẫn file tự động ở ô I1
+        const SHEET_RANGE = 'A1:I200'; // Quét rộng từ cột A đến cột I để tự động định vị thông minh
         const ADMIN_PASSWORD = 'admin123'; // Mật khẩu kích hoạt quyền Admin trên giao diện web
 
         // Cấu hình tài khoản GitHub cố định
@@ -468,11 +468,9 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Render giao diện HOÀN TOÀN TỪ FILE TĨNH (Học sinh tuyệt đối không gọi API Sheet)
             if (STATIC_DATA_STORE) {
                 renderMenuAndVideo(STATIC_DATA_STORE);
             } else {
-                // File mới tinh chưa từng được Admin đồng bộ đóng gói
                 document.getElementById('base-subject-text').innerText = "NAMINS EDUCATION";
                 document.getElementById('menu-container').innerHTML = `<div class="loading-overlay" style="color:orange; font-weight:bold;">🛠️ TRANG MỚI: Vui lòng gõ mật khẩu Quản trị vào ô Tìm kiếm để Đồng bộ dữ liệu lên GitHub!</div>`;
             }
@@ -607,23 +605,35 @@
             }
         }
 
-        // Chuyển đổi dữ liệu Google gviz thô thành JSON cấu trúc chuẩn NAMINS và bóc tách ô I1
+        // THUẬT TOÁN ĐỊNH VỊ THÔNG MINH (Tự động nhận diện cấu trúc file viết từ cột A hay cột B)
         function parseGoogleSheetToPackage(rawText) {
             const data = JSON.parse(rawText.substr(47).slice(0, -2));
             const rows = data.table.rows;
             
-            let subjectVal = 'Toán 10', sidebarVal = 'Khóa bồi dưỡng kiến thức', targetPath = 'video/video-toan-10.html';
-            
-            function getVal(cols, index) {
+            let subjectVal = 'Toán', sidebarVal = 'Khóa bồi dưỡng kiến thức', targetPath = 'video/video-toan-6.html';
+            let shiftIndex = 0; // Biến dịch chuyển vị trí cột
+
+            function getRawVal(cols, index) {
                 if (!cols || index >= cols.length || !cols[index] || cols[index].v === null || cols[index].v === undefined) return '';
                 return cols[index].v.toString().trim();
             }
 
-            // ĐÚNG CHUẨN ĐỊNH VỊ: Vùng chọn bắt đầu từ cột B (index 0 là cột B, index 1 là cột C,...)
             if (rows[0] && rows[0].c) {
-                subjectVal = getVal(rows[0].c, 0) || 'Toán 10';    // Bóc tách chính xác ô B2 (Cột thứ 1) làm môn học lớn
-                sidebarVal = getVal(rows[0].c, 1) || 'Khóa bồi dưỡng kiến thức'; // Ô C2
-                targetPath = getVal(rows[0].c, 7) || 'video/video-toan-10.html'; // Ô I1 (Lấy tại index 7 tính từ cột B)
+                const cellA2 = getRawVal(rows[0].c, 0); // Kiểm tra ô A2 đầu tiên
+                
+                if (cellA2 !== '' && !cellA2.startsWith('#') && !cellA2.includes('/') && cellA2.toLowerCase() !== 'none') {
+                    // CẤU TRÚC MỚI (Viết từ cột A): A2=Môn học, B2=Mục lục, H1=Đường dẫn GitHub
+                    subjectVal = cellA2;
+                    sidebarVal = getRawVal(rows[0].c, 1) || 'Khóa bồi dưỡng kiến thức';
+                    targetPath = getRawVal(rows[0].c, 7) || 'video/video-toan-6.html'; // Ô H1 (Cột thứ 8)
+                    shiftIndex = 0; // Không dịch chuyển mảng quét
+                } else {
+                    // CẤU TRÚC CŨ (Viết từ cột B): B2=Môn học, C2=Mục lục, I1=Đường dẫn GitHub
+                    subjectVal = getRawVal(rows[0].c, 1) || 'Toán';
+                    sidebarVal = getRawVal(rows[0].c, 2) || 'Khóa bồi dưỡng kiến thức';
+                    targetPath = getRawVal(rows[0].c, 8) || 'video/video-toan-6.html'; // Ô I1 (Cột thứ 9)
+                    shiftIndex = 1; // Dịch chuyển mảng quét sang phải 1 ô
+                }
             }
             
             let structuredData = {
@@ -638,13 +648,13 @@
                 const cols = rows[i].c;
                 if (!cols) continue;
 
-                const checkSidebarCol = getVal(cols, 1); 
+                const checkSidebarCol = getRawVal(cols, 1 + shiftIndex); 
                 if (!checkSidebarCol) break; 
 
-                const lessonTitle = getVal(cols, 2); 
-                const partTitle   = getVal(cols, 3); 
-                const linkUrl     = getVal(cols, 4); 
-                const colorCode   = getVal(cols, 5); 
+                const lessonTitle = getRawVal(cols, 2 + shiftIndex); 
+                const partTitle   = getRawVal(cols, 3 + shiftIndex); 
+                const linkUrl     = getRawVal(cols, 4 + shiftIndex); 
+                const colorCode   = getRawVal(cols, 5 + shiftIndex); 
 
                 if (!lessonTitle) continue;
 
