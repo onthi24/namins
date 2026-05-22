@@ -6,6 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giao diện bài giảng NAMINS</title>
+
+    <script>
+        const SHEET_ID = '1mphOMBuB0KYO22iqNvt81EpBrU2fBTBe15cmRiFvWxQ'; // Thay ID Google Sheet của môn khác vào đây
+        const SHEET_TITLE = 'Trang tính1'; // Thay tên Tab của Google Sheet nếu thay đổi
+        const DEFAULT_SUBJECT_TITLE = 'Toán 10'; // Tên môn học hiển thị mặc định trong lúc chờ tải dữ liệu
+    </script>
     <style>
         /* ==========================================
            CẤU HÌNH CƠ BẢN & LAYOUT CHUẨN NAMINS
@@ -298,7 +304,6 @@
             margin-right: 0px;
         }
 
-        /* Lớp thông báo đang tải dữ liệu */
         .loading-overlay {
             padding: 20px;
             text-align: center;
@@ -408,12 +413,6 @@
     </div>
 
     <script>
-        // ==========================================
-        // CẤU HÌNH LIÊN KẾT GOOGLE SHEET TRỰC TIẾP
-        // ==========================================
-        const SHEET_ID = '1mphOMBuB0KYO22iqNvt81EpBrU2fBTBe15cmRiFvWxQ'; 
-        const SHEET_TITLE = 'Trang tính1'; 
-
         function extractYouTubeId(url) {
             if (!url) return '';
             url = url.trim();
@@ -441,9 +440,9 @@
             }
         }
 
-        // ==========================================
-        // TỰ ĐỘNG GỌI DỮ LIỆU KHI HỌC SINH MỞ WEB
-        // ==========================================
+        // Đặt tên tiêu đề tạm thời trong lúc chờ kết nối Sheet
+        document.getElementById('base-subject-text').innerText = typeof DEFAULT_SUBJECT_TITLE !== 'undefined' ? DEFAULT_SUBJECT_TITLE : 'NAMINS';
+
         window.addEventListener('DOMContentLoaded', () => {
             loadDataFromGoogleSheet();
         });
@@ -457,7 +456,6 @@
                 return res.text();
             })
             .then(rep => {
-                // Xử lý chuỗi JSON đặc thù trả về từ API Google gviz
                 const data = JSON.parse(rep.substr(47).slice(0, -2));
                 const rows = data.table.rows;
                 
@@ -473,9 +471,8 @@
                     return cols[index].v.toString().trim();
                 }
 
-                // Hàng đầu tiên lấy Tiêu đề môn học và Tiêu đề mục lục
                 const firstRowCols = rows[0].c;
-                const finalSubjectTitle = getVal(firstRowCols, 0) || 'Toán 10';
+                const finalSubjectTitle = getVal(firstRowCols, 0) || (typeof DEFAULT_SUBJECT_TITLE !== 'undefined' ? DEFAULT_SUBJECT_TITLE : 'Toán 10');
                 const finalSidebarTitle = getVal(firstRowCols, 1) || 'Khóa bồi dưỡng kiến thức';
 
                 let structuredData = {
@@ -486,13 +483,12 @@
 
                 let currentLessonObj = null;
 
-                // Thuật toán gộp nhóm tương tự phiên bản Admin cũ của bạn
                 for (let i = 0; i < rows.length; i++) {
                     const cols = rows[i].c;
                     if (!cols) continue;
 
                     const checkSidebarCol = getVal(cols, 1);
-                    if (!checkSidebarCol) break; // Gặp dòng trống thì dừng
+                    if (!checkSidebarCol) break; 
 
                     const lessonTitle = getVal(cols, 2);
                     const partTitle   = getVal(cols, 3);
@@ -518,7 +514,6 @@
                     }
                 }
 
-                // Tiến hành render dữ liệu lên giao diện
                 renderMenuAndVideo(structuredData);
             })
             .catch(err => {
@@ -528,9 +523,6 @@
             });
         }
 
-        // ==========================================
-        // THUẬT TOÁN RENDERING MỤC LỤC
-        // ==========================================
         function renderMenuAndVideo(data) {
             document.getElementById('base-subject-text').innerText = data.subjectTitle;
             document.getElementById('sidebar-title').innerHTML = `<span>${data.sidebarTitle}</span>`;
