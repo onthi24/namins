@@ -8,9 +8,9 @@
     <title>Giao diện bài giảng NAMINS</title>
 
     <script>
-        const SHEET_ID = '1_NUBIXgXj5QrDP6cf0iAl1VYfhar4vteO50r0OTfk7Q'; // ID Google Sheet mới của bạn
+        const SHEET_ID = '1_NUBIXgXj5QrDP6cf0iAl1VYfhar4vteO50r0OTfk7Q'; // ID Google Sheet môn học của bạn
         const SHEET_TITLE = 'Trang tính1'; // Tên Tab của Google Sheet
-        const SHEET_RANGE = 'A1:I200'; // Quét rộng từ cột A đến cột I để tự động định vị thông minh
+        const SHEET_RANGE = 'B1:I200'; // Quét chuẩn từ cột B đến cột I để lấy dữ liệu
         const ADMIN_PASSWORD = 'admin123'; // Mật khẩu kích hoạt quyền Admin trên giao diện web
 
         // Cấu hình tài khoản GitHub cố định
@@ -440,7 +440,7 @@
         // ==========================================================
         // KHU VỰC BỘ NHỚ ĐỆM ĐÓNG GÓI SẴN (CHỈ CẬP NHẬT KHI ADMIN LỆNH)
         // ==========================================================
-        const STATIC_DATA_STORE = {"subjectTitle":"Toán 6","sidebarTitle":"Nâng cao","lessons":[{"lessonTitle":"Chương 1. Vật Lí Nhiệt","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 3. Từ trường","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=WvRFuee6flU"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=nK0Mu9FYJIg"},{"partTitle":"Tài liệu 3","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 3. Vật lí hạt nhân","colorCode":"","parts":[]},{"lessonTitle":"Bài 1.Đại cương về VLHN","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"https://www.youtube.com/watch?v=1HwGFQaeR9c"},{"partTitle":"Phần 2. Tính chất","linkUrl":"https://www.youtube.com/watch?v=OOfiMWzeZig"},{"partTitle":"Phần 3. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Phóng xạ","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm về khí lí tưởng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]};
+        const STATIC_DATA_STORE = null;
         // ==========================================================
 
         function extractYouTubeId(url) {
@@ -605,35 +605,31 @@
             }
         }
 
-        // THUẬT TOÁN ĐỊNH VỊ THÔNG MINH (Tự động nhận diện cấu trúc file viết từ cột A hay cột B)
+        // ĐỌC CHUẨN XÁC TIÊU ĐỀ Ô I1 TRÊN GOOGLE SPREADSHEET API
         function parseGoogleSheetToPackage(rawText) {
             const data = JSON.parse(rawText.substr(47).slice(0, -2));
             const rows = data.table.rows;
+            const rawCols = data.table.cols; // Mảng bóc tách nhãn tiêu đề dòng 1 trực tiếp
             
-            let subjectVal = 'Toán', sidebarVal = 'Khóa bồi dưỡng kiến thức', targetPath = 'video/video-toan-6.html';
-            let shiftIndex = 0; // Biến dịch chuyển vị trí cột
-
-            function getRawVal(cols, index) {
+            let subjectVal = 'Toán 6', sidebarVal = 'Khóa bồi dưỡng kiến thức', targetPath = 'video/video-toan-6.html';
+            
+            function getVal(cols, index) {
                 if (!cols || index >= cols.length || !cols[index] || cols[index].v === null || cols[index].v === undefined) return '';
                 return cols[index].v.toString().trim();
             }
 
-            if (rows[0] && rows[0].c) {
-                const cellA2 = getRawVal(rows[0].c, 0); // Kiểm tra ô A2 đầu tiên
-                
-                if (cellA2 !== '' && !cellA2.startsWith('#') && !cellA2.includes('/') && cellA2.toLowerCase() !== 'none') {
-                    // CẤU TRÚC MỚI (Viết từ cột A): A2=Môn học, B2=Mục lục, H1=Đường dẫn GitHub
-                    subjectVal = cellA2;
-                    sidebarVal = getRawVal(rows[0].c, 1) || 'Khóa bồi dưỡng kiến thức';
-                    targetPath = getRawVal(rows[0].c, 7) || 'video/video-toan-6.html'; // Ô H1 (Cột thứ 8)
-                    shiftIndex = 0; // Không dịch chuyển mảng quét
-                } else {
-                    // CẤU TRÚC CŨ (Viết từ cột B): B2=Môn học, C2=Mục lục, I1=Đường dẫn GitHub
-                    subjectVal = getRawVal(rows[0].c, 1) || 'Toán';
-                    sidebarVal = getRawVal(rows[0].c, 2) || 'Khóa bồi dưỡng kiến thức';
-                    targetPath = getRawVal(rows[0].c, 8) || 'video/video-toan-6.html'; // Ô I1 (Cột thứ 9)
-                    shiftIndex = 1; // Dịch chuyển mảng quét sang phải 1 ô
+            // BÓC CHÍNH XÁC Ô I1 TỪ NHÃN CỦA API GOOGLE GVIZ
+            if (rawCols && rawCols.length >= 8) {
+                // Nhãn cột thứ 8 (Cột I tính từ cột B) tương ứng với ô I1 trên Sheet
+                if (rawCols[7] && rawCols[7].label) {
+                    targetPath = rawCols[7].label.toString().trim();
                 }
+            }
+
+            // Đọc dòng đầu tiên để lấy Tên môn học (B2) và Mục lục (C2)
+            if (rows[0] && rows[0].c) {
+                subjectVal = getVal(rows[0].c, 0) || 'Toán 6';    
+                sidebarVal = getVal(rows[0].c, 1) || 'Khóa bồi dưỡng kiến thức'; 
             }
             
             let structuredData = {
@@ -648,13 +644,13 @@
                 const cols = rows[i].c;
                 if (!cols) continue;
 
-                const checkSidebarCol = getRawVal(cols, 1 + shiftIndex); 
+                const checkSidebarCol = getVal(cols, 1); 
                 if (!checkSidebarCol) break; 
 
-                const lessonTitle = getRawVal(cols, 2 + shiftIndex); 
-                const partTitle   = getRawVal(cols, 3 + shiftIndex); 
-                const linkUrl     = getRawVal(cols, 4 + shiftIndex); 
-                const colorCode   = getRawVal(cols, 5 + shiftIndex); 
+                const lessonTitle = getVal(cols, 2); 
+                const partTitle   = getVal(cols, 3); 
+                const linkUrl     = getVal(cols, 4); 
+                const colorCode   = getVal(cols, 5); 
 
                 if (!lessonTitle) continue;
 
