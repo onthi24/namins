@@ -11,13 +11,12 @@
     <script>
         const SHEET_ID = '1jddm8AKdiiOXVjVF6zMRYiq_5cbzBeRU2X2DD7Wiubg'; // Mã ID Google Sheet của bạn
         const SHEET_TITLE = 'Sheet1'; // Tên Tab Trang tính chứa dữ liệu
-        const SHEET_RANGE = 'A1:H150'; // Vùng quét dữ liệu trên Sheet
+        const SHEET_RANGE = 'A1:I150'; // Quét rộng đến cột I để lấy đường dẫn file ở ô I1
         const ADMIN_PASSWORD = 'admin123'; // Mật khẩu kích hoạt quyền Admin trên giao diện web
 
-        // Cấu hình đường dẫn lưu trữ file này trên GitHub của bạn
+        // Cấu hình tài khoản GitHub cố định
         const GH_OWNER = 'onthi24';      // Tên tài khoản GitHub của bạn
         const GH_REPO = 'namins';        // Tên kho chứa (Repository) trên GitHub
-        const GH_PATH = 'toan-thpt/toan11.html'; // Đường dẫn chính xác tới file này trên GitHub
     </script>
     <style>
         :root {
@@ -196,8 +195,8 @@
     <div class="header">
         <div class="logo-wrap">
             <h1 class="logo-text">
-                <span id="subject-text">Toán</span>
-                <span id="grade-text">10</span>
+                <span id="subject-text">Môn</span>
+                <span id="grade-text">Học</span>
             </h1>
         </div>
         <div class="search-box">
@@ -207,7 +206,7 @@
 
     <div id="admin-panel">
         <h3 style="margin-top:0; color: #856404; margin-bottom: 10px;"><i class="fa fa-cogs"></i> HỆ THỐNG ĐỒNG BỘ GITHUB TỰ ĐỘNG - NAMINS</h3>
-        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Hệ thống sẽ kéo dữ liệu mới nhất từ Google Sheet và tự động commit ghi đè lên kho mã nguồn GitHub của bạn.</p>
+        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Hệ thống sẽ kéo dữ liệu mới nhất từ Google Sheet (Bao gồm đường dẫn lưu file lấy tại ô I1) và tự động ghi đè lên kho GitHub của bạn.</p>
         
         <div class="admin-form-group">
             <label for="gh-token-input">Nhập mã GitHub Personal Access Token (PAT) của bạn:</label>
@@ -223,11 +222,11 @@
     <div class="container">
         <div class="column" id="column-1">
             <div class="column-header bg-green">1. Bài giảng</div>
-            <div class="loading-overlay">Đang nạp cấu trúc bài giảng tĩnh...</div>
+            <div class="loading-overlay">Đang nạp dữ liệu...</div>
         </div>
         <div class="column" id="column-2">
             <div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div>
-            <div class="loading-overlay">Đang tải danh sách tài liệu...</div>
+            <div class="loading-overlay">Đang nạp dữ liệu...</div>
         </div>
     </div>
 
@@ -241,16 +240,11 @@
     <div class="copyright">© 2026 NAMINS</div>
 
     <script>
-        // --- KHU VỰC CHỨA DỮ LIỆU ĐÃ ĐƯỢC ĐÓNG GÓI SẴN ---
-        // Khi hệ thống chạy API thành công, toàn bộ dữ liệu mới sẽ nằm cố định tại dòng dưới này
+        // ==========================================================
+        // KHU VỰC BỘ NHỚ ĐỆM ĐÓNG GÓI SẴN (CHỈ CẬP NHẬT KHI ADMIN LỆNH)
+        // ==========================================================
         const STATIC_DATA_STORE = null;
-        // ------------------------------------------------
-
-        if(STATIC_DATA_STORE) {
-            document.getElementById('subject-text').innerText = STATIC_DATA_STORE.meta.subject;
-            document.getElementById('grade-text').innerText = STATIC_DATA_STORE.meta.grade;
-            document.getElementById('page-title').innerText = STATIC_DATA_STORE.meta.title;
-        }
+        // ==========================================================
 
         function openMobileMenu(e) { e.stopPropagation(); document.getElementById('mobileNavMenu').classList.add('open'); }
         function closeMobileMenu(e) { e.stopPropagation(); document.getElementById('mobileNavMenu').classList.remove('open'); }
@@ -275,13 +269,18 @@
             else if (currentUrl.includes('/video/')) document.getElementById('menu-video').classList.add('active');
             else document.getElementById('menu-home').classList.add('active');
 
-            // Render giao diện từ cục STATIC_DATA_STORE có sẵn trong file
+            // Render giao diện HOÀN TOÀN TỪ FILE TĨNH (Học sinh tuyệt đối không gọi API Sheet)
             if (STATIC_DATA_STORE) {
+                document.getElementById('subject-text').innerText = STATIC_DATA_STORE.meta.subject || "Toán";
+                document.getElementById('grade-text').innerText = STATIC_DATA_STORE.meta.grade || "10";
+                document.getElementById('page-title').innerText = STATIC_DATA_STORE.meta.title || "NAMINS Education";
+                
                 renderColumn(1, STATIC_DATA_STORE.columns[1]);
                 renderColumn(2, STATIC_DATA_STORE.columns[2]);
             } else {
-                // Nếu trang hoàn toàn mới chưa có dữ liệu tĩnh, kéo từ Sheet về tạm thời cho người xem
-                pullTempDataFromSheets();
+                // File mới tinh chưa từng được Admin đồng bộ đóng gói
+                document.getElementById('column-1').innerHTML = `<div class="column-header bg-green">1. Bài giảng</div><div class="loading-overlay" style="color:orange; font-weight:bold;">🛠️ TRANG MỚI: Vui lòng gõ mật khẩu Quản trị để Đồng bộ dữ liệu lần đầu tiên từ Google Sheet lên GitHub!</div>`;
+                document.getElementById('column-2').innerHTML = `<div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div><div class="loading-overlay">Chờ dữ liệu từ Admin...</div>`;
             }
 
             document.addEventListener('click', (e) => {
@@ -347,33 +346,27 @@
             if (val.trim() === ADMIN_PASSWORD) {
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('search-input').value = ''; 
-                alert('🔓 Đã kích hoạt cổng đẩy code tự động của Admin!');
+                alert('🔓 Đã kích hoạt cổng đẩy dữ liệu tự động lên GitHub của Quản trị viên!');
                 document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
             }
         }
 
-        // Hàm kéo dữ liệu dự phòng khi file tĩnh trống rỗng
-        function pullTempDataFromSheets() {
-            const FULL_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
-            fetch(FULL_URL).then(res => res.text()).then(rep => {
-                const pack = parseGoogleSheetToPackage(rep);
-                renderColumn(1, pack.columns[1]);
-                renderColumn(2, pack.columns[2]);
-            }).catch(() => {
-                showErrorMsg("Lỗi nạp cấu trúc sơ bộ.");
-            });
-        }
-
-        // Chuyển đổi dữ liệu thô từ Google gviz thành bưu kiện JSON sạch
+        // Chuyển đổi dữ liệu thô từ Google gviz sang định dạng JSON sạch và lấy đường dẫn lưu file từ ô I1
         function parseGoogleSheetToPackage(rawText) {
             const data = JSON.parse(rawText.substr(47).slice(0, -2));
             const rows = data.table.rows;
-            let subjectVal = 'Toán', gradeVal = '10', titleVal = 'Toán 10';
+            
+            // Mặc định ban đầu
+            let subjectVal = 'Toán', gradeVal = '10', titleVal = 'Toán 10', targetPath = 'toan-thpt/toan10.html';
+            
+            // Đọc dòng đầu tiên để bóc tách cấu hình động
             if (rows[0] && rows[0].c) {
-                if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim();
-                if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();
-                if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();
+                if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim(); // Ô F1
+                if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();    // Ô G1
+                if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();    // Ô H1
+                if (rows[0].c[8] && rows[0].c[8].v) targetPath = rows[0].c[8].v.toString().trim();  // Ô I1 (Đường dẫn file động trên GitHub)
             }
+            
             let columnsData = { 1: {}, 2: {} };
             rows.forEach((row, rowIndex) => {
                 if (!row.c) return;
@@ -390,11 +383,16 @@
                     else if (customColor) columnsData[colNum][chuongName].color = customColor;
                 }
             });
-            return { meta: { subject: subjectVal, grade: gradeVal, title: titleVal }, columns: columnsData };
+            
+            return { 
+                meta: { subject: subjectVal, grade: gradeVal, title: titleVal }, 
+                columns: columnsData,
+                gitPath: targetPath 
+            };
         }
 
         // ==========================================================
-        // THUẬT TOÁN ĐẨY CODE LÊN GITHUB KHÔNG CẦN COPY-PASTE MANUAL
+        // THUẬT TOÁN ĐẨY CODE LÊN GITHUB ĐỘNG THEO Ô I1 TRÊN GOOGLE SHEET
         // ==========================================================
         function startAutoSyncToGitHub() {
             const token = document.getElementById('gh-token-input').value.trim();
@@ -407,45 +405,49 @@
 
             const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
 
-            // 1. Kéo dữ liệu từ Sheet về trước
+            // 1. Kéo dữ liệu từ Sheet về
             fetch(SHEET_URL)
-            .then(res => { if(!res.ok) throw new Error("Sheet error"); return res.text(); })
+            .then(res => { if(!res.ok) throw new Error("Không thể kết nối đến Google Sheet!"); return res.text(); })
             .then(rep => {
                 const freshPackage = parseGoogleSheetToPackage(rep);
-                status.innerText = "⏳ Bước 2: Đang tải mã gốc và SHA định danh từ GitHub...";
+                const ghPathFromSheet = freshPackage.gitPath; // Đường dẫn lấy động từ ô I1 trên Sheet
                 
-                // Đường dẫn gọi API GitHub
-                const githubApiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+                status.innerText = `⏳ Bước 2: Đang tải định danh SHA file [${ghPathFromSheet}] từ GitHub...`;
                 
-                // 2. Gọi lên GitHub lấy file hiện tại về để lấy mã SHA định danh (Bắt buộc phải có SHA mới ghi đè được)
+                // Đường dẫn API GitHub động theo ô I1
+                const githubApiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${ghPathFromSheet}`;
+                
+                // 2. Gọi lên GitHub lấy file hiện tại về dựa vào đường dẫn động ô I1
                 return fetch(githubApiUrl, {
                     headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
                 })
                 .then(res => {
                     if (res.status === 401) throw new Error("Mã GitHub Token sai hoặc đã hết hạn!");
-                    if (!res.ok) throw new Error("Không tìm thấy file trên GitHub. Vui lòng kiểm tra cấu hình GH_PATH.");
+                    if (!res.ok) throw new Error(`Không tìm thấy file theo đường dẫn [${ghPathFromSheet}] trên GitHub. Vui lòng kiểm tra lại ô I1 trên Sheet.`);
                     return res.json();
                 })
                 .then(fileData => {
                     status.innerText = "⏳ Bước 3: Đang biên dịch mã nguồn và đóng gói...";
                     
-                    const fileSha = fileData.sha; // Lấy chuỗi SHA bí mật của file
+                    const fileSha = fileData.sha; 
                     const oldSourceBase64 = fileData.content;
-                    // Giải mã file cũ ra dạng chữ để xử lý chuỗi
+                    // Giải mã tệp cũ ra chữ viết văn bản
                     let oldHtmlText = decodeURIComponent(escape(atob(oldSourceBase64.replace(/\s/g, ''))));
                     
-                    // Thực hiện tìm vùng biến STATIC_DATA_STORE cũ và bơm cục dữ liệu JSON mới vào
-                    const jsonStringData = JSON.stringify(freshPackage);
-                    const regexReplace = /const STATIC_DATA_STORE = \{.*?\};|const STATIC_DATA_STORE = null;/;
+                    // Tạo cục bưu kiện dữ liệu mới sạch sẽ để lưu
+                    const cleanSaveData = { meta: freshPackage.meta, columns: freshPackage.columns };
+                    const jsonStringData = JSON.stringify(cleanSaveData);
                     
+                    // Tìm kiếm vùng biến STATIC_DATA_STORE cũ để dán đè dữ liệu mới
+                    const regexReplace = /const STATIC_DATA_STORE = \{.*?\};|const STATIC_DATA_STORE = null;/;
                     let newHtmlText = oldHtmlText.replace(regexReplace, `const STATIC_DATA_STORE = ${jsonStringData};`);
                     
-                    // Mã hóa file mới sang Base64 để gửi lên GitHub API
+                    // Mã hóa tệp mới sang Base64 gửi lên hệ thống API GitHub
                     const newContentBase64 = btoa(unescape(encodeURIComponent(newHtmlText)));
                     
-                    status.innerText = "⏳ Bước 4: Đang đẩy tệp tin đã nén lên máy chủ GitHub...";
+                    status.innerText = "⏳ Bước 4: Đang ghi đè dữ liệu lên máy chủ GitHub...";
                     
-                    // 3. Tiến hành PUT gửi lệnh ghi đè trực tiếp
+                    // 3. Tiến hành gửi lệnh PUT ghi đè trực tiếp
                     return fetch(githubApiUrl, {
                         method: 'PUT',
                         headers: {
@@ -454,7 +456,7 @@
                             'Accept': 'application/vnd.github.v3+json'
                         },
                         body: JSON.stringify({
-                            message: `⚡ Hệ thống NAMINS tự động đồng bộ từ Google Sheet vào ngày ${new Date().toLocaleDateString('vi-VN')}`,
+                            message: `⚡ NAMINS Auto-Sync: Đồng bộ từ Sheet vào file [${ghPathFromSheet}]`,
                             content: newContentBase64,
                             sha: fileSha
                         })
@@ -468,19 +470,15 @@
             .then(() => {
                 status.innerText = "✅ THÀNH CÔNG! File đã được cập nhật trực tiếp lên GitHub.";
                 status.style.color = "green";
-                document.getElementById('gh-token-input').value = ""; // Xóa sạch token ngay lập tức để bảo mật
-                alert("🎉 Tuyệt vời! Hệ thống đã ghi đè tệp lên GitHub thành công. Học sinh sẽ thấy bài học mới sau 1-2 phút khi GitHub Pages đồng bộ xong.");
-                location.reload(); // Tải lại trang để áp dụng giao diện mới
+                document.getElementById('gh-token-input').value = ""; // Tiêu hủy Token để bảo mật tuyệt đối
+                alert("🎉 Tuyệt vời! Hệ thống đã tự đọc ô I1 trên Sheet và đồng bộ ghi đè file lên GitHub thành công. Người dùng sẽ thấy giao diện mới sau 1-2 phút.");
+                location.reload(); // Tải lại trang để áp dụng dữ liệu tĩnh vừa cập nhật
             })
             .catch(err => {
                 console.error(err);
                 status.innerText = "❌ Lỗi: " + err.message;
                 status.style.color = "red";
             });
-        }
-
-        function showErrorMsg(msg) {
-            document.getElementById('column-1').innerHTML = `<div class="column-header bg-green">1. Bài giảng</div><div class="loading-overlay" style="color:red;">${msg}</div>`;
         }
     </script>
 </body>
