@@ -109,11 +109,11 @@
 
         .loading-overlay { padding: 20px; text-align: center; font-size: 15px; color: #777; background: #fff; border-radius: 12px; border: 1px dashed var(--border-color); }
 
-        /* KHU VỰC QUẢN TRỊ ADMIN TỐI GIẢN */
-        #admin-panel { max-width: 1100px; margin: 15px auto; padding: 15px; background: #fff3cd; border: 1.5px dashed #ffc107; border-radius: 10px; display: none; }
-        .admin-form-group { display: flex; flex-direction: column; gap: 8px; }
+        /* KHU VỰC QUẢN TRỊ ADMIN SIÊU TỐI GIẢN */
+        #admin-panel { max-width: 1100px; margin: 0 auto 20px auto; padding: 15px; background: #fff3cd; border: 1.5px solid #ffc107; border-radius: 10px; display: none; }
+        .admin-form-group { display: flex; flex-direction: column; gap: 10px; }
         .admin-form-group input { width: 100%; padding: 10px 14px; border: 1px solid #ffc107; border-radius: 6px; outline: none; font-size: 14px; background: #fff; }
-        .admin-btn-group { display: flex; gap: 15px; align-items: center; margin-top: 10px; }
+        .admin-btn-group { display: flex; gap: 15px; align-items: center; }
         .btn-admin { background: #28a745; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
         .btn-admin:hover { background: #218838; }
         #update-status { font-weight: bold; font-size: 14px; }
@@ -206,21 +206,21 @@
     <div id="admin-panel">
         <div class="admin-form-group">
             <input type="password" id="gh-token-input" placeholder="Nhập mã GitHub Personal Access Token">
-        </div>
-        <div class="admin-btn-group">
-            <button class="btn-admin" id="btn-update-cloud" onclick="startAutoSyncToGitHub()">Cập nhật</button>
-            <span id="update-status" style="color: blue;"></span>
+            <div class="admin-btn-group">
+                <button class="btn-admin" id="btn-update-cloud" onclick="startAutoSyncToGitHub()">Cập nhật</button>
+                <span id="update-status" style="color: blue;"></span>
+            </div>
         </div>
     </div>
 
     <div class="container">
         <div class="column" id="column-1">
             <div class="column-header bg-green">1. Bài giảng</div>
-            <div class="loading-overlay">Đang nạp dữ liệu...</div>
+            <div class="loading-overlay">Chờ dữ liệu...</div>
         </div>
         <div class="column" id="column-2">
             <div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div>
-            <div class="loading-overlay">Đang nạp dữ liệu...</div>
+            <div class="loading-overlay">Chờ dữ liệu...</div>
         </div>
     </div>
 
