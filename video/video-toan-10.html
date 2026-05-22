@@ -10,7 +10,7 @@
     <script>
         const SHEET_ID = '1mphOMBuB0KYO22iqNvt81EpBrU2fBTBe15cmRiFvWxQ'; // Mã ID Google Sheet của bạn
         const SHEET_TITLE = 'Trang tính1'; // Tên Tab của Google Sheet
-        const SHEET_RANGE = 'B2:I200'; // Mở rộng tầm quét đến cột I để lấy đường dẫn file tại ô I1
+        const SHEET_RANGE = 'B2:I200'; // Quét đến cột I để lấy đường dẫn file tự động ở ô I1
         const ADMIN_PASSWORD = 'admin123'; // Mật khẩu kích hoạt quyền Admin trên giao diện web
 
         // Cấu hình tài khoản GitHub cố định
@@ -440,7 +440,7 @@
         // ==========================================================
         // KHU VỰC BỘ NHỚ ĐỆM ĐÓNG GÓI SẴN (CHỈ CẬP NHẬT KHI ADMIN LỆNH)
         // ==========================================================
-        const STATIC_DATA_STORE = {"subjectTitle":"#b37d32","sidebarTitle":"Khóa bồi dưỡng kiến thức","lessons":[{"lessonTitle":"Chương 1. Vật Lí Nhiệt","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]};
+        const STATIC_DATA_STORE = null;
         // ==========================================================
 
         function extractYouTubeId(url) {
@@ -468,12 +468,12 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Hiển thị giao diện thuần từ tệp tĩnh lưu trong file HTML (Học sinh tuyệt đối không gọi mạng)
+            // Render giao diện HOÀN TOÀN TỪ FILE TĨNH (Học sinh tuyệt đối không gọi API Sheet)
             if (STATIC_DATA_STORE) {
                 renderMenuAndVideo(STATIC_DATA_STORE);
             } else {
                 // File mới tinh chưa từng được đồng bộ đóng gói dữ liệu
-                document.getElementById('base-subject-text').innerText = typeof DEFAULT_SUBJECT_TITLE !== 'undefined' ? DEFAULT_SUBJECT_TITLE : 'NAMINS';
+                document.getElementById('base-subject-text').innerText = "NAMINS EDUCATION";
                 document.getElementById('menu-container').innerHTML = `<div class="loading-overlay" style="color:orange; font-weight:bold;">🛠️ TRANG MỚI: Vui lòng gõ mật khẩu Quản trị vào ô Tìm kiếm để Đồng bộ dữ liệu lên GitHub!</div>`;
             }
         });
@@ -614,10 +614,16 @@
             
             let subjectVal = 'Toán 10', sidebarVal = 'Khóa bồi dưỡng kiến thức', targetPath = 'video/video-toan-10.html';
             
+            function getVal(cols, index) {
+                if (!cols || index >= cols.length || !cols[index] || cols[index].v === null || cols[index].v === undefined) return '';
+                return cols[index].v.toString().trim();
+            }
+
+            // ĐÚNG CHUẨN ĐỊNH VỊ: Vùng chọn bắt đầu từ cột B (index 0 là cột B, index 1 là cột C,...)
             if (rows[0] && rows[0].c) {
-                if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim(); // Ô F1 (Chữ Toán)
-                if (rows[0].c[6] && rows[0].c[6].v) sidebarVal = rows[0].c[6].v.toString().trim(); // Ô G1 (Số 10)
-                if (rows[0].c[7] && rows[0].c[7].v) targetPath = rows[0].c[7].v.toString().trim();  // Ô I1 (Đường dẫn GitHub lấy tại cột thứ 8 vì range dịch 1 cột)
+                subjectVal = getVal(rows[0].c, 0) || 'Toán 10';    // Cột B (Môn học)
+                sidebarVal = getVal(rows[0].c, 1) || 'Khóa bồi dưỡng kiến thức';    // Cột C (Tiêu đề mục lục)
+                targetPath = getVal(rows[0].c, 7) || 'video/video-toan-10.html';    // Cột I (Đường dẫn file GitHub - index 7 tính từ cột B)
             }
             
             let structuredData = {
@@ -628,22 +634,17 @@
 
             let currentLessonObj = null;
 
-            function getVal(cols, index) {
-                if (!cols || index >= cols.length || !cols[index] || cols[index].v === null || cols[index].v === undefined) return '';
-                return cols[index].v.toString().trim();
-            }
-
             for (let i = 0; i < rows.length; i++) {
                 const cols = rows[i].c;
                 if (!cols) continue;
 
-                const checkSidebarCol = getVal(cols, 1);
+                const checkSidebarCol = getVal(cols, 1); // Cột C
                 if (!checkSidebarCol) break; 
 
-                const lessonTitle = getVal(cols, 2);
-                const partTitle   = getVal(cols, 3);
-                const linkUrl     = getVal(cols, 4);
-                const colorCode   = getVal(cols, 5);
+                const lessonTitle = getVal(cols, 2); // Cột D
+                const partTitle   = getVal(cols, 3); // Cột E
+                const linkUrl     = getVal(cols, 4); // Cột F
+                const colorCode   = getVal(cols, 5); // Cột G
 
                 if (!lessonTitle) continue;
 
@@ -667,9 +668,6 @@
             return { data: structuredData, gitPath: targetPath };
         }
 
-        // ==========================================================
-        // THUẬT TOÁN ĐẨY CODE LÊN GITHUB ĐỘNG THEO Ô I1 TRÊN GOOGLE SHEET
-        // ==========================================================
         function startAutoSyncToGitHub() {
             const token = document.getElementById('gh-token-input').value.trim();
             const status = document.getElementById('update-status');
@@ -685,7 +683,7 @@
             .then(res => { if(!res.ok) throw new Error("Lỗi kết nối Sheet!"); return res.text(); })
             .then(rep => {
                 const parsedResult = parseGoogleSheetToPackage(rep);
-                const ghPathFromSheet = parsedResult.gitPath; // Đường dẫn lấy động từ ô I1
+                const ghPathFromSheet = parsedResult.gitPath; 
                 
                 status.innerText = "⏳ Đang kết nối GitHub...";
                 const githubApiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${ghPathFromSheet}`;
@@ -735,9 +733,8 @@
             .then(() => {
                 status.innerText = "✅ THÀNH CÔNG!";
                 status.style.color = "green";
-                document.getElementById('gh-token-input').value = ""; // Xóa mã Token ngay lập tức
+                document.getElementById('gh-token-input').value = ""; 
                 
-                // Tự động làm mới trang sau 1 giây
                 setTimeout(() => {
                     location.reload(); 
                 }, 1000);
