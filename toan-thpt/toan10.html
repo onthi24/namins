@@ -11,7 +11,7 @@
     <script>
         const SHEET_ID = '1z23j5ylmECwayX2Y-8jD3uOLJcGbRZeoY3GQaDWeF3Q'; // Mã ID Google Sheet của bạn
         const SHEET_TITLE = 'Sheet1'; // Tên Tab Trang tính chứa dữ liệu
-        const SHEET_RANGE = 'A1:I150'; // Quét rộng đến cột I để lấy đường dẫn file ở ô I1
+        const SHEET_RANGE = 'A1:I150'; // Quét đến cột I để lấy đường dẫn file tự động ở ô I1
         const ADMIN_PASSWORD = 'admin123'; // Mật khẩu kích hoạt quyền Admin trên giao diện web
 
         // Cấu hình tài khoản GitHub cố định
@@ -109,15 +109,14 @@
 
         .loading-overlay { padding: 20px; text-align: center; font-size: 15px; color: #777; background: #fff; border-radius: 12px; border: 1px dashed var(--border-color); }
 
-        /* BẢNG ĐIỀU KHIỂN QUẢN TRỊ ADMIN CAO CẤP */
-        #admin-panel { max-width: 1100px; margin: 20px auto; padding: 25px; background: #fff3cd; border: 2px dashed #ffc107; border-radius: 14px; display: none; }
-        .admin-form-group { margin-bottom: 15px; }
-        .admin-form-group label { display: block; font-weight: bold; margin-bottom: 6px; color: #533f03; font-size: 14px; }
+        /* KHU VỰC QUẢN TRỊ ADMIN TỐI GIẢN */
+        #admin-panel { max-width: 1100px; margin: 15px auto; padding: 15px; background: #fff3cd; border: 1.5px dashed #ffc107; border-radius: 10px; display: none; }
+        .admin-form-group { display: flex; flex-direction: column; gap: 8px; }
         .admin-form-group input { width: 100%; padding: 10px 14px; border: 1px solid #ffc107; border-radius: 6px; outline: none; font-size: 14px; background: #fff; }
-        .admin-btn-group { display: flex; gap: 15px; align-items: center; margin-top: 20px; }
-        .btn-admin { background: #28a745; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; }
+        .admin-btn-group { display: flex; gap: 15px; align-items: center; margin-top: 10px; }
+        .btn-admin { background: #28a745; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
         .btn-admin:hover { background: #218838; }
-        #update-status { font-weight: bold; font-size: 15px; }
+        #update-status { font-weight: bold; font-size: 14px; }
 
         .footer-action { margin: 40px auto 20px auto; max-width: 1100px; width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 30px; }
         .btn-register { background: var(--image-orange); color: #fff; padding: 14px 35px; border-radius: 25px; border: 1px solid #945d12; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 3px 6px rgba(0,0,0,0.1); transition: 0.2s; }
@@ -205,16 +204,11 @@
     </div>
 
     <div id="admin-panel">
-        <h3 style="margin-top:0; color: #856404; margin-bottom: 10px;"><i class="fa fa-cogs"></i> HỆ THỐNG ĐỒNG BỘ GITHUB TỰ ĐỘNG - NAMINS</h3>
-        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Hệ thống sẽ kéo dữ liệu mới nhất từ Google Sheet (Bao gồm đường dẫn lưu file lấy tại ô I1) và tự động ghi đè lên kho GitHub của bạn.</p>
-        
         <div class="admin-form-group">
-            <label for="gh-token-input">Nhập mã GitHub Personal Access Token (PAT) của bạn:</label>
-            <input type="password" id="gh-token-input" placeholder="Dán mã ghp_... vào đây để xác thực quyền ghi đè">
+            <input type="password" id="gh-token-input" placeholder="Nhập mã GitHub Personal Access Token">
         </div>
-
         <div class="admin-btn-group">
-            <button class="btn-admin" id="btn-update-cloud" onclick="startAutoSyncToGitHub()">🚀 XÁC NHẬN CẬP NHẬT LÊN GITHUB</button>
+            <button class="btn-admin" id="btn-update-cloud" onclick="startAutoSyncToGitHub()">Cập nhật</button>
             <span id="update-status" style="color: blue;"></span>
         </div>
     </div>
@@ -243,7 +237,7 @@
         // ==========================================================
         // KHU VỰC BỘ NHỚ ĐỆM ĐÓNG GÓI SẴN (CHỈ CẬP NHẬT KHI ADMIN LỆNH)
         // ==========================================================
-        const STATIC_DATA_STORE = {"meta":{"subject":"Toán","grade":"10","title":"Toán 10"},"columns":{"1":{"Chương 1. Mệnh đề và tập hợp":{"color":"","items":[{"name":"Bài 1. Mệnh đề.","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""},{"name":"Bài 2. Tập hợp và các phép toán trên tập hợp.","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""},{"name":"Bài tập cuối chương 1","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""}]},"Chương 2. Bất phương trình và hệ bất phương trình bậc nhất hai ẩn":{"color":"","items":[{"name":"Bài 3. Bất phương trình bậc nhất hai ẩn.","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""},{"name":"Bài 4. Hệ bất phương trình bậc nhất hai ẩn.","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""},{"name":"Bài tập cuối chương II.","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""}]},"Chương 3. Hệ thức lượng trong tam giác":{"color":"","items":[{"name":"Bài 5. Giá trị lượng giác của một góc từ 0° đến 180°.","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""},{"name":"Bài 6. Hệ thức lượng trong tam giác.","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""},{"name":"Bài tập cuối chương 3","link":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link","color":""}]},"Chương 4. Véc tơ":{"color":"","items":[{"name":"Bài 7. Các khái niệm mở đầu.","link":"#","color":""},{"name":"Bài 8. Tổng và hiệu của hai vectơ.","link":"#","color":""},{"name":"Bài 9. Tích của một vectơ với một số.","link":"#","color":""},{"name":"Bài 10. Vectơ trong mặt phẳng toạ độ.","link":"#","color":""},{"name":"Bài 11. Tích vô hướng của hai vectơ.","link":"#","color":""},{"name":"Bài tập cuối chương 4","link":"#","color":""}]},"Chương 5. Các số đặc trưng của mẫu số liệu không ghép nhóm":{"color":"","items":[{"name":"Bài 12. Số gần đúng và sai số.","link":"#","color":""},{"name":"Bài 13. Các số đặc trưng đo xu thế trung tâm.","link":"#","color":""},{"name":"Bài 14. Các số đặc trưng đo độ phân tán.","link":"#","color":""},{"name":"Bài tập cuối chương 5","link":"#","color":""}]},"Chương 6 Các số đặc trưng của mẫu số liệu không ghép nhóm":{"color":"","items":[{"name":"Bài 15. Số gần đúng và sai số.","link":"#","color":""},{"name":"Bài 16. Các số đặc trưng đo xu thế trung tâm.","link":"#","color":""},{"name":"Bài 17. Các số đặc trưng đo độ phân tán.","link":"#","color":""},{"name":"Bài tập cuối chương 5","link":"#","color":""}]},"Chương 7 Các số đặc trưng của mẫu số liệu không ghép nhóm":{"color":"","items":[{"name":"Bài 15. Số gần đúng và sai số.","link":"#","color":""},{"name":"Bài 16. Các số đặc trưng đo xu thế trung tâm.","link":"#","color":""},{"name":"Bài 17. Các số đặc trưng đo độ phân tán.","link":"#","color":""},{"name":"Bài tập cuối chương 5","link":"#","color":""}]}},"2":{"1.1 Đề cương giữa kì 1":{"color":"","items":[{"name":"Đề cương 1","link":"https://www.youtube.com/watch?v=wyLaay_sHtk&list=RDwyLaay_sHtk&start_radio=1","color":""},{"name":"Đề cương 2","link":"#","color":""},{"name":"Đề cương 3","link":"#","color":""},{"name":"Đề cương 4","link":"#","color":""}]},"1.2 Đề thi giữ kì 1":{"color":"","items":[{"name":"Bộ đề thi 1","link":"#","color":""},{"name":"Bộ đề thi 2","link":"#","color":""}]},"1.3 Đề cương học kì 1":{"color":"","items":[{"name":"Đề cương 1","link":"#","color":""},{"name":"Đề cương 2","link":"#","color":""},{"name":"Đề cương 3","link":"#","color":""},{"name":"Đề cương 4","link":"#","color":""}]},"1.4 Đề thi học kì 1":{"color":"","items":[{"name":"Bộ đề thi 1","link":"#","color":""},{"name":"Bộ đề thi 2","link":"#","color":""}]}}}};
+        const STATIC_DATA_STORE = null;
         // ==========================================================
 
         function openMobileMenu(e) { e.stopPropagation(); document.getElementById('mobileNavMenu').classList.add('open'); }
@@ -279,8 +273,8 @@
                 renderColumn(2, STATIC_DATA_STORE.columns[2]);
             } else {
                 // File mới tinh chưa từng được Admin đồng bộ đóng gói
-                document.getElementById('column-1').innerHTML = `<div class="column-header bg-green">1. Bài giảng</div><div class="loading-overlay" style="color:orange; font-weight:bold;">🛠️ TRANG MỚI: Vui lòng gõ mật khẩu Quản trị để Đồng bộ dữ liệu lần đầu tiên từ Google Sheet lên GitHub!</div>`;
-                document.getElementById('column-2').innerHTML = `<div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div><div class="loading-overlay">Chờ dữ liệu từ Admin...</div>`;
+                document.getElementById('column-1').innerHTML = `<div class="column-header bg-green">1. Bài giảng</div><div class="loading-overlay" style="color:orange; font-weight:bold;">🛠️ TRANG MỚI: Vui lòng gõ mật khẩu Quản trị vào ô Tìm kiếm để Đồng bộ dữ liệu lên GitHub!</div>`;
+                document.getElementById('column-2').innerHTML = `<div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div><div class="loading-overlay">Chờ dữ liệu...</div>`;
             }
 
             document.addEventListener('click', (e) => {
@@ -346,7 +340,7 @@
             if (val.trim() === ADMIN_PASSWORD) {
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('search-input').value = ''; 
-                alert('🔓 Đã kích hoạt cổng đẩy dữ liệu tự động lên GitHub của Quản trị viên!');
+                alert('🔓 Đã mở bảng cập nhật dữ liệu!');
                 document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
             }
         }
@@ -356,15 +350,13 @@
             const data = JSON.parse(rawText.substr(47).slice(0, -2));
             const rows = data.table.rows;
             
-            // Mặc định ban đầu
             let subjectVal = 'Toán', gradeVal = '10', titleVal = 'Toán 10', targetPath = 'toan-thpt/toan10.html';
             
-            // Đọc dòng đầu tiên để bóc tách cấu hình động
             if (rows[0] && rows[0].c) {
                 if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim(); // Ô F1
                 if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();    // Ô G1
                 if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();    // Ô H1
-                if (rows[0].c[8] && rows[0].c[8].v) targetPath = rows[0].c[8].v.toString().trim();  // Ô I1 (Đường dẫn file động trên GitHub)
+                if (rows[0].c[8] && rows[0].c[8].v) targetPath = rows[0].c[8].v.toString().trim();  // Ô I1
             }
             
             let columnsData = { 1: {}, 2: {} };
@@ -378,7 +370,9 @@
                 const customColor = (row.c[4] && row.c[4].v) ? row.c[4].v.toString().trim() : '';
                 if (chuongName) {
                     if (!columnsData[colNum]) columnsData[colNum] = {};
-                    if (!columnsData[colNum][chuongName]) columnsData[colNum][chuongName] = { color: '', items: [] };
+                    if (!columnsData[colNum][chuongName]) {
+                        columnsData[colNum][chuongName] = { color: '', items: [] };
+                    }
                     if (baiName) columnsData[colNum][chuongName].items.push({ name: baiName, link: linkUrl, color: customColor });
                     else if (customColor) columnsData[colNum][chuongName].color = customColor;
                 }
@@ -398,56 +392,47 @@
             const token = document.getElementById('gh-token-input').value.trim();
             const status = document.getElementById('update-status');
             
-            if(!token) { alert('Vui lòng nhập mã GitHub Token để xác thực quyền ghi đè!'); return; }
+            if(!token) { alert('Vui lòng nhập mã GitHub Token!'); return; }
             
-            status.innerText = "⏳ Bước 1: Đang lấy dữ liệu từ Google Sheets...";
+            status.innerText = "⏳ Đang kết nối Sheet...";
             status.style.color = "orange";
 
             const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
 
-            // 1. Kéo dữ liệu từ Sheet về
             fetch(SHEET_URL)
-            .then(res => { if(!res.ok) throw new Error("Không thể kết nối đến Google Sheet!"); return res.text(); })
+            .then(res => { if(!res.ok) throw new Error("Lỗi kết nối Sheet!"); return res.text(); })
             .then(rep => {
                 const freshPackage = parseGoogleSheetToPackage(rep);
-                const ghPathFromSheet = freshPackage.gitPath; // Đường dẫn lấy động từ ô I1 trên Sheet
+                const ghPathFromSheet = freshPackage.gitPath; 
                 
-                status.innerText = `⏳ Bước 2: Đang tải định danh SHA file [${ghPathFromSheet}] từ GitHub...`;
-                
-                // Đường dẫn API GitHub động theo ô I1
+                status.innerText = "⏳ Đang kết nối GitHub...";
                 const githubApiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${ghPathFromSheet}`;
                 
-                // 2. Gọi lên GitHub lấy file hiện tại về dựa vào đường dẫn động ô I1
                 return fetch(githubApiUrl, {
                     headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
                 })
                 .then(res => {
-                    if (res.status === 401) throw new Error("Mã GitHub Token sai hoặc đã hết hạn!");
-                    if (!res.ok) throw new Error(`Không tìm thấy file theo đường dẫn [${ghPathFromSheet}] trên GitHub. Vui lòng kiểm tra lại ô I1 trên Sheet.`);
+                    if (res.status === 401) throw new Error("Mã Token sai hoặc hết hạn!");
+                    if (!res.ok) throw new Error(`Không tìm thấy file [${ghPathFromSheet}] trên GitHub!`);
                     return res.json();
                 })
                 .then(fileData => {
-                    status.innerText = "⏳ Bước 3: Đang biên dịch mã nguồn và đóng gói...";
+                    status.innerText = "⏳ Đang đóng gói dữ liệu...";
                     
                     const fileSha = fileData.sha; 
                     const oldSourceBase64 = fileData.content;
-                    // Giải mã tệp cũ ra chữ viết văn bản
                     let oldHtmlText = decodeURIComponent(escape(atob(oldSourceBase64.replace(/\s/g, ''))));
                     
-                    // Tạo cục bưu kiện dữ liệu mới sạch sẽ để lưu
                     const cleanSaveData = { meta: freshPackage.meta, columns: freshPackage.columns };
                     const jsonStringData = JSON.stringify(cleanSaveData);
                     
-                    // Tìm kiếm vùng biến STATIC_DATA_STORE cũ để dán đè dữ liệu mới
                     const regexReplace = /const STATIC_DATA_STORE = \{.*?\};|const STATIC_DATA_STORE = null;/;
                     let newHtmlText = oldHtmlText.replace(regexReplace, `const STATIC_DATA_STORE = ${jsonStringData};`);
                     
-                    // Mã hóa tệp mới sang Base64 gửi lên hệ thống API GitHub
                     const newContentBase64 = btoa(unescape(encodeURIComponent(newHtmlText)));
                     
-                    status.innerText = "⏳ Bước 4: Đang ghi đè dữ liệu lên máy chủ GitHub...";
+                    status.innerText = "⏳ Đang đồng bộ file...";
                     
-                    // 3. Tiến hành gửi lệnh PUT ghi đè trực tiếp
                     return fetch(githubApiUrl, {
                         method: 'PUT',
                         headers: {
@@ -456,7 +441,7 @@
                             'Accept': 'application/vnd.github.v3+json'
                         },
                         body: JSON.stringify({
-                            message: `⚡ NAMINS Auto-Sync: Đồng bộ từ Sheet vào file [${ghPathFromSheet}]`,
+                            message: `⚡ Auto-Sync: ${ghPathFromSheet}`,
                             content: newContentBase64,
                             sha: fileSha
                         })
@@ -464,15 +449,15 @@
                 });
             })
             .then(res => {
-                if(!res.ok) throw new Error("Ghi đè file lên GitHub thất bại!");
+                if(!res.ok) throw new Error("Đồng bộ GitHub thất bại!");
                 return res.json();
             })
             .then(() => {
-                status.innerText = "✅ THÀNH CÔNG! File đã được cập nhật trực tiếp lên GitHub.";
+                status.innerText = "✅ THÀNH CÔNG!";
                 status.style.color = "green";
-                document.getElementById('gh-token-input').value = ""; // Tiêu hủy Token để bảo mật tuyệt đối
-                alert("🎉 Tuyệt vời! Hệ thống đã tự đọc ô I1 trên Sheet và đồng bộ ghi đè file lên GitHub thành công. Người dùng sẽ thấy giao diện mới sau 1-2 phút.");
-                location.reload(); // Tải lại trang để áp dụng dữ liệu tĩnh vừa cập nhật
+                document.getElementById('gh-token-input').value = ""; 
+                alert("🎉 Đồng bộ dữ liệu và ghi đè tệp lên GitHub thành công!");
+                location.reload(); 
             })
             .catch(err => {
                 console.error(err);
