@@ -9,21 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <script>
-        const SHEET_ID = '1Yc_08QbksokSslgraHs6B7OJkxrSI159PvTGFRNc5NM'; // ID Google Sheet
-        const SHEET_TITLE = 'Sheet1'; // Tên Tab Trang tính
-        const SHEET_RANGE = 'A1:H150'; // Vùng quét dữ liệu
-        const ADMIN_PASSWORD = 'admin123'; // Mật khẩu kích hoạt quyền Admin để bấm cập nhật
+        const SHEET_ID = '1Yc_08QbksokSslgraHs6B7OJkxrSI159PvTGFRNc5NM'; // Mã ID Google Sheet của bạn
+        const SHEET_TITLE = 'Sheet1'; // Tên Tab Trang tính chứa dữ liệu
+        const SHEET_RANGE = 'A1:H150'; // Vùng quét dữ liệu trên Sheet
+        const ADMIN_PASSWORD = 'admin123'; // Mật khẩu kích hoạt quyền Admin trên giao diện web
 
-        // Môn học mặc định hiển thị ban đầu
-        const DEFAULT_SUBJECT = 'Toán';
-        const DEFAULT_GRADE = '9';
-
-        // -------------------------------------------------------------------------
-        // KHU VỰC DỮ LIỆU CỐ ĐỊNH (Học sinh sẽ dùng cục này để hiện web ngay lập tức)
-        // Khi Admin bấm nút "Cập nhật", hệ thống sẽ sinh ra một đoạn mã thay thế đoạn này.
-        // -------------------------------------------------------------------------
-        const STATIC_DATA_STORE = null; 
-        // -------------------------------------------------------------------------
+        // Cấu hình đường dẫn lưu trữ file này trên GitHub của bạn
+        const GH_OWNER = 'onthi24';      // Tên tài khoản GitHub của bạn
+        const GH_REPO = 'namins';        // Tên kho chứa (Repository) trên GitHub
+        const GH_PATH = 'toan-thcs/toan9.html'; // Đường dẫn chính xác tới file này trên GitHub
     </script>
     <style>
         :root {
@@ -116,13 +110,15 @@
 
         .loading-overlay { padding: 20px; text-align: center; font-size: 15px; color: #777; background: #fff; border-radius: 12px; border: 1px dashed var(--border-color); }
 
-        /* BẢNG ĐIỀU KHIỂN QUẢN TRỊ ADMIN */
-        #admin-panel { max-width: 1100px; margin: 20px auto; padding: 20px; background: #fff3cd; border: 2px dashed #ffc107; border-radius: 10px; display: none; }
-        .admin-input-group { margin-bottom: 15px; }
-        .admin-input-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #533f03; }
-        #admin-panel textarea { width: 100%; height: 140px; margin-top: 10px; font-family: monospace; font-size: 12px; padding: 10px; border: 1px solid #ffc107; }
-        .btn-admin { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px; }
-        .btn-admin:hover { opacity: 0.9; }
+        /* BẢNG ĐIỀU KHIỂN QUẢN TRỊ ADMIN CAO CẤP */
+        #admin-panel { max-width: 1100px; margin: 20px auto; padding: 25px; background: #fff3cd; border: 2px dashed #ffc107; border-radius: 14px; display: none; }
+        .admin-form-group { margin-bottom: 15px; }
+        .admin-form-group label { display: block; font-weight: bold; margin-bottom: 6px; color: #533f03; font-size: 14px; }
+        .admin-form-group input { width: 100%; padding: 10px 14px; border: 1px solid #ffc107; border-radius: 6px; outline: none; font-size: 14px; background: #fff; }
+        .admin-btn-group { display: flex; gap: 15px; align-items: center; margin-top: 20px; }
+        .btn-admin { background: #28a745; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; }
+        .btn-admin:hover { background: #218838; }
+        #update-status { font-weight: bold; font-size: 15px; }
 
         .footer-action { margin: 40px auto 20px auto; max-width: 1100px; width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 30px; }
         .btn-register { background: var(--image-orange); color: #fff; padding: 14px 35px; border-radius: 25px; border: 1px solid #945d12; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 3px 6px rgba(0,0,0,0.1); transition: 0.2s; }
@@ -210,26 +206,28 @@
     </div>
 
     <div id="admin-panel">
-        <h3 style="margin-top:0; color: #856404;">🛠️ KHU VỰC QUẢN TRỊ NAMINS EDUCATION</h3>
-        <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Hệ thống đang chạy bằng bộ nhớ đệm siêu tốc. Khi bạn sửa file Google Sheet, hãy nhấn nút dưới đây để đồng bộ dữ liệu mới.</p>
-        <button class="btn-admin" id="btn-update-cloud" onclick="fetchNewDataFromSheets()">⚡ BẮT ĐẦU CẬP NHẬT TỪ SHEETS</button>
-        <span id="update-status" style="margin-left:15px; font-weight:bold; color:blue;"></span>
+        <h3 style="margin-top:0; color: #856404; margin-bottom: 10px;"><i class="fa fa-cogs"></i> HỆ THỐNG ĐỒNG BỘ GITHUB TỰ ĐỘNG - NAMINS</h3>
+        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Hệ thống sẽ kéo dữ liệu mới nhất từ Google Sheet và tự động commit ghi đè lên kho mã nguồn GitHub của bạn.</p>
         
-        <div id="output-area" style="display:none; margin-top: 15px; border-top: 1px dashed #ffc107; padding-top: 15px;">
-            <p style="font-size: 14px; font-weight: bold; color: green;">🎉 ĐÃ ĐỒNG BỘ THỬ NGHIỆM THÀNH CÔNG TRÊN TRÌNH DUYỆT CỦA BẠN!</p>
-            <p style="font-size: 13px; color: #555;"><b>Để lưu cố định cho TẤT CẢ HỌC SINH:</b> Hãy copy đoạn code cấu trúc dưới đây, mở file HTML trên GitHub ra, tìm biến <code>const STATIC_DATA_STORE = ...</code> rồi dán đè thay thế vào là xong.</p>
-            <textarea id="code-output" readonly onclick="this.select()"></textarea>
+        <div class="admin-form-group">
+            <label for="gh-token-input">Nhập mã GitHub Personal Access Token (PAT) của bạn:</label>
+            <input type="password" id="gh-token-input" placeholder="Dán mã ghp_... vào đây để xác thực quyền ghi đè">
+        </div>
+
+        <div class="admin-btn-group">
+            <button class="btn-admin" id="btn-update-cloud" onclick="startAutoSyncToGitHub()">🚀 XÁC NHẬN CẬP NHẬT LÊN GITHUB</button>
+            <span id="update-status" style="color: blue;"></span>
         </div>
     </div>
 
     <div class="container">
         <div class="column" id="column-1">
             <div class="column-header bg-green">1. Bài giảng</div>
-            <div class="loading-overlay">Chưa có dữ liệu bài học nào được cấu hình.</div>
+            <div class="loading-overlay">Đang nạp cấu trúc bài giảng tĩnh...</div>
         </div>
         <div class="column" id="column-2">
             <div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div>
-            <div class="loading-overlay">Chưa có dữ liệu đề thi nào được cấu hình.</div>
+            <div class="loading-overlay">Đang tải danh sách tài liệu...</div>
         </div>
     </div>
 
@@ -243,8 +241,16 @@
     <div class="copyright">© 2026 NAMINS</div>
 
     <script>
-        document.getElementById('subject-text').innerText = DEFAULT_SUBJECT;
-        document.getElementById('grade-text').innerText = DEFAULT_GRADE;
+        // --- KHU VỰC CHỨA DỮ LIỆU ĐÃ ĐƯỢC ĐÓNG GÓI SẴN ---
+        // Khi hệ thống chạy API thành công, toàn bộ dữ liệu mới sẽ nằm cố định tại dòng dưới này
+        const STATIC_DATA_STORE = null;
+        // ------------------------------------------------
+
+        if(STATIC_DATA_STORE) {
+            document.getElementById('subject-text').innerText = STATIC_DATA_STORE.meta.subject;
+            document.getElementById('grade-text').innerText = STATIC_DATA_STORE.meta.grade;
+            document.getElementById('page-title').innerText = STATIC_DATA_STORE.meta.title;
+        }
 
         function openMobileMenu(e) { e.stopPropagation(); document.getElementById('mobileNavMenu').classList.add('open'); }
         function closeMobileMenu(e) { e.stopPropagation(); document.getElementById('mobileNavMenu').classList.remove('open'); }
@@ -259,32 +265,8 @@
             }
         }
 
-        // TIẾN TRÌNH KHỞI CHẠY WEB TỐI ƯU SIÊU TỐC
         window.addEventListener('DOMContentLoaded', () => {
-            initMenuHighlights();
-            
-            // Bước 1: Kiểm tra xem trong file HTML có sẵn dữ liệu STATIC chưa
-            let activeData = STATIC_DATA_STORE;
-
-            // Bước 2: Nếu file HTML trống, xem trình duyệt có lưu bộ nhớ đệm (Cache) chưa
-            if (!activeData) {
-                const cachedData = localStorage.getItem('NAMINS_CACHE_' + SHEET_ID);
-                if (cachedData) {
-                    try { activeData = JSON.parse(cachedData); } catch(e) { activeData = null; }
-                }
-            }
-
-            // Bước 3: Nếu có dữ liệu, hiển thị ngay lập tức không tốn 1 giọt tài nguyên mạng nào!
-            if (activeData) {
-                applyRenderedPage(activeData);
-            } else {
-                // Trường hợp trang web mới tinh hoàn toàn chưa có dữ liệu gì, bắt buộc phải kéo từ Sheet về 1 lần đầu tiên
-                console.log("Khởi tạo lần đầu: Tải dữ liệu từ Sheet...");
-                autoLoadFirstTime();
-            }
-        });
-
-        function initMenuHighlights() {
+            // Khởi tạo trạng thái thanh navbar
             const currentUrl = window.location.href;
             document.querySelectorAll('.nav-menu .nav-item').forEach(el => el.classList.remove('active'));
             if (currentUrl.includes('/toan-thpt/')) document.getElementById('menu-thpt').classList.add('active');
@@ -292,24 +274,29 @@
             else if (currentUrl.includes('/vatli/')) document.getElementById('menu-vatli').classList.add('active');
             else if (currentUrl.includes('/video/')) document.getElementById('menu-video').classList.add('active');
             else document.getElementById('menu-home').classList.add('active');
-        }
 
-        function applyRenderedPage(pack) {
-            document.getElementById('page-title').innerText = pack.meta.title;
-            document.getElementById('subject-text').innerText = pack.meta.subject;
-            document.getElementById('grade-text').innerText = pack.meta.grade;
+            // Render giao diện từ cục STATIC_DATA_STORE có sẵn trong file
+            if (STATIC_DATA_STORE) {
+                renderColumn(1, STATIC_DATA_STORE.columns[1]);
+                renderColumn(2, STATIC_DATA_STORE.columns[2]);
+            } else {
+                // Nếu trang hoàn toàn mới chưa có dữ liệu tĩnh, kéo từ Sheet về tạm thời cho người xem
+                pullTempDataFromSheets();
+            }
 
-            renderColumn(1, pack.columns[1]);
-            renderColumn(2, pack.columns[2]);
-        }
+            document.addEventListener('click', (e) => {
+                if(window.innerWidth <= 768) {
+                    const menu = document.getElementById('mobileNavMenu');
+                    if(menu && !menu.contains(e.target)) menu.classList.remove('open');
+                }
+            });
+        });
 
         function renderColumn(colNum, chapters) {
             const columnEl = document.getElementById(`column-${colNum}`);
             if (!columnEl) return;
-
             const headerEl = columnEl.querySelector('.column-header');
-            const headerHtml = headerEl ? headerEl.outerHTML : '';
-            columnEl.innerHTML = headerHtml;
+            columnEl.innerHTML = headerEl ? headerEl.outerHTML : '';
 
             let index = 0;
             for (let chuongName in chapters) {
@@ -339,10 +326,8 @@
                         a.href = item.link; a.target = '_blank';
                         a.onclick = (e) => e.stopPropagation(); 
                         if (item.color) a.style.color = item.color; 
-                        
                         const span = document.createElement('span');
                         span.innerText = item.name;
-                        
                         a.appendChild(span);
                         dropdown.appendChild(a);
                     });
@@ -350,7 +335,6 @@
                 card.appendChild(dropdown);
                 columnEl.appendChild(card);
             }
-            
             if (!chapters || Object.keys(chapters).length === 0) {
                 const emptyNotify = document.createElement('div');
                 emptyNotify.className = 'loading-overlay';
@@ -359,822 +343,144 @@
             }
         }
 
-        // KIỂM TRA MẬT KHẨU ADMIN TRONG Ô TÌM KIẾM
         function checkAdminAuth(val) {
             if (val.trim() === ADMIN_PASSWORD) {
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('search-input').value = ''; 
-                alert('🔓 Đã kích hoạt cổng cập nhật Admin!');
+                alert('🔓 Đã kích hoạt cổng đẩy code tự động của Admin!');
                 document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
             }
         }
 
-        // LỆNH LẤY DỮ LIỆU TỪ SHEET (CHỈ CHẠY KHI ADMIN BẤM NÚT)
-        function fetchNewDataFromSheets() {
-            const statusText = document.getElementById('update-status');
-            statusText.innerText = "⏳ Đang quét dữ liệu Google Sheet...";
-            statusText.style.color = "orange";
-
-            const FULL_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
-
-            fetch(FULL_URL)
-            .then(res => res.text())
-            .then(rep => {
-                const data = JSON.parse(rep.substr(47).slice(0, -2));
-                const rows = data.table.rows;
-                if (!rows || rows.length === 0) { alert('Lỗi: Sheet không có dữ liệu.'); return; }
-
-                let subjectVal = DEFAULT_SUBJECT;
-                let gradeVal = DEFAULT_GRADE;
-                let titleVal = `${DEFAULT_SUBJECT} ${DEFAULT_GRADE} - NAMINS`;
-                
-                if (rows[0] && rows[0].c) {
-                    if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim();
-                    if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();
-                    if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();
-                }
-
-                let columnsData = { 1: {}, 2: {} };
-                rows.forEach((row, rowIndex) => {
-                    if (!row.c) return;
-                    if (rowIndex === 0 && !row.c[0]) return;
-
-                    const colNum = (row.c[0] && row.c[0].v) ? parseInt(row.c[0].v) : 1;
-                    const chuongName = (row.c[1] && row.c[1].v) ? row.c[1].v.toString().trim() : '';
-                    const baiName = (row.c[2] && row.c[2].v) ? row.c[2].v.toString().trim() : '';
-                    const linkUrl = (row.c[3] && row.c[3].v) ? row.c[3].v.toString().trim() : '#';
-                    const customColor = (row.c[4] && row.c[4].v) ? row.c[4].v.toString().trim() : '';
-
-                    if (chuongName) {
-                        if (!columnsData[colNum]) columnsData[colNum] = {};
-                        if (!columnsData[colNum][chuongName]) columnsData[colNum][chuongName] = { color: '', items: [] };
-                        if (baiName) {
-                            columnsData[colNum][chuongName].items.push({ name: baiName, link: linkUrl, color: customColor });
-                        } else if (customColor) {
-                            columnsData[colNum][chuongName].color = customColor;
-                        }
-                    }
-                });
-
-                const dataPackage = {
-                    meta: { subject: subjectVal, grade: gradeVal, title: titleVal },
-                    columns: columnsData
-                };
-
-                // Lưu vào cache trình duyệt hiện tại để test trước
-                localStorage.setItem('NAMINS_CACHE_' + SHEET_ID, JSON.stringify(dataPackage));
-                applyRenderedPage(dataPackage);
-
-                // Sinh mã đóng gói thông minh để dán đè cố định lên GitHub
-                document.getElementById('code-output').value = `const STATIC_DATA_STORE = ${JSON.stringify(dataPackage)};`;
-                
-                document.getElementById('output-area').style.display = 'block';
-                statusText.innerText = "✅ Hoàn tất!";
-                statusText.style.color = "green";
-            })
-            .catch(err => {
-                console.error(err);
-                statusText.innerText = "❌ Lỗi kết nối Google Sheet!";
-                statusText.style.color = "red";
-            });
-        }
-
-        function autoLoadFirstTime() {
+        // Hàm kéo dữ liệu dự phòng khi file tĩnh trống rỗng
+        function pullTempDataFromSheets() {
             const FULL_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
             fetch(FULL_URL).then(res => res.text()).then(rep => {
-                const data = JSON.parse(rep.substr(47).slice(0, -2));
-                const rows = data.table.rows;
-                if (!rows) return;
-                let subjectVal = DEFAULT_SUBJECT, gradeVal = DEFAULT_GRADE, titleVal = `${DEFAULT_SUBJECT} ${DEFAULT_GRADE}`;
-                if (rows[0] && rows[0].c) {
-                    if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim();
-                    if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();
-                    if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();
-                }
-                let columnsData = { 1: {}, 2: {} };
-                rows.forEach((row, rowIndex) => {
-                    if (!row.c) return;
-                    const colNum = (row.c[0] && row.c[0].v) ? parseInt(row.c[0].v) : 1;
-                    const chuongName = (row.c[1] && row.c[1].v) ? row.c[1].v.toString().trim() : '';
-                    const baiName = (row.c[2] && row.c[2].v) ? row.c[2].v.toString().trim() : '';
-                    const linkUrl = (row.c[3] && row.c[3].v) ? row.c[3].v.toString().trim() : '#';
-                    const customColor = (row.c[4] && row.c[4].v) ? row.c[4].v.toString().trim() : '';
-                    if (chuongName) {
-                        if (!columnsData[colNum]) columnsData[colNum] = {};
-                        if (!columnsData[colNum][chuongName]) columnsData[colNum][chuongName] = { color: '', items: [] };
-                        if (baiName) columnsData[colNum][chuongName].items.push({ name: baiName, link: linkUrl, color: customColor });
-                    }
-                });
-                const pack = { meta: { subject: subjectVal, grade: gradeVal, title: titleVal }, columns: columnsData };
-                localStorage.setItem('NAMINS_CACHE_' + SHEET_ID, JSON.stringify(pack));
-                applyRenderedPage(pack);
-            }).catch(e => {
-                document.getElementById('column-1').innerHTML = "Lỗi kết nối khởi tạo dữ liệu.";
+                const pack = parseGoogleSheetToPackage(rep);
+                renderColumn(1, pack.columns[1]);
+                renderColumn(2, pack.columns[2]);
+            }).catch(() => {
+                showErrorMsg("Lỗi nạp cấu trúc sơ bộ.");
             });
         }
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <base target="_blank">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Giao diện học liệu NAMINS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <script>
-        const SHEET_ID = '1-hB1nU7bF7AtrUwhd8sQetHwCyDKOS_FJ40EdVRmYXE'; // Thay ID Google Sheet của bạn tại đây
-        const SHEET_TITLE = 'Sheet1'; // Tên Tab Trang tính chứa dữ liệu
-        const SHEET_RANGE = 'A1:H150'; // Vùng quét dữ liệu (Cột F=Môn, G=Lớp, H=Tiêu đề trang)
-        
-        // Cấu hình hiển thị mặc định trong lúc hệ thống đang kết nối dữ liệu đám mây
-        const DEFAULT_SUBJECT = 'Toán';
-        const DEFAULT_GRADE = '7';
-    </script>
-    <style>
-        :root {
-            --primary-green: #1a4d2e;  /* Màu xanh từ ảnh (dành cho ô F1) */
-            --image-orange: #b57318;   /* Màu cam đất từ ảnh (dành cho ô G1) */
-            --primary-orange: #e67e22; /* Giữ màu cam cũ cho Chương và Bài học */
-            --bg-light: #fdfdfd;
-            --border-color: #b5b5b5;
-            --text-dark: #222;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: var(--bg-light); 
-            margin: 0;
-            padding: 20px;
-            font-size: 16px;
-            overflow-x: hidden;
-        }
-
-        /* --- THANH ĐIỀU HƯỚNG MÁY TÍNH (TOP NAVBAR) --- */
-        .top-navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1100px;
-            margin: 0 auto 10px auto;
-            width: 100%;
-            background-color: #f1f4f6;
-            padding: 0 10px;
-            border-radius: 4px;
-            position: relative;
-        }
-
-        .logo-box {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-img {
-            height: 45px;
-            object-fit: contain;
-            display: block;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #333;
-            padding: 10px;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-item-wrap {
-            position: relative;
-        }
-
-        .nav-item {
-            text-decoration: none;
-            color: #333;
-            padding: 14px 15px;
-            font-weight: 500;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.2s;
-            border-bottom: 4px solid transparent;
-        }
-
-        .nav-item.active {
-            font-weight: bold;
-            background-color: #fff;
-            border-bottom: 4px solid #000;
-        }
-
-        .nav-item:hover {
-            background-color: #e2e8f0;
-        }
-
-        /* DROPDOWN MENU CON TRÊN PC */
-        .dropdown-content {
-            display: none; 
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 180px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-            z-index: 1000;
-            top: 100%; 
-            left: 0;
-            border-radius: 0 0 5px 5px;
-        }
-
-        .dropdown-content a {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            font-size: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .dropdown-content a:last-child { border-bottom: none; }
-        .dropdown-content a:hover {
-            background-color: #ddd;
-            color: var(--primary-orange);
-        }
-
-        .nav-item-wrap:hover .dropdown-content {
-            display: block;
-        }
-
-        .mobile-close-btn { display: none; }
-
-        /* TIÊU ĐỀ NỘI DUNG CHÍNH */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1100px;
-            margin: 0 auto 25px auto;
-            width: 100%;
-        }
-
-        .logo-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-text {
-            font-size: 36px;
-            font-weight: 800;
-            line-height: 1;
-            text-transform: uppercase;
-        }
-
-        #subject-text { color: var(--primary-green); }
-        #grade-text { color: var(--image-orange); margin-left: 5px; }
-
-        /* TÌM KIẾM */
-        .search-box input {
-            width: 270px; 
-            padding: 10px 16px; 
-            border-radius: 25px;
-            border: 1px solid #c7d2d8;
-            background: #f1f4f6;
-            outline: none;
-            font-size: 15px;
-            transition: 0.2s;
-        }
-
-        .search-box input:focus {
-            border-color: var(--primary-orange);
-            background: #fff;
-        }
-
-        /* LAYOUT CHÍNH */
-        .container {
-            display: flex;
-            gap: 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .column-header {
-            padding: 14px 18px;
-            border-radius: 10px;
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            text-align: left;
-        }
-
-        .bg-green { background: var(--primary-green); }
-        .bg-orange { background: var(--image-orange); }
-
-        /* THIẾT KẾ Ô KHÓA HỌC (ITEM CARD) */
-        .item-card {
-            background: #fff;
-            padding: 16px 20px; 
-            border-radius: 16px;
-            border: 1.5px solid var(--border-color); 
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05); 
-            display: block;
-        }
-
-        .item-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
-        }
-
-        .item-card h2 {
-            margin: 0;
-            font-weight: 700; 
-            color: var(--text-dark); 
-            font-size: 18px;
-            transition: color 0.2s ease;
-        }
-
-        .item-card:hover h2 { color: var(--primary-orange) !important; }
-
-        /* DROPDOWN Ô BÀI HỌC DƯỚI CARD */
-        .dropdown {
-            margin-top: 14px;          
-            padding-top: 14px;         
-            border-top: 1px dashed #cbd5e1;
-            display: none;
-        }
-
-        .dropdown a {
-            display: block;
-            text-decoration: none;
-            color: #334155;
-            padding: 5px 4px;          
-            margin-bottom: 2px;        
-            font-size: 15px;
-            font-weight: 600;
-            transition: color 0.15s ease;
-        }
-
-        .dropdown a:last-child { margin-bottom: 0; }
-        .dropdown a:hover { 
-            color: var(--primary-orange) !important; 
-            text-decoration: underline; 
-        }
-
-        /* Lớp trạng thái thông báo */
-        .loading-overlay {
-            padding: 20px;
-            text-align: center;
-            font-size: 15px;
-            color: #777;
-            background: #fff;
-            border-radius: 12px;
-            border: 1px dashed var(--border-color);
-        }
-
-        /* FOOTER ACTIONS */
-        .footer-action {
-            margin: 40px auto 20px auto;
-            max-width: 1100px;
-            width: 100%;
-            display: flex;
-            flex-direction: row; 
-            align-items: center;
-            justify-content: flex-start;
-            gap: 30px;
-        }
-
-        .btn-register {
-            background: var(--image-orange); 
-            color: #fff;
-            padding: 14px 35px; 
-            border-radius: 25px;
-            border: 1px solid #945d12;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-            transition: 0.2s;
-        }
-
-        .link-detail { color: var(--primary-green); font-weight: bold; text-decoration: none; font-size: 18px; text-transform: uppercase; } 
-        .copyright { max-width: 1100px; margin: 20px auto; color: #999; font-size: 14px; text-align: left;}
-
-        /* --- RESPONSIVE MOBILE --- */
-        @media (max-width: 768px) {
-            body { padding: 0px; } 
-
-            .top-navbar { 
-                padding: 8px 15px; 
-                border-radius: 0; 
-                margin-bottom: 10px;
-                justify-content: flex-start; 
-                gap: 15px;
-                background-color: #f1f4f6;
+        // Chuyển đổi dữ liệu thô từ Google gviz thành bưu kiện JSON sạch
+        function parseGoogleSheetToPackage(rawText) {
+            const data = JSON.parse(rawText.substr(47).slice(0, -2));
+            const rows = data.table.rows;
+            let subjectVal = 'Toán', gradeVal = '10', titleVal = 'Toán 10';
+            if (rows[0] && rows[0].c) {
+                if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim();
+                if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();
+                if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();
             }
-
-            .mobile-menu-btn { 
-                display: block; 
-            }
-
-            .nav-menu {
-                position: fixed;
-                top: 0;
-                left: -280px; 
-                width: 260px;
-                height: 100%;
-                background-color: #f4f6f8; 
-                flex-direction: column;
-                z-index: 99999;
-                padding: 60px 0px 20px 0px; 
-                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 4px 0 12px rgba(0,0,0,0.15);
-                display: flex !important; 
-            }
-
-            .nav-menu.open {
-                left: 0 !important;
-            }
-
-            .mobile-close-btn {
-                display: block !important;
-                position: absolute;
-                top: 15px;
-                left: 20px;
-                font-size: 24px;
-                cursor: pointer;
-                color: #222;
-                font-weight: bold;
-            }
-
-            .nav-item-wrap { 
-                width: 100%; 
-            }
-
-            .nav-item { 
-                padding: 14px 24px; 
-                font-size: 20px; 
-                color: #222;
-                font-weight: 600;
-                border-bottom: none;
-                border-left: 5px solid transparent; 
-                justify-content: space-between; 
-                width: 100%;
-                background-color: transparent;
-            }
-
-            .nav-item.active {
-                background-color: #e2e8f0;
-                border-left: 6px solid #000 !important; 
-                border-bottom: none !important;
-                font-weight: bold;
-            }
-
-            .nav-item-wrap .dropdown-content {
-                display: none; 
-                position: static; 
-                width: 100%;
-                box-shadow: none;
-                background-color: #eaedf1; 
-                padding-left: 20px;
-                border-radius: 0;
-            }
-
-            .nav-item-wrap .dropdown-content a {
-                padding: 12px 25px;
-                font-size: 16px;
-                color: #333;
-                border-bottom: 1px solid #d1d5db;
-            }
-
-            .nav-item-wrap.active-mobile .dropdown-content {
-                display: block !important;
-            }
-
-            .nav-item-wrap:hover .dropdown-content { display: none; }
-
-            .header { 
-                flex-direction: column; 
-                padding: 0 15px; 
-                gap: 12px; 
-                align-items: flex-start;
-            }
-            
-            .logo-text { 
-                font-size: 32px; 
-                font-weight: 800;
-                margin: 5px 0 0 0;
-            }
-
-            .search-box { width: 100%; padding: 0 15px; }
-            .search-box input { width: 100%; border-radius: 20px; }
-
-            .container { flex-direction: column; gap: 8px; padding: 0; margin-top: 15px; }
-            .column-header { border-radius: 0; font-size: 18px; padding: 14px; text-align: center; }
-            .item-card { border-radius: 0; border-left: none; border-right: none; padding: 14px; }
-            .item-card h2 { font-size: 16px; text-align: center; }
-
-            .footer-action { flex-direction: column; align-items: center; gap: 20px; text-align: center; padding: 20px; }
-            .btn-register { width: 100%; }
-            .copyright { text-align: center; font-size: 13px; padding-left: 0; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="top-navbar">
-        <div class="mobile-menu-btn" onclick="openMobileMenu(event)"><i class="fa fa-bars"></i></div>
-        <div class="logo-box">
-            <img src="https://raw.githubusercontent.com/onthi24/namins/main/logo.github2.png" alt="NAMINS LOGO" class="logo-img">
-        </div>
-        
-        <div class="nav-menu" id="mobileNavMenu">
-            <div class="mobile-close-btn" onclick="closeMobileMenu(event)"><i class="fa fa-times"></i></div>
-            <div class="nav-item-wrap">
-                <a href="https://namins.com/" class="nav-item" id="menu-home">Trang chủ</a>
-            </div>
-            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
-                <a href="#" class="nav-item" id="menu-thpt">Toán THPT <i class="fa fa-chevron-down" style="font-size: 12px;"></i></a>
-                <div class="dropdown-content">
-                    <a href="https://namins.com/toan-thpt/toan12.html">Toán 12</a>
-                    <a href="https://namins.com/toan-thpt/toan11.html">Toán 11</a>
-                    <a href="https://namins.com/toan-thpt/toan10.html">Toán 10</a>
-                </div>
-            </div>
-            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
-                <a href="#" class="nav-item" id="menu-thcs">Toán THCS <i class="fa fa-chevron-down" style="font-size: 12px;"></i></a>
-                <div class="dropdown-content">
-                    <a href="https://namins.com/toan-thcs/toan9.html">Toán 9</a>
-                    <a href="https://namins.com/toan-thcs/toan8.html">Toán 8</a>
-                    <a href="https://namins.com/toan-thcs/toan7.html">Toán 7</a>
-                    <a href="https://namins.com/toan-thcs/toan6.html">Toán 6</a>
-                </div>
-            </div>
-            <div class="nav-item-wrap" onclick="handleMobileClick(this, event)">
-                <a href="#" class="nav-item" id="menu-vatli">Vật Lí <i class="fa fa-chevron-down" style="font-size: 12px;"></i></a>
-                <div class="dropdown-content">
-                    <a href="https://namins.com/vatli/vatli12.html">Vật Lí 12</a>
-                    <a href="https://namins.com/vatli/vatli11.html">Vật Lí 11</a>
-                    <a href="https://namins.com/vatli/vatli10.html">Vật Lí 10</a>
-                </div>
-            </div>
-            <div class="nav-item-wrap">
-                <a href="https://namins.com/video/video-kho.html" class="nav-item" id="menu-video">Video</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="header">
-        <div class="logo-wrap">
-            <h1 class="logo-text">
-                <span id="subject-text">Toán</span>
-                <span id="grade-text">10</span>
-            </h1>
-        </div>
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Tìm qua Google...">
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="column" id="column-1">
-            <div class="column-header bg-green">1. Bài giảng</div>
-            <div class="loading-overlay">Đang kết nối kho bài giảng động...</div>
-        </div>
-        
-        <div class="column" id="column-2">
-            <div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div>
-            <div class="loading-overlay">Đang tải danh sách đề kiểm tra...</div>
-        </div>
-    </div>
-
-    <div class="footer-action">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdX0G3eI0fttdhqXR_YAexVfp2LlgFBJTWZUpS4gGjICfkZ_Q/viewform?usp=sharing" target="_blank" style="text-decoration: none;">
-            <button class="btn-register">ĐĂNG KÍ HỌC NGAY</button>
-        </a>
-        <a href="https://sites.google.com/view/namins2" target="_blank" class="link-detail">GIỚI THIỆU VỀ NAMINS.COM</a>
-    </div>
-
-    <div class="copyright">© 2026 NAMINS</div>
-
-    <script>
-        // Gán dữ liệu hiển thị mặc định trong lúc chờ tải dữ liệu mạng
-        document.getElementById('subject-text').innerText = DEFAULT_SUBJECT;
-        document.getElementById('grade-text').innerText = DEFAULT_GRADE;
-
-        function openMobileMenu(e) {
-            e.stopPropagation();
-            document.getElementById('mobileNavMenu').classList.add('open');
-        }
-
-        function closeMobileMenu(e) {
-            e.stopPropagation();
-            document.getElementById('mobileNavMenu').classList.remove('open');
-        }
-
-        function handleMobileClick(wrapper, event) {
-            if (window.innerWidth <= 768) {
-                if (event.target.tagName === 'A' && event.target.getAttribute('href') !== '#') return; 
-                event.preventDefault();
-                event.stopPropagation();
-                wrapper.classList.toggle('active-mobile');
-            }
-        }
-
-        function toggleMenu(id) {
-            let targetMenu = document.getElementById(id);
-            if (targetMenu) {
-                const currentDisplay = window.getComputedStyle(targetMenu).display;
-                document.querySelectorAll('.container .dropdown').forEach(menu => {
-                    menu.style.display = 'none';
-                });
-                if (currentDisplay === "none") {
-                    targetMenu.style.display = "block";
-                }
-            }
-        }
-
-        // Tự động gán lớp Active cho thanh Menu dựa trên URL thực tế
-        window.addEventListener('DOMContentLoaded', () => {
-            const currentUrl = window.location.href;
-            document.querySelectorAll('.nav-menu .nav-item').forEach(el => el.classList.remove('active'));
-            
-            if (currentUrl.includes('/toan-thpt/')) {
-                document.getElementById('menu-thpt').classList.add('active');
-            } else if (currentUrl.includes('/toan-thcs/')) {
-                document.getElementById('menu-thcs').classList.add('active');
-            } else if (currentUrl.includes('/vatli/')) {
-                document.getElementById('menu-vatli').classList.add('active');
-            } else if (currentUrl.includes('/video/')) {
-                document.getElementById('menu-video').classList.add('active');
-            } else {
-                document.getElementById('menu-home').classList.add('active');
-            }
-
-            // Gọi tiến trình tải dữ liệu thời gian thực
-            loadDataRealtime();
-
-            document.addEventListener('click', (e) => {
-                if(window.innerWidth <= 768) {
-                    const menu = document.getElementById('mobileNavMenu');
-                    if(menu && !menu.contains(e.target)) {
-                        menu.classList.remove('open');
-                    }
+            let columnsData = { 1: {}, 2: {} };
+            rows.forEach((row, rowIndex) => {
+                if (!row.c) return;
+                if (rowIndex === 0 && !row.c[0]) return;
+                const colNum = (row.c[0] && row.c[0].v) ? parseInt(row.c[0].v) : 1;
+                const chuongName = (row.c[1] && row.c[1].v) ? row.c[1].v.toString().trim() : '';
+                const baiName = (row.c[2] && row.c[2].v) ? row.c[2].v.toString().trim() : '';
+                const linkUrl = (row.c[3] && row.c[3].v) ? row.c[3].v.toString().trim() : '#';
+                const customColor = (row.c[4] && row.c[4].v) ? row.c[4].v.toString().trim() : '';
+                if (chuongName) {
+                    if (!columnsData[colNum]) columnsData[colNum] = {};
+                    if (!columnsData[colNum][chuongName]) columnsData[colNum][chuongName] = { color: '', items: [] };
+                    if (baiName) columnsData[colNum][chuongName].items.push({ name: baiName, link: linkUrl, color: customColor });
+                    else if (customColor) columnsData[colNum][chuongName].color = customColor;
                 }
             });
-        });
+            return { meta: { subject: subjectVal, grade: gradeVal, title: titleVal }, columns: columnsData };
+        }
 
-        // Xử lý kéo luồng dữ liệu động trực tiếp từ Google Sheet API gviz
-        function loadDataRealtime() {
-            const FULL_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
+        // ==========================================================
+        // THUẬT TOÁN ĐẨY CODE LÊN GITHUB KHÔNG CẦN COPY-PASTE MANUAL
+        // ==========================================================
+        function startAutoSyncToGitHub() {
+            const token = document.getElementById('gh-token-input').value.trim();
+            const status = document.getElementById('update-status');
+            
+            if(!token) { alert('Vui lòng nhập mã GitHub Token để xác thực quyền ghi đè!'); return; }
+            
+            status.innerText = "⏳ Bước 1: Đang lấy dữ liệu từ Google Sheets...";
+            status.style.color = "orange";
 
-            fetch(FULL_URL)
-            .then(res => {
-                if(!res.ok) throw new Error("Network error");
-                return res.text();
-            })
+            const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
+
+            // 1. Kéo dữ liệu từ Sheet về trước
+            fetch(SHEET_URL)
+            .then(res => { if(!res.ok) throw new Error("Sheet error"); return res.text(); })
             .then(rep => {
-                const data = JSON.parse(rep.substr(47).slice(0, -2));
-                const rows = data.table.rows;
+                const freshPackage = parseGoogleSheetToPackage(rep);
+                status.innerText = "⏳ Bước 2: Đang tải mã gốc và SHA định danh từ GitHub...";
                 
-                if (!rows || rows.length === 0) {
-                    showErrorNotify("Không tìm thấy cấu trúc dòng dữ liệu.");
-                    return;
-                }
-
-                // Đọc thông tin cấu hình từ hàng thứ nhất (Hàng 1: F1, G1, H1)
-                let subjectVal = DEFAULT_SUBJECT;
-                let gradeVal = DEFAULT_GRADE;
-                let titleVal = `${DEFAULT_SUBJECT} ${DEFAULT_GRADE} - NAMINS`;
+                // Đường dẫn gọi API GitHub
+                const githubApiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
                 
-                if (rows[0] && rows[0].c) {
-                    if (rows[0].c[5] && rows[0].c[5].v) subjectVal = rows[0].c[5].v.toString().trim();
-                    if (rows[0].c[6] && rows[0].c[6].v) gradeVal = rows[0].c[6].v.toString().trim();
-                    if (rows[0].c[7] && rows[0].c[7].v) titleVal = rows[0].c[7].v.toString().trim();
-                }
-
-                // Cập nhật các tiêu đề hiển thị động
-                document.getElementById('page-title').innerText = titleVal;
-                document.getElementById('subject-text').innerText = subjectVal;
-                document.getElementById('grade-text').innerText = gradeVal;
-
-                let columnsData = { 1: {}, 2: {} };
-
-                // Xử lý thuật toán nhóm bảng dữ liệu động dạng cây
-                rows.forEach((row, rowIndex) => {
-                    if (!row.c) return; 
-                    if (rowIndex === 0 && !row.c[0]) return; 
-
-                    const colNum = (row.c[0] && row.c[0].v) ? parseInt(row.c[0].v) : 1; 
-                    const chuongName = (row.c[1] && row.c[1].v) ? row.c[1].v.toString().trim() : '';     
-                    const baiName = (row.c[2] && row.c[2].v) ? row.c[2].v.toString().trim() : '';        
-                    const linkUrl = (row.c[3] && row.c[3].v) ? row.c[3].v.toString().trim() : '#';        
-                    const customColor = (row.c[4] && row.c[4].v) ? row.c[4].v.toString().trim() : '';       
-
-                    if (chuongName) {
-                        if (!columnsData[colNum]) columnsData[colNum] = {};
-                        if (!columnsData[colNum][chuongName]) {
-                            columnsData[colNum][chuongName] = { color: '', items: [] };
-                        }
-                        if (baiName) {
-                            columnsData[colNum][chuongName].items.push({ 
-                                name: baiName, link: linkUrl, color: customColor 
-                            });
-                        } else if (customColor) {
-                            columnsData[colNum][chuongName].color = customColor;
-                        }
-                    }
+                // 2. Gọi lên GitHub lấy file hiện tại về để lấy mã SHA định danh (Bắt buộc phải có SHA mới ghi đè được)
+                return fetch(githubApiUrl, {
+                    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+                })
+                .then(res => {
+                    if (res.status === 401) throw new Error("Mã GitHub Token sai hoặc đã hết hạn!");
+                    if (!res.ok) throw new Error("Không tìm thấy file trên GitHub. Vui lòng kiểm tra cấu hình GH_PATH.");
+                    return res.json();
+                })
+                .then(fileData => {
+                    status.innerText = "⏳ Bước 3: Đang biên dịch mã nguồn và đóng gói...";
+                    
+                    const fileSha = fileData.sha; // Lấy chuỗi SHA bí mật của file
+                    const oldSourceBase64 = fileData.content;
+                    // Giải mã file cũ ra dạng chữ để xử lý chuỗi
+                    let oldHtmlText = decodeURIComponent(escape(atob(oldSourceBase64.replace(/\s/g, ''))));
+                    
+                    // Thực hiện tìm vùng biến STATIC_DATA_STORE cũ và bơm cục dữ liệu JSON mới vào
+                    const jsonStringData = JSON.stringify(freshPackage);
+                    const regexReplace = /const STATIC_DATA_STORE = \{.*?\};|const STATIC_DATA_STORE = null;/;
+                    
+                    let newHtmlText = oldHtmlText.replace(regexReplace, `const STATIC_DATA_STORE = ${jsonStringData};`);
+                    
+                    // Mã hóa file mới sang Base64 để gửi lên GitHub API
+                    const newContentBase64 = btoa(unescape(encodeURIComponent(newHtmlText)));
+                    
+                    status.innerText = "⏳ Bước 4: Đang đẩy tệp tin đã nén lên máy chủ GitHub...";
+                    
+                    // 3. Tiến hành PUT gửi lệnh ghi đè trực tiếp
+                    return fetch(githubApiUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github.v3+json'
+                        },
+                        body: JSON.stringify({
+                            message: `⚡ Hệ thống NAMINS tự động đồng bộ từ Google Sheet vào ngày ${new Date().toLocaleDateString('vi-VN')}`,
+                            content: newContentBase64,
+                            sha: fileSha
+                        })
+                    });
                 });
-
-                // Kết xuất cấu trúc cây ra 2 cột HTML tương ứng
-                renderColumn(1, columnsData[1]);
-                renderColumn(2, columnsData[2]);
+            })
+            .then(res => {
+                if(!res.ok) throw new Error("Ghi đè file lên GitHub thất bại!");
+                return res.json();
+            })
+            .then(() => {
+                status.innerText = "✅ THÀNH CÔNG! File đã được cập nhật trực tiếp lên GitHub.";
+                status.style.color = "green";
+                document.getElementById('gh-token-input').value = ""; // Xóa sạch token ngay lập tức để bảo mật
+                alert("🎉 Tuyệt vời! Hệ thống đã ghi đè tệp lên GitHub thành công. Học sinh sẽ thấy bài học mới sau 1-2 phút khi GitHub Pages đồng bộ xong.");
+                location.reload(); // Tải lại trang để áp dụng giao diện mới
             })
             .catch(err => {
                 console.error(err);
-                showErrorNotify("Lỗi tải đám mây. Hãy kiểm tra cài đặt chia sẻ của Google Sheet.");
+                status.innerText = "❌ Lỗi: " + err.message;
+                status.style.color = "red";
             });
         }
 
-        function renderColumn(colNum, chapters) {
-            const columnEl = document.getElementById(`column-${colNum}`);
-            if (!columnEl) return;
-
-            const headerEl = columnEl.querySelector('.column-header');
-            const headerHtml = headerEl ? headerEl.outerHTML : '';
-            columnEl.innerHTML = headerHtml;
-
-            let index = 0;
-            for (let chuongName in chapters) {
-                index++;
-                const menuId = `chuong_col${colNum}_${index}`;
-                const chapterData = chapters[chuongName];
-                
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.style.marginBottom = '12px';
-                card.setAttribute('onclick', `toggleMenu('${menuId}')`);
-
-                const h2 = document.createElement('h2');
-                h2.innerText = chuongName;
-                if (chapterData.color) h2.style.color = chapterData.color; 
-                card.appendChild(h2);
-
-                const dropdown = document.createElement('div');
-                dropdown.className = 'dropdown';
-                dropdown.id = menuId;
-
-                if (!chapterData.items || chapterData.items.length === 0) {
-                    dropdown.innerHTML = '<span style="color:#888; font-style:italic; font-size:14px; padding: 5px 4px; display:block;">(Chưa có học liệu con)</span>';
-                } else {
-                    chapterData.items.forEach(item => {
-                        const a = document.createElement('a');
-                        a.href = item.link;
-                        a.target = '_blank';
-                        a.onclick = (e) => e.stopPropagation(); 
-                        if (item.color) a.style.color = item.color; 
-                        
-                        const span = document.createElement('span');
-                        span.innerText = item.name;
-                        
-                        a.appendChild(span);
-                        dropdown.appendChild(a);
-                    });
-                }
-                card.appendChild(dropdown);
-                columnEl.appendChild(card);
-            }
-            
-            if (!chapters || Object.keys(chapters).length === 0) {
-                const emptyNotify = document.createElement('div');
-                emptyNotify.className = 'loading-overlay';
-                emptyNotify.innerText = 'Hiện tại mục này chưa cập nhật nội dung.';
-                columnEl.appendChild(emptyNotify);
-            }
-        }
-
-        function showErrorNotify(msg) {
+        function showErrorMsg(msg) {
             document.getElementById('column-1').innerHTML = `<div class="column-header bg-green">1. Bài giảng</div><div class="loading-overlay" style="color:red;">${msg}</div>`;
-            document.getElementById('column-2').innerHTML = `<div class="column-header bg-orange">2. Đề cương &amp; Đề thi</div><div class="loading-overlay" style="color:red;">${msg}</div>`;
         }
     </script>
 </body>
