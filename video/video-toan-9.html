@@ -8,9 +8,9 @@
     <title>Giao diện bài giảng NAMINS</title>
 
     <script>
-        const SHEET_ID = '1Yc_08QbksokSslgraHs6B7OJkxrSI159PvTGFRNc5NM'; // Mã ID Google Sheet của bạn
+        const SHEET_ID = '1GaziLrmpjOMaw6gPnXrj7wlqFs4hXU5JQFX62pL79Nk'; // ID Google Sheet môn học của bạn
         const SHEET_TITLE = 'Trang tính1'; // Tên Tab của Google Sheet
-        const SHEET_RANGE = 'B2:I200'; // Quét đến cột I để lấy đường dẫn file tự động ở ô I1
+        const SHEET_RANGE = 'B1:I200'; // Quét chuẩn từ cột B đến cột I để lấy dữ liệu
         const ADMIN_PASSWORD = 'admin123'; // Mật khẩu kích hoạt quyền Admin trên giao diện web
 
         // Cấu hình tài khoản GitHub cố định
@@ -358,7 +358,7 @@
                 grid-template-columns: 1fr;
             }
             .video-column {
-                padding-bottom: 1px; 
+                padding-bottom: 10px; 
                 background-color: #000;
             }
             .sidebar-column {
@@ -431,7 +431,7 @@
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSdX0G3eI0fttdhqXR_YAexVfp2LlgFBJTWZUpS4gGjICfkZ_Q/viewform?usp=sharing" target="_blank" style="text-decoration: none;">
                 <button class="btn-register">ĐĂNG KÍ HỌC NGAY</button>
             </a>
-            <a href="https://sites.google.com/view/namins2" target="_blank" class="link-detail">GIỚI THIỆU VỀ NAMINS.COM</a>
+            <a href="https://sites.google.com/view/namins2" target="_blank" class="link-detail">GIỢI THIỆU VỀ NAMINS.COM</a>
         </div>
         <div class="copyright">© 2026 NAMINS</div>
     </div>
@@ -440,7 +440,7 @@
         // ==========================================================
         // KHU VỰC BỘ NHỚ ĐỆM ĐÓNG GÓI SẴN (CHỈ CẬP NHẬT KHI ADMIN LỆNH)
         // ==========================================================
-        const STATIC_DATA_STORE = {"subjectTitle":"Toán 10","sidebarTitle":"Khóa bồi dưỡng kiến thức","lessons":[{"lessonTitle":"Chương 1. Vật Lí Nhiệt","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]};
+        const STATIC_DATA_STORE = {"subjectTitle":"Toán 6","sidebarTitle":"Bài giảng nền tảng","lessons":[{"lessonTitle":"Chương 1. Tập hợp số tự nhiên","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 3. Từ trường","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=WvRFuee6flU"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=nK0Mu9FYJIg"},{"partTitle":"Tài liệu 3","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 2. Tính chia hết trong số tự nhiên","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1.Đại cương về VLHN","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"https://www.youtube.com/watch?v=1HwGFQaeR9c"},{"partTitle":"Phần 2. Tính chất","linkUrl":"https://www.youtube.com/watch?v=OOfiMWzeZig"},{"partTitle":"Phần 3. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Phóng xạ","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm về khí lí tưởng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương  3. Tập hợp số tự nhiên","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1. Đại cương vật lí nhiệt","colorCode":"","parts":[{"partTitle":"Phần 1. Tính chất","linkUrl":"https://www.youtube.com/watch?v=ho87M1-qPLk"},{"partTitle":"Phần 2. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=5IfDXZ3URzM"},{"partTitle":"Tài liệu 1","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Khí lí tưởng","colorCode":"","parts":[{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=271Xrxi_o5g"},{"partTitle":"Phần 3. Quá trình đẳng tích","linkUrl":"https://www.youtube.com/watch?v=fZcr7pKHPIM"},{"partTitle":"Phần 4. Quá trình đẳng áp","linkUrl":"https://www.youtube.com/watch?v=lAEDVXYm8-k"},{"partTitle":"Tài liệu 2","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 3. Từ trường","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=WvRFuee6flU"},{"partTitle":"Phần 3. Cảm ứng điện từ","linkUrl":"https://www.youtube.com/watch?v=nK0Mu9FYJIg"},{"partTitle":"Tài liệu 3","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 4. Tính chia hết trong số tự nhiên","colorCode":"#b37d32","parts":[]},{"lessonTitle":"Bài 1.Đại cương về VLHN","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm","linkUrl":"https://www.youtube.com/watch?v=1HwGFQaeR9c"},{"partTitle":"Phần 2. Tính chất","linkUrl":"https://www.youtube.com/watch?v=OOfiMWzeZig"},{"partTitle":"Phần 3. Ứng dụng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Bài 2. Phóng xạ","colorCode":"","parts":[{"partTitle":"Phần 1. Một số khái niệm về khí lí tưởng","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Phần 2. Quá trình đẳng nhiệt","linkUrl":"https://www.youtube.com/watch?v=8Sdx-W5ghgs"},{"partTitle":"Tài liệu 4","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]};
         // ==========================================================
 
         function extractYouTubeId(url) {
@@ -468,13 +468,11 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Render giao diện HOÀN TOÀN TỪ FILE TĨNH (Học sinh tuyệt đối không gọi API Sheet)
             if (STATIC_DATA_STORE) {
                 renderMenuAndVideo(STATIC_DATA_STORE);
             } else {
-                // File mới tinh chưa từng được đồng bộ đóng gói dữ liệu
                 document.getElementById('base-subject-text').innerText = "NAMINS EDUCATION";
-                document.getElementById('menu-container').innerHTML = `<div class="loading-overlay" style="color:orange; font-weight:bold;">🛠️ TRANG MỚI: Vui lòng gõ mật khẩu Quản trị vào ô Tìm kiếm để Đồng bộ dữ liệu lên GitHub!</div>`;
+                document.getElementById('menu-container').innerHTML = `<div class="loading-overlay">Chờ dữ liệu...</div>`;
             }
         });
 
@@ -607,23 +605,27 @@
             }
         }
 
-        // Chuyển đổi dữ liệu Google gviz thô thành JSON cấu trúc chuẩn NAMINS và bóc tách ô I1
         function parseGoogleSheetToPackage(rawText) {
             const data = JSON.parse(rawText.substr(47).slice(0, -2));
             const rows = data.table.rows;
+            const rawCols = data.table.cols; 
             
-            let subjectVal = 'Toán 10', sidebarVal = 'Khóa bồi dưỡng kiến thức', targetPath = 'video/video-toan-10.html';
+            let subjectVal = 'Toán 6', sidebarVal = 'Khóa bồi dưỡng kiến thức', targetPath = 'video/video-toan-6.html';
             
             function getVal(cols, index) {
                 if (!cols || index >= cols.length || !cols[index] || cols[index].v === null || cols[index].v === undefined) return '';
                 return cols[index].v.toString().trim();
             }
 
-            // ĐÚNG CHUẨN ĐỊNH VỊ: Vùng chọn bắt đầu từ cột B (index 0 là cột B, index 1 là cột C,...)
+            if (rawCols && rawCols.length >= 8) {
+                if (rawCols[7] && rawCols[7].label) {
+                    targetPath = rawCols[7].label.toString().trim();
+                }
+            }
+
             if (rows[0] && rows[0].c) {
-                subjectVal = getVal(rows[0].c, 0) || 'Toán 10';    // Cột B (Môn học)
-                sidebarVal = getVal(rows[0].c, 1) || 'Khóa bồi dưỡng kiến thức';    // Cột C (Tiêu đề mục lục)
-                targetPath = getVal(rows[0].c, 7) || 'video/video-toan-10.html';    // Cột I (Đường dẫn file GitHub - index 7 tính từ cột B)
+                subjectVal = getVal(rows[0].c, 0) || 'Toán 6';    
+                sidebarVal = getVal(rows[0].c, 1) || 'Khóa bồi dưỡng kiến thức'; 
             }
             
             let structuredData = {
@@ -638,13 +640,13 @@
                 const cols = rows[i].c;
                 if (!cols) continue;
 
-                const checkSidebarCol = getVal(cols, 1); // Cột C
+                const checkSidebarCol = getVal(cols, 1); 
                 if (!checkSidebarCol) break; 
 
-                const lessonTitle = getVal(cols, 2); // Cột D
-                const partTitle   = getVal(cols, 3); // Cột E
-                const linkUrl     = getVal(cols, 4); // Cột F
-                const colorCode   = getVal(cols, 5); // Cột G
+                const lessonTitle = getVal(cols, 2); 
+                const partTitle   = getVal(cols, 3); 
+                const linkUrl     = getVal(cols, 4); 
+                const colorCode   = getVal(cols, 5); 
 
                 if (!lessonTitle) continue;
 
@@ -674,7 +676,7 @@
             
             if(!token) return;
             
-            status.innerText = "⏳ Đang kết nối Sheet...";
+            status.innerText = "⏳";
             status.style.color = "orange";
 
             const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TITLE)}&range=${SHEET_RANGE}`;
@@ -685,7 +687,6 @@
                 const parsedResult = parseGoogleSheetToPackage(rep);
                 const ghPathFromSheet = parsedResult.gitPath; 
                 
-                status.innerText = "⏳ Đang kết nối GitHub...";
                 const githubApiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${ghPathFromSheet}`;
                 
                 return fetch(githubApiUrl, {
@@ -697,8 +698,6 @@
                     return res.json();
                 })
                 .then(fileData => {
-                    status.innerText = "⏳ Đang đóng gói dữ liệu...";
-                    
                     const fileSha = fileData.sha; 
                     const oldSourceBase64 = fileData.content;
                     let oldHtmlText = decodeURIComponent(escape(atob(oldSourceBase64.replace(/\s/g, ''))));
@@ -708,8 +707,6 @@
                     let newHtmlText = oldHtmlText.replace(regexReplace, `const STATIC_DATA_STORE = ${jsonStringData};`);
                     
                     const newContentBase64 = btoa(unescape(encodeURIComponent(newHtmlText)));
-                    
-                    status.innerText = "⏳ Đang đồng bộ file...";
                     
                     return fetch(githubApiUrl, {
                         method: 'PUT',
