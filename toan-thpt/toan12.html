@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -326,40 +325,6 @@
             flex-shrink: 0;
         }
 
-        /* KHỐI CHỌN GIÁO VIÊN MỚI THÊM VÀO */
-        .teacher-select-box {
-            background-color: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 8px 12px;
-            flex-shrink: 0;
-        }
-        .teacher-select-title {
-            font-size: 11px;
-            font-weight: bold;
-            color: #64748b;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
-        }
-        .teacher-item {
-            font-size: 13px;
-            padding: 6px 10px;
-            color: #334155;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s;
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-        .teacher-item:hover {
-            background-color: #e2e8f0;
-        }
-        .teacher-item.active {
-            background-color: #1e4620;
-            color: #ffffff;
-            font-weight: bold;
-        }
-
         .menu-scroll-container {
             flex-grow: 1;
             overflow-y: auto; 
@@ -483,6 +448,42 @@
             text-align: center;
             font-size: 14px;
             color: #666;
+        }
+
+        /* ========================================================
+           KHỐI THIẾT KẾ MỚI CHUẨN 100% THEO ẢNH BÊN TRÁI CỦA BẠN
+           ======================================================== */
+        .courses-catalog-box {
+            margin-top: 25px;
+            width: 100%;
+            clear: both;
+        }
+        .courses-catalog-title {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 28px;
+            font-weight: bold;
+            color: #000000;
+            text-decoration: underline;
+            margin-bottom: 12px;
+        }
+        .courses-list {
+            list-style: none;
+            padding-left: 5px;
+        }
+        .course-link-item {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 26px;
+            font-weight: bold;
+            color: #000000;
+            cursor: pointer;
+            margin-bottom: 6px;
+            transition: color 0.2s;
+        }
+        .course-link-item:hover {
+            color: var(--primary-orange);
+        }
+        .course-link-item.selected-active {
+            color: var(--primary-green);
         }
 
         /* KHU VỰC QUẢN TRỊ ADMIN TUYỆT ĐỐI TỐI GIẢN */
@@ -619,20 +620,14 @@
 
             .nav-item-wrap:hover .dropdown-content { display: none; }
 
-            /* Mobile: Chuyển khối tiêu đề và tìm kiếm thành hàng dọc để tránh bị chèn chữ */
             .subject-header-container {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 10px;
             }
 
-            .search-box {
-                width: 100%;
-            }
-
-            .search-box input {
-                width: 100%;
-            }
+            .search-box { width: 100%; }
+            .search-box input { width: 100%; }
 
             .main-container {
                 grid-template-columns: 1fr;
@@ -645,7 +640,7 @@
                 border-left: none;
                 border-top: 1px solid #dcdcdc;
                 height: auto;
-                max-height: 400px;
+                max-height: 320px;
             }
             .current-lesson-bottom-display {
                 margin-right: 0px;
@@ -661,6 +656,8 @@
             .copyright {
                 text-align: center;
             }
+            .courses-catalog-title { text-align: center; }
+            .course-link-item { text-align: center; }
         }
     </style>
 </head>
@@ -740,13 +737,6 @@
 
             <div class="sidebar-column">
                 <div class="sidebar-header" id="sidebar-title"><span>Mục lục bài giảng</span></div>
-                
-                <div class="teacher-select-box">
-                    <div class="teacher-select-title">Danh mục các khóa học</div>
-                    <div id="teacher-list-container">
-                        </div>
-                </div>
-
                 <div class="menu-scroll-container" id="menu-container">
                     <div class="loading-overlay">Chờ dữ liệu...</div>
                 </div>
@@ -754,6 +744,12 @@
         </div>
 
         <div class="current-lesson-bottom-display" id="subject-lesson-append">ONTHI24 EDUCATION</div>
+
+        <div class="courses-catalog-box">
+            <div class="courses-catalog-title">Danh mục các khóa học</div>
+            <ul class="courses-list" id="custom-teacher-links-list">
+                </ul>
+        </div>
 
         <div id="admin-panel">
             <div class="admin-form-group">
@@ -776,16 +772,15 @@
 
     <script>
         // ==========================================================
-        // BỘ NHỚ ĐỆM ĐÓNG GÓI SẴN NHIỀU GIÁO VIÊN (CẬP NHẬT QUA ADMIN AUTO-SYNC)
+        // KHU VỰC BỘ NHỚ ĐỆM ĐÓNG GÓI SẴN (ĐÃ ĐƯỢC CHỈNH CẤU TRÚC ĐA GIÁO VIÊN)
         // ==========================================================
-        const STATIC_DATA_STORE = {"subjectTitle":"Toán 12","sidebarTitle":"Thầy Nguyễn Phan Tiến","lessons":[{"lessonTitle":"Chương 1. Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số","colorCode":"#b37d32","parts":[{"partTitle":"Bài 1.1 Tính Đơn Điệu Của Hàm Số","linkUrl":"https://www.youtube.com/watch?v=zsxktJWNxVI&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 1.2 Cực Trị Của Hàm Số","linkUrl":"https://www.youtube.com/watch?v=BbFj2KgZy6Q&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=2"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 2. Giá Trị Lớn Nhất - Nhỏ Nhất của Hàm Số","linkUrl":"https://www.youtube.com/watch?v=WsMJEaCQsoA&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=4"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 3. Đường Tiệm Cận của Đồ Thị hàm Số","linkUrl":"https://www.youtube.com/watch?v=o6g5ZpOczLc&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=6"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 4. Khảo Sát và Vẽ Đồ Thị Hàm Số","linkUrl":"https://www.youtube.com/watch?v=990wEB5yo2k&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=7"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 5. Ứng Dụng Đạo Hàm Giải Quyết Bài Toán Thực Tế","linkUrl":"https://www.youtube.com/watch?v=DYFeDU9oFG4&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=8"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 6. Đơn Điệu Chứa Tham Số m (Tính đồng biến - nghịch biến)","linkUrl":"https://www.youtube.com/watch?v=g7InuFPi7Yo&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=9"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 7. Cực Trị Chứa Tham Số m","linkUrl":"https://www.youtube.com/watch?v=hSe9VbM95o4&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=10"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 8. Cực Trị của Hàm Trị Tuyệt Đối","linkUrl":"https://www.youtube.com/watch?v=KmiyIn6H_Kk&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=12"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 9. Giá trị lớn nhất và Nhỏ Nhất của Hàm S","linkUrl":"https://www.youtube.com/watch?v=FukzNMLJt6s&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=13"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 10. Đồ thị Đạo Hàm (Hàm Hợp) - Phần 1","linkUrl":"https://www.youtube.com/watch?v=yNQRywzrR5M&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=14"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 11. Nhận diện Đồ thị Hàm Số (Phần 1): Hàm Bậc 3, Bậc 4","linkUrl":"https://www.youtube.com/watch?v=TJrY8OO8Nqw&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=15"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 12. Tiệm Cận chứa Tham Số m","linkUrl":"https://www.youtube.com/watch?v=jqKJAmWblEc&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=16"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 13. Phương Pháp Ghép Trục - Tương Giao Hàm Số Chứa m","linkUrl":"https://www.youtube.com/watch?v=x416ddGvt5k&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=17"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 14. Tổng ôn tập chương 1. Hàm số và ứng dụng","linkUrl":"https://www.youtube.com/watch?v=RtuWyBrEq9g&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=22"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 2. Véc tơ và trục tọa độ trong không gian","colorCode":"#b37d32","parts":[{"partTitle":"Bài 1. Vecto Trong Không Gian","linkUrl":"https://www.youtube.com/watch?v=phvpqxLNTUQ&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 2. Hệ Trục Tọa Độ Oxyz - Tọa Độ Điểm và Vecto","linkUrl":"https://www.youtube.com/watch?v=uzN97cFH1II&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=4"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 3. Biểu Thức Tọa Độ Phép Toán Vecto Trong Không Gian","linkUrl":"https://www.youtube.com/watch?v=G-9G2nDnwqA&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=5"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 4. Ôn Tập Hình Tọa Độ Oxyz - Giữa Kì 2","linkUrl":"https://www.youtube.com/watch?v=9xj5ExISius&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=16"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 3. Các số đo đặc trưng","colorCode":"#b37d32","parts":[{"partTitle":"Mẫu Số Liệu Ghép Nhóm và Các Số Đặc Trưng Đo Xu Thế Trung Tâm","linkUrl":"https://www.youtube.com/watch?v=Z2ssSY4atIA"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 4. Nguyên hàm và tích phân","colorCode":"#b37d32","parts":[{"partTitle":"Bài 1.1 Nguyên Hàm Cơ Bản và Công Thức Nguyên Hàm","linkUrl":"https://www.youtube.com/watch?v=j615s9znk4U&list=PLXmeri-X8nVzh1d_AjoKoTqZI1D3iqU5q&index=1"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 1.2 Nguyên Hàm Thường Gặp","linkUrl":"https://www.youtube.com/watch?v=7urfQ8s20oY&list=PLXmeri-X8nVzh1d_AjoKoTqZI1D3iqU5q&index=2"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 2. Tích Phân Và Toán Thực Tế Tích Phân","linkUrl":"https://www.youtube.com/watch?v=cNDQkKzfsfw&list=PLXmeri-X8nVzh1d_AjoKoTqZI1D3iqU5q&index=3"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 3. Ứng Dụng Hình Học của Tích Phân","linkUrl":"https://www.youtube.com/watch?v=4DE9Cz-e2mo&list=PLXmeri-X8nVzh1d_AjoKoTqZI1D3iqU5q&index=4"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bấm Máy Tính Tích Phân 2, 3 ẩn","linkUrl":"https://www.youtube.com/watch?v=4v7TAgoz2FI&list=PLXmeri-X8nVzh1d_AjoKoTqZI1D3iqU5q&index=13"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Ứng Dụng Tích Phân (Toán 12): Bài Toán Chuyển Động","linkUrl":"https://www.youtube.com/watch?v=ZWNGDJqTSSU&list=PLXmeri-X8nVzh1d_AjoKoTqZI1D3iqU5q&index=24"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 5. Phương pháp tọa độ trong không gian","colorCode":"#b37d32","parts":[{"partTitle":"Chương 5. Phương pháp tọa độ trong không gian","linkUrl":""},{"partTitle":"Bài 1. Phương Trình Mặt Phẳng","linkUrl":"https://www.youtube.com/watch?v=PciV6qoMQXU&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=6"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 2. Phương Trình Đường Thẳng","linkUrl":"https://www.youtube.com/watch?v=pE0nx6XGwD0&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=7"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 3. Phương Trình Mặt Cầu","linkUrl":"https://www.youtube.com/watch?v=D3TjlXqPaz0&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=8"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 4. Góc và Khoảng Cách - Phần 1","linkUrl":"https://www.youtube.com/watch?v=GbZxmfrD6j0&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=14"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 5. Tìm Điểm Đối Xứng và Các Loại Hình Chiếu","linkUrl":"https://www.youtube.com/watch?v=5mGlYIQHiOI&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=15"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 6. Tâm Tỉ Cự Giải Nhanh Max Min Oxyz","linkUrl":"https://www.youtube.com/watch?v=ulZYfnAWkRo&list=PLXmeri-X8nVz44g73HUIKaN_atMmUc1Uj&index=18"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]},{"lessonTitle":"Chương 6. Xác suất có điều kiện","colorCode":"#b37d32","parts":[{"partTitle":"Bài 1. Xác Suất có điều kiện. Công Thức Nhân Xác Suất","linkUrl":"https://www.youtube.com/watch?v=73Ft8fDSc3c&list=PLXmeri-X8nVydIoUTujAYaV1uaeavkpjA&index=1"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 2. Công Thức Xác Suất Toàn Phần. Công Thức Bayes","linkUrl":"https://www.youtube.com/watch?v=n7bUihWfW4w&list=PLXmeri-X8nVydIoUTujAYaV1uaeavkpjA&index=2"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Phần 2.1 Công Thức Xác Suất Toàn Phần. Xác Suất Có Điều Kiện","linkUrl":"https://www.youtube.com/watch?v=2ZsjfFccH0s&list=PLXmeri-X8nVydIoUTujAYaV1uaeavkpjA&index=3"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Phần 2.2 Công Thức Bayes. Xác suất có Điều kiệ","linkUrl":"https://www.youtube.com/watch?v=ZN4LSnQLEyc&list=PLXmeri-X8nVydIoUTujAYaV1uaeavkpjA&index=4"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]};
+        const STATIC_DATA_STORE = {"subjectTitle":"Toán 12","byTeachers":{"Thầy Nguyễn Phan Tiến":{"sidebarTitle":"Thầy Nguyễn Phan Tiến","lessons":[{"lessonTitle":"Chương 1. Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số","colorCode":"#b37d32","parts":[{"partTitle":"Bài 1.1 Tính Đơn Điệu Của Hàm Số","linkUrl":"https://www.youtube.com/watch?v=zsxktJWNxVI&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 1.2 Cực Trị Của Hàm Số","linkUrl":"https://www.youtube.com/watch?v=BbFj2KgZy6Q&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=2"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 2. Giá Trị Lớn Nhất - Nhỏ Nhất của Hàm Số","linkUrl":"https://www.youtube.com/watch?v=WsMJEaCQsoA&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=4"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 3. Đường Tiệm Cận của Đồ Thị hàm Số","linkUrl":"https://www.youtube.com/watch?v=o6g5ZpOczLc&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=6"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"},{"partTitle":"Bài 4. Khảo Sát và Vẽ Đồ Thị Hàm Số","linkUrl":"https://www.youtube.com/watch?v=990wEB5yo2k&list=PLXmeri-X8nVwKZM86S_TmWS2UsvB_mi45&index=7"},{"partTitle":"Bài tập (đang cập nhật)","linkUrl":"https://drive.google.com/file/d/1XYXocUdpEtKQj4hUShVnNH93Sv1q6u4z/view?usp=drive_link"}]}]}}};
         // ==========================================================
 
-        // BIẾN TOÀN CỤC LƯU TRỮ DỮ LIỆU ĐÃ PHÂN TÁCH THEO GIÁO VIÊN
         let GROUPED_TEACHERS_DATA = {};
         let CURRENT_TEACHER_NAME = "";
 
-        // --- HÀM ĐIỀU HƯỚNG THANH NAVBAR (MỞ / ĐÓNG MOBILE) ---
+        // --- HÀM ĐIỀU HƯỚNG NAVBAR ---
         function openMobileMenu(e) {
             e.stopPropagation();
             document.getElementById('mobileNavMenu').classList.add('open');
@@ -798,21 +793,17 @@
 
         function handleMenuMobileClick(wrapper, event) {
             if (window.innerWidth <= 768) {
-                if (event.target.tagName === 'A' && event.target.getAttribute('href') !== '#') {
-                    return; 
-                }
+                if (event.target.tagName === 'A' && event.target.getAttribute('href') !== '#') return;
                 event.preventDefault();
                 event.stopPropagation();
-
                 document.querySelectorAll('.nav-item-wrap').forEach(el => {
                     if (el !== wrapper) el.classList.remove('active-mobile');
                 });
-
                 wrapper.classList.toggle('active-mobile');
             }
         }
 
-        // --- HÀM XỬ LÝ VIDEO TRANG BÀI GIẢNG ---
+        // --- TRÌNH PHÁT VIDEO ---
         function extractYouTubeId(url) {
             if (!url) return '';
             url = url.trim();
@@ -837,65 +828,55 @@
             if (player) player.src = targetSrc;
         }
 
-        // HÀM KHỞI TẠO VÀ PHÂN CHIA DỮ LIỆU ĐỐI TƯỢNG BAN ĐẦU
+        // KHỞI TẠO GÓI DỮ LIỆU
         function initTeachersDataPackage(data) {
             GROUPED_TEACHERS_DATA = {};
-            
-            // Nếu data là định dạng đa giáo viên đã được nhóm từ Sheet
             if (data.byTeachers) {
                 GROUPED_TEACHERS_DATA = data.byTeachers;
-                document.getElementById('base-subject-text').innerText = data.subjectTitle || "ONTHI24";
+                document.getElementById('base-subject-text').innerText = data.subjectTitle || "Toán 12";
             } else {
-                // Dự phòng nếu data cũ chỉ có 1 thầy dạng phẳng
-                const tName = data.sidebarTitle || "Chưa rõ giáo viên";
+                const tName = data.sidebarTitle || "Thầy Nguyễn Phan Tiến";
                 GROUPED_TEACHERS_DATA[tName] = {
                     sidebarTitle: tName,
                     lessons: data.lessons || []
                 };
-                document.getElementById('base-subject-text').innerText = data.subjectTitle || "ONTHI24";
+                document.getElementById('base-subject-text').innerText = data.subjectTitle || "Toán 12";
             }
-
-            renderTeacherTabs();
+            renderCustomTeacherLinks();
         }
 
-        // HÀM HIỂN THỊ DANH SÁCH KHÓA HỌC/GIÁO VIÊN (1. THẦY HẢI, 2. THẦY TIẾN...)
-        function renderTeacherTabs() {
-            const container = document.getElementById('teacher-list-container');
+        // TẠO DANH MỤC KHÓA HỌC DƯỚI VIDEO THEO FONT CHỮ CÓ CHÂN (GIỐNG ẢNH BÊN TRÁI)
+        function renderCustomTeacherLinks() {
+            const container = document.getElementById('custom-teacher-links-list');
             container.innerHTML = '';
 
             const teacherNames = Object.keys(GROUPED_TEACHERS_DATA);
-            if (teacherNames.length === 0) {
-                container.innerHTML = '<div style="font-size:12px;color:red;">Không tìm thấy khóa học nào.</div>';
-                return;
-            }
+            if (teacherNames.length === 0) return;
 
-            // Chọn thầy đầu tiên làm mặc định nếu chưa chọn thầy nào
             if (!CURRENT_TEACHER_NAME || !GROUPED_TEACHERS_DATA[CURRENT_TEACHER_NAME]) {
                 CURRENT_TEACHER_NAME = teacherNames[0];
             }
 
             teacherNames.forEach((name, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = `teacher-item ${name === CURRENT_TEACHER_NAME ? 'active' : ''}`;
-                itemDiv.innerText = `${index + 1}. ${name}`;
+                const liItem = document.createElement('li');
+                liItem.className = `course-link-item ${name === CURRENT_TEACHER_NAME ? 'selected-active' : ''}`;
+                liItem.innerText = `${index + 1}. ${name}`;
                 
-                itemDiv.addEventListener('click', () => {
+                liItem.addEventListener('click', () => {
                     CURRENT_TEACHER_NAME = name;
-                    renderTeacherTabs(); // Vẽ lại menu để đổi trạng thái active
-                    renderLessonsMenu(GROUPED_TEACHERS_DATA[name]); // Đổi mục lục tương ứng
+                    renderCustomTeacherLinks(); 
+                    renderLessonsMenu(GROUPED_TEACHERS_DATA[name]);
                 });
 
-                container.appendChild(itemDiv);
+                container.appendChild(liItem);
             });
 
-            // Gọi render luôn cho thầy đang chọn hiện tại
             renderLessonsMenu(GROUPED_TEACHERS_DATA[CURRENT_TEACHER_NAME]);
         }
 
-        // HÀM IN MỤC LỤC BÀI GIẢNG CHI TIẾT THEO GIÁO VIÊN ĐƯỢC CHỌN
+        // IN MỤC LỤC BÀI GIẢNG TRÊN SIDEBAR
         function renderLessonsMenu(teacherData) {
             document.getElementById('sidebar-title').innerHTML = `<span>${teacherData.sidebarTitle}</span>`;
-
             const menuContainer = document.getElementById('menu-container');
             menuContainer.innerHTML = '';
 
@@ -1010,6 +991,8 @@
             if (!isFirstVideoLoaded && teacherData.lessons.length > 0) {
                 document.getElementById('subject-lesson-append').innerText = teacherData.lessons[0].lessonTitle;
                 document.getElementById('current-lesson-title').innerText = "Chọn bài học ở mục lục";
+                // Nếu chương đầu tiên của thầy không có video youtube nào (chỉ có tiêu đề chương trống):
+                updateVideoIframe('', false);
             }
         }
 
@@ -1021,13 +1004,13 @@
             }
         }
 
-        // HÀM PHÂN TÍCH DATA CHUẨN TỪ GOOGLE SHEET VÀ PHÂN CHIA THEO GIÁO VIÊN TỰ ĐỘNG
+        // HÀM PARSE SỬA LỖI: KHÔNG BỎ QUA DÒNG TRỐNG PART_TITLE ĐỂ TRÁNH MẤT DỮ LIỆU THẦY HẢI
         function parseGoogleSheetToPackage(rawText) {
             const data = JSON.parse(rawText.substr(47).slice(0, -2));
             const rows = data.table.rows;
             const rawCols = data.table.cols; 
             
-            let subjectVal = 'Toán học', targetPath = 'video/video-toan-12.html';
+            let subjectVal = 'Toán 12', targetPath = 'video/video-toan-12.html';
             
             function getVal(cols, index) {
                 if (!cols || index >= cols.length || !cols[index] || cols[index].v === null || cols[index].v === undefined) return '';
@@ -1041,28 +1024,27 @@
             }
 
             if (rows[0] && rows[0].c) {
-                subjectVal = getVal(rows[0].c, 0) || 'Môn Học';    
+                subjectVal = getVal(rows[0].c, 0) || 'Toán 12';    
             }
             
             let structuredData = {
                 subjectTitle: subjectVal,
-                byTeachers: {} // Lưu trữ dạng: {"Thầy Hải": { sidebarTitle: "...", lessons: [] }, "Thầy Tiến": {...}}
+                byTeachers: {}
             };
 
             for (let i = 0; i < rows.length; i++) {
                 const cols = rows[i].c;
                 if (!cols) continue;
 
-                const checkSubjectCol = getVal(cols, 0);
-                const teacherName = getVal(cols, 1); // Cột C: Tên Giáo viên
-                const lessonTitle = getVal(cols, 2); // Cột D: Chương
-                const partTitle   = getVal(cols, 3); // Cột E: Bài học nhỏ
-                const linkUrl     = getVal(cols, 4); // Cột F: Link Youtube / Drive
-                const colorCode   = getVal(cols, 5); // Cột G: Màu sắc hiển thị
+                const teacherName = getVal(cols, 1); // Cột C
+                const lessonTitle = getVal(cols, 2); // Cột D
+                const partTitle   = getVal(cols, 3); // Cột E
+                const linkUrl     = getVal(cols, 4); // Cột F
+                const colorCode   = getVal(cols, 5); // Cột G
 
+                // CHỈ CẦN CÓ TÊN GIÁO VIÊN VÀ CHƯƠNG LÀ ĐỦ ĐỂ KHỞI TẠO (Sửa lỗi bỏ qua dòng 2, 3)
                 if (!teacherName || !lessonTitle) continue;
 
-                // Khởi tạo cụm đối tượng của từng Thầy nếu chưa tồn tại
                 if (!structuredData.byTeachers[teacherName]) {
                     structuredData.byTeachers[teacherName] = {
                         sidebarTitle: teacherName,
@@ -1071,8 +1053,6 @@
                 }
 
                 let teacherLessons = structuredData.byTeachers[teacherName].lessons;
-                
-                // Tìm kiếm chương đã tồn tại của thầy đó chưa
                 let currentLessonObj = teacherLessons.find(l => l.lessonTitle === lessonTitle);
 
                 if (!currentLessonObj) {
@@ -1084,6 +1064,7 @@
                     teacherLessons.push(currentLessonObj);
                 }
 
+                // Nếu có bài học nhỏ hoặc tài liệu thì mới đẩy vào danh sách phần học
                 if (partTitle && partTitle.trim() !== '') {
                     currentLessonObj.parts.push({
                         partTitle: partTitle,
@@ -1168,7 +1149,7 @@
             });
         }
 
-        // --- KẾT NỐI TỰ ĐỘNG KHỚP URL HIỆN TẠI VỚI HOẠT ĐỘNG THANH NAVBAR ---
+        // --- KHỚP URL HOẠT ĐỘNG THANH NAVBAR ---
         window.addEventListener('DOMContentLoaded', () => {
             if (typeof STATIC_DATA_STORE !== 'undefined' && STATIC_DATA_STORE) {
                 initTeachersDataPackage(STATIC_DATA_STORE);
@@ -1177,7 +1158,6 @@
                 document.getElementById('menu-container').innerHTML = `<div class="loading-overlay">Chờ dữ liệu...</div>`;
             }
 
-            // XỬ LÝ SO KHỚP URL ĐỂ ACTIVE TAB NAVBAR TRÊN TRANG BÀI GIẢNG
             const currentUrl = window.location.href.toLowerCase();
             document.querySelectorAll('.nav-menu .nav-item').forEach(el => el.classList.remove('active'));
             
@@ -1193,7 +1173,6 @@
                 document.getElementById('menu-home').classList.add('active');
             }
 
-            // Đóng menu mobile khi click ra ngoài màn hình trống
             document.addEventListener('click', (e) => {
                 if (window.innerWidth <= 768) {
                     const menu = document.getElementById('mobileNavMenu');
